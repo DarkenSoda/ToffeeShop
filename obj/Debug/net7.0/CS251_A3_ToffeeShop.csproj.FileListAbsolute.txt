@@ -1,0 +1,5 @@
+E:\projects\CS251_A3_ToffeeShop\obj\Debug\net7.0\CS251_A3_ToffeeShop.csproj.AssemblyReference.cache
+E:\projects\CS251_A3_ToffeeShop\obj\Debug\net7.0\CS251_A3_ToffeeShop.GeneratedMSBuildEditorConfig.editorconfig
+E:\projects\CS251_A3_ToffeeShop\obj\Debug\net7.0\CS251_A3_ToffeeShop.AssemblyInfoInputs.cache
+E:\projects\CS251_A3_ToffeeShop\obj\Debug\net7.0\CS251_A3_ToffeeShop.AssemblyInfo.cs
+E:\projects\CS251_A3_ToffeeShop\obj\Debug\net7.0\CS251_A3_ToffeeShop.csproj.CoreCompileInputs.cache
