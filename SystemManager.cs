@@ -10,10 +10,11 @@ namespace CS251_A3_ToffeeShop {
         public void SystemRun() {
             // Load Data at the start of the program
             catalogue.LoadCatalogueData("./Items/Data.json");
-            
-            
+
+
             // Login/Register
             // While(true)
+            DisplayCatalogue();
 
 
             // Save Data before Closing the program
