@@ -1,4 +1,4 @@
-using CS251_A3_ToffeeShop.User;
+using CS251_A3_ToffeeShop.UsersClasses;
 namespace CS251_A3_ToffeeShop {
     public class main {
         public static void Main(string[] args) {

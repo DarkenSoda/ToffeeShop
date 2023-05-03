@@ -35,7 +35,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             phoneNumber = Phonenumber;
         }
         public string GetPhonenumber() {
-            if(phoneNumber == null) return "";
+            if (phoneNumber == null) return "";
 
             return phoneNumber;
         }
