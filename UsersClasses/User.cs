@@ -1,4 +1,4 @@
-namespace CS251_A3_ToffeeShop.User {
+namespace CS251_A3_ToffeeShop.UsersClasses {
     public class User {
         protected string name;
         protected string userName;

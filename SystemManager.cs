@@ -1,8 +1,9 @@
 using CS251_A3_ToffeeShop.Items;
+using CS251_A3_ToffeeShop.UsersClasses;
 
 namespace CS251_A3_ToffeeShop {
     public class SystemManager {
-        // private List<User> users = new List<User>();
+        private List<User> users = new List<User>();
         Catalogue catalogue = new Catalogue();
 
         public void SystemRun() {
