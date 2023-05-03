@@ -1,3 +1,4 @@
+using System.IO;
 using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.UsersClasses;
 
@@ -7,7 +8,16 @@ namespace CS251_A3_ToffeeShop {
         Catalogue catalogue = new Catalogue();
 
         public void SystemRun() {
+            // Load Data at the start of the program
+            catalogue.LoadCatalogueData("./Items/Data.json");
+            
+            
+            // Login/Register
+            // While(true)
 
+
+            // Save Data before Closing the program
+            catalogue.SaveCatalogueData("./Items/Data.json");
         }
 
         private void CustomerSystem() {
@@ -22,7 +32,7 @@ namespace CS251_A3_ToffeeShop {
 
         }
 
-        private void DisplayCatalogue() {
+        public void DisplayCatalogue() {
             int i = 1;
             foreach (Product product in catalogue.GetProductList()) {
                 Console.Write($"{i++}) Name: {product.GetName()} - Price: {product.GetDiscountPrice()} L.E.\n");

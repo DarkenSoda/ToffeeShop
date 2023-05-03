@@ -4,10 +4,10 @@ namespace CS251_A3_ToffeeShop.Items {
         private string category;
         private string? description;
         private string? brand;
-        private float price;
-        private float discountPrice;
+        private double price;
+        private double discountPrice;
 
-        public Product(string name, string category, float price = 0) {
+        public Product(string name, string category, double price = 0) {
             this.name = name;
             this.category = category;
             this.price = this.discountPrice = price;
@@ -21,19 +21,19 @@ namespace CS251_A3_ToffeeShop.Items {
             this.name = name;
         }
 
-        public float GetPrice() {
+        public double GetPrice() {
             return price;
         }
 
-        public void SetPrice(float price) {
+        public void SetPrice(double price) {
             this.price = price;
         }
 
-        public float GetDiscountPrice() {
+        public double GetDiscountPrice() {
             return discountPrice;
         }
 
-        public void SetDiscountPrice(float price) {
+        public void SetDiscountPrice(double price) {
             discountPrice = price;
         }
 
@@ -64,5 +64,16 @@ namespace CS251_A3_ToffeeShop.Items {
 
             return brand;
         }
+    }
+
+    // Struct to use as a database schema
+    // Load all data into it before converting to Product class
+    public struct ProductData {
+        public string name { get; set; }
+        public string category { get; set; }
+        public string description { get; set; }
+        public string brand { get; set; }
+        public double price { get; set; }
+        public double discountPrice { get; set; }
     }
 }

@@ -1,0 +1,26 @@
+[
+	{
+		"name": "Chocolate Bar",
+		"category": "Chocolate",
+		"description": "A sweet Choco bar!",
+		"brand": "Cadbury",
+		"price": 40,
+		"discountPrice": 40
+	},
+	{
+		"name": "Hohos",
+		"category": "Chocolate",
+		"description": "Chocolate cake filled with Cream!",
+		"brand": "Hohos",
+		"price": 3,
+		"discountPrice": 3
+	},
+	{
+		"name": "Molto",
+		"category": "Chocolate",
+		"description": "",
+		"brand": "Molto",
+		"price": 6,
+		"discountPrice": 6
+	}
+]
