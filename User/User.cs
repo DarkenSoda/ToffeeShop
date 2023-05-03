@@ -1,54 +1,51 @@
-namespace CS251_A3_ToffeeShop.User
-{
-    public class User
-    {
-        protected string? name;
-        protected string? userName;
-        protected string? password;
+namespace CS251_A3_ToffeeShop.User {
+    public class User {
+        protected string name;
+        protected string userName;
+        protected string password;
         protected string? phoneNumber;
-        protected string? emailAdress;
+        protected string emailAdress;
 
-        public void SetName(string Name)
-        {
+        public User(string name, string userName, string password, string emailAdress) {
+            this.name = name;
+            this.userName = userName;
+            this.password = password;
+            this.emailAdress = emailAdress;
+        }
+
+        public void SetName(string Name) {
             name = Name;
         }
-        public string GetName()
-        {
+        public string GetName() {
             return name;
         }
-        public void SetUsername(string username)
-        {
+        public void SetUsername(string username) {
             userName = username;
         }
-        public string GetUsername()
-        {
+        public string GetUsername() {
             return userName;
         }
-        public void SetPassword(string Password)
-        {
+        public void SetPassword(string Password) {
             password = Password;
         }
-        public string GetPassword()
-        {
+        public string GetPassword() {
             return password;
         }
-        public void SetPhonenumber(string Phonenumber)
-        {
+        public void SetPhonenumber(string Phonenumber) {
             phoneNumber = Phonenumber;
         }
-        public string GetPhonenumber()
-        {
+        public string GetPhonenumber() {
+            if(phoneNumber == null) return "";
+
             return phoneNumber;
         }
-        public void SetEmail(string Email)
-        {
+        public void SetEmail(string Email) {
             emailAdress = Email;
         }
-        public string GetEmail()
-        {
+        public string GetEmail() {
             return emailAdress;
         }
-        public void UserInterface(){
+        public void UserInterface() {
 
         }
         /*public void Authernicate()
