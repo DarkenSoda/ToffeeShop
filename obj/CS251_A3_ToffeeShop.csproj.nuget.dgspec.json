@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\projects\\CS251_A3_ToffeeShop\\CS251_A3_ToffeeShop.csproj": {}
+    "C:\\Users\\w10\\Documents\\GitHub\\CS251_A3_ToffeeShop\\CS251_A3_ToffeeShop.csproj": {}
   },
   "projects": {
-    "E:\\projects\\CS251_A3_ToffeeShop\\CS251_A3_ToffeeShop.csproj": {
+    "C:\\Users\\w10\\Documents\\GitHub\\CS251_A3_ToffeeShop\\CS251_A3_ToffeeShop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\projects\\CS251_A3_ToffeeShop\\CS251_A3_ToffeeShop.csproj",
+        "projectUniqueName": "C:\\Users\\w10\\Documents\\GitHub\\CS251_A3_ToffeeShop\\CS251_A3_ToffeeShop.csproj",
         "projectName": "CS251_A3_ToffeeShop",
-        "projectPath": "E:\\projects\\CS251_A3_ToffeeShop\\CS251_A3_ToffeeShop.csproj",
-        "packagesPath": "C:\\Users\\Nour eldeen\\.nuget\\packages\\",
-        "outputPath": "E:\\projects\\CS251_A3_ToffeeShop\\obj\\",
+        "projectPath": "C:\\Users\\w10\\Documents\\GitHub\\CS251_A3_ToffeeShop\\CS251_A3_ToffeeShop.csproj",
+        "packagesPath": "C:\\Users\\w10\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\w10\\Documents\\GitHub\\CS251_A3_ToffeeShop\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Nour eldeen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\w10\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -53,7 +53,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.105\\RuntimeIdentifierGraph.json"
         }
       }
     }
