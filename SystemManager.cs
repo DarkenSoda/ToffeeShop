@@ -5,8 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace CS251_A3_ToffeeShop {
     public class SystemManager {
-        private Dictionary<string, User> users = new Dictionary<string, User>();
         private Catalogue catalogue = new Catalogue();
+        private Dictionary<string, User> users = new Dictionary<string, User>();
+        private User? currentUser;
         private int userInput;
 
         public void SystemRun() {
@@ -31,16 +32,21 @@ namespace CS251_A3_ToffeeShop {
                         break;
                     case 3:
                         // Login
-
+                        if (!LoginUser()) break;
                         // Check if user is found in DB
 
                         // if his type is Admin
-                        AdminSystem();
+                        if (currentUser is Admin) {
+                            AdminSystem();
+                        }
 
                         // if his type is Staff
-                        StaffSystem();
+                        if (currentUser is Staff) {
+                            StaffSystem();
+                        }
 
                         // if his type is customer
+                        // if(currentUser is Customer)
                         CustomerSystem();
                         break;
                     case 4:
@@ -109,8 +115,7 @@ namespace CS251_A3_ToffeeShop {
 
                 if (string.IsNullOrEmpty(name)) {
                     Console.WriteLine("Invalid name!\nName should not be empty!");
-                }
-                else {
+                } else {
                     correctInput = true;
                 }
             } while (!correctInput || string.IsNullOrEmpty(name));
@@ -121,15 +126,14 @@ namespace CS251_A3_ToffeeShop {
                 correctInput = false;
                 Console.Write("Please Enter your Username (Enter 0 to cancel Registration): ");
                 username = Console.ReadLine();
-                if(username == "0") {
+                if (username == "0") {
                     Console.WriteLine("Registration Canceled!");
                     return;
                 }
 
-                if(string.IsNullOrEmpty(username) || !usernamePattern.IsMatch(username)) {
+                if (string.IsNullOrEmpty(username) || !usernamePattern.IsMatch(username)) {
                     Console.WriteLine("Invalid Username!\nUsername should consist of letters, numbers, _, -");
-                }
-                else{
+                } else {
                     correctInput = true;
                     if (users.ContainsKey(username)) {
                         Console.WriteLine("This username is already taken!");
@@ -175,6 +179,55 @@ namespace CS251_A3_ToffeeShop {
             User customer = new User(name, username, password, emailAdress);
             users.Add(username, customer);
             Console.WriteLine("Registered Successfully!");
+        }
+
+        private bool LoginUser() {
+            string? username;
+            string? password;
+            bool correctInput;
+
+            do {
+                correctInput = false;
+                Console.WriteLine("Please enter your Username (Enter 0 to cancel Login): ");
+                username = Console.ReadLine();
+                Console.WriteLine("Please enter your Password (Enter 0 to cancel Login): ");
+                password = Console.ReadLine();
+
+                if (username == "0" || password == "0") {
+                    Console.WriteLine("Login Canceled!");
+                    return false;
+                }
+
+                if (string.IsNullOrEmpty(username)) {
+                    Console.WriteLine("Username cannot be empty!");
+                    continue;
+                }
+
+                if (string.IsNullOrEmpty(password)) {
+                    Console.WriteLine("Password cannot be empty!");
+                    continue;
+                }
+
+                if (!users.ContainsKey(username)) {
+                    Console.WriteLine("User does not exist!");
+                } else {
+                    if (users[username].GetPassword() != password) {
+                        Console.WriteLine("Incorrect Password!");
+                    } else {
+                        correctInput = true;
+                    }
+                }
+            } while (!correctInput);
+
+            if (string.IsNullOrEmpty(username)) {
+                Console.WriteLine("Login Failed!");
+                return false;
+            }
+
+            currentUser = users[username];
+            Console.WriteLine("Logged in Successfully!");
+            Console.WriteLine($"Welcome {currentUser.GetName()}!");
+            return true;
         }
     }
 }
