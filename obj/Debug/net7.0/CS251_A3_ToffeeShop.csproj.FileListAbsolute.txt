@@ -36,3 +36,13 @@ G:\Github\CS251_A3_ToffeeShop\obj\Debug\net7.0\CS251_A3_ToffeeShop.pdb
 G:\Github\CS251_A3_ToffeeShop\obj\Debug\net7.0\CS251_A3_ToffeeShop.genruntimeconfig.cache
 G:\Github\CS251_A3_ToffeeShop\obj\Debug\net7.0\ref\CS251_A3_ToffeeShop.dll
 >>>>>>> Stashed changes
+E:\projects\CS251_A3_ToffeeShop\obj\Debug\net7.0\CS251_A3_ToffeeShop.dll
+E:\projects\CS251_A3_ToffeeShop\obj\Debug\net7.0\refint\CS251_A3_ToffeeShop.dll
+E:\projects\CS251_A3_ToffeeShop\obj\Debug\net7.0\CS251_A3_ToffeeShop.pdb
+E:\projects\CS251_A3_ToffeeShop\bin\Debug\net7.0\CS251_A3_ToffeeShop.exe
+E:\projects\CS251_A3_ToffeeShop\bin\Debug\net7.0\CS251_A3_ToffeeShop.deps.json
+E:\projects\CS251_A3_ToffeeShop\bin\Debug\net7.0\CS251_A3_ToffeeShop.runtimeconfig.json
+E:\projects\CS251_A3_ToffeeShop\bin\Debug\net7.0\CS251_A3_ToffeeShop.dll
+E:\projects\CS251_A3_ToffeeShop\bin\Debug\net7.0\CS251_A3_ToffeeShop.pdb
+E:\projects\CS251_A3_ToffeeShop\obj\Debug\net7.0\CS251_A3_ToffeeShop.genruntimeconfig.cache
+E:\projects\CS251_A3_ToffeeShop\obj\Debug\net7.0\ref\CS251_A3_ToffeeShop.dll
