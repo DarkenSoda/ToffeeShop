@@ -37,8 +37,8 @@ namespace CS251_A3_ToffeeShop.Items {
                 // To insert in Catalogue.productList
                 foreach (ProductData productData in items) {
                     Product product = new Product(productData.name, productData.category, productData.price);
-                    if (productData.description != null) product.SetDescription(productData.description);
-                    if (productData.brand != null) product.SetBrand(productData.brand);
+                    if (!string.IsNullOrEmpty(productData.description)) product.SetDescription(productData.description);
+                    if (!string.IsNullOrEmpty(productData.brand)) product.SetBrand(productData.brand);
                     if (productData.discountPrice != 0) product.SetDiscountPrice(productData.discountPrice);
 
                     AddProduct(product);
@@ -84,11 +84,15 @@ namespace CS251_A3_ToffeeShop.Items {
             foreach (Product product in GetProductList()) {
                 Console.Write($"{i++}) Name: {product.GetName()} - Price: {product.GetDiscountPrice()} L.E.\n");
                 Console.Write($"\tCategory: {product.GetCategory()}");
-                if (product.GetBrand() != "") {
+
+                // Don't display null or empty brand
+                if (!string.IsNullOrEmpty(product.GetBrand())) {
                     Console.Write($" - Brand: {product.GetBrand()}");
                 }
                 Console.WriteLine();
-                if (product.GetDescription() != "") {
+
+                // Don't display null or empty description
+                if (!string.IsNullOrEmpty(product.GetDescription())) {
                     Console.WriteLine($"\tDescription: {product.GetDescription()}");
                 }
             }

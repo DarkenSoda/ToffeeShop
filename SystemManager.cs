@@ -107,13 +107,13 @@ namespace CS251_A3_ToffeeShop {
                     return;
                 }
 
-                if (name == null) {
+                if (string.IsNullOrEmpty(name)) {
                     Console.WriteLine("Invalid name!\nName should not be empty!");
                 }
                 else {
                     correctInput = true;
                 }
-            } while (!correctInput || name == null);
+            } while (!correctInput || string.IsNullOrEmpty(name));
 
             bool found;
             do {
@@ -126,7 +126,7 @@ namespace CS251_A3_ToffeeShop {
                     return;
                 }
 
-                if(username == null || !usernamePattern.IsMatch(username)) {
+                if(string.IsNullOrEmpty(username) || !usernamePattern.IsMatch(username)) {
                     Console.WriteLine("Invalid Username!\nUsername should consist of letters, numbers, _, -");
                 }
                 else{
@@ -136,7 +136,7 @@ namespace CS251_A3_ToffeeShop {
                         found = true;
                     }
                 }
-            } while (found || !correctInput || username == null);
+            } while (found || !correctInput || string.IsNullOrEmpty(username));
 
             do {
                 correctInput = false;
@@ -147,13 +147,13 @@ namespace CS251_A3_ToffeeShop {
                     return;
                 }
 
-                if (password == null || !passwordPattern.IsMatch(password)) {
+                if (string.IsNullOrEmpty(password) || !passwordPattern.IsMatch(password)) {
                     Console.WriteLine("Invalid password!");
                     Console.WriteLine("Password must consist of letters, numbers and one of [$ # & * % ^] and be at least 8 characters long");
                 } else {
                     correctInput = true;
                 }
-            } while (!correctInput || password == null);
+            } while (!correctInput || string.IsNullOrEmpty(password));
 
             do {
                 correctInput = false;
@@ -164,13 +164,13 @@ namespace CS251_A3_ToffeeShop {
                     return;
                 }
 
-                if (emailAdress == null || !emailPattern.IsMatch(emailAdress)) {
+                if (string.IsNullOrEmpty(emailAdress) || !emailPattern.IsMatch(emailAdress)) {
                     Console.WriteLine("Invalid Email Address!");
                     Console.WriteLine("Please enter a valid Email Address!");
                 } else {
                     correctInput = true;
                 }
-            } while (!correctInput || emailAdress == null);
+            } while (!correctInput || string.IsNullOrEmpty(emailAdress));
 
             User customer = new User(name, username, password, emailAdress);
             users.Add(username, customer);
