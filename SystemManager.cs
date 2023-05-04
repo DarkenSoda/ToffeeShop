@@ -5,7 +5,7 @@ using CS251_A3_ToffeeShop.UsersClasses;
 namespace CS251_A3_ToffeeShop {
     public class SystemManager {
         private List<User> users = new List<User>();
-        Catalogue catalogue = new Catalogue();
+        private Catalogue catalogue = new Catalogue();
 
         public void SystemRun() {
             // Load Data at the start of the program
@@ -14,7 +14,7 @@ namespace CS251_A3_ToffeeShop {
 
             // Login/Register
             // While(true)
-            DisplayCatalogue();
+            catalogue.DisplayCatalogue();
 
 
             // Save Data before Closing the program
@@ -31,21 +31,6 @@ namespace CS251_A3_ToffeeShop {
 
         private void AdminSystem() {
 
-        }
-
-        public void DisplayCatalogue() {
-            int i = 1;
-            foreach (Product product in catalogue.GetProductList()) {
-                Console.Write($"{i++}) Name: {product.GetName()} - Price: {product.GetDiscountPrice()} L.E.\n");
-                Console.Write($"\tCategory: {product.GetCategory()}");
-                if (product.GetBrand() != "") {
-                    Console.Write($" - Brand: {product.GetBrand()}");
-                }
-                Console.WriteLine();
-                if (product.GetDescription() != "") {
-                    Console.WriteLine($"\tDescription: {product.GetDescription()}");
-                }
-            }
         }
     }
 }

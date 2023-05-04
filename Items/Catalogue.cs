@@ -79,6 +79,21 @@ namespace CS251_A3_ToffeeShop.Items {
             }
         }
 
+        public void DisplayCatalogue() {
+            int i = 1;
+            foreach (Product product in GetProductList()) {
+                Console.Write($"{i++}) Name: {product.GetName()} - Price: {product.GetDiscountPrice()} L.E.\n");
+                Console.Write($"\tCategory: {product.GetCategory()}");
+                if (product.GetBrand() != "") {
+                    Console.Write($" - Brand: {product.GetBrand()}");
+                }
+                Console.WriteLine();
+                if (product.GetDescription() != "") {
+                    Console.WriteLine($"\tDescription: {product.GetDescription()}");
+                }
+            }
+        }
+        
         // public void AddToShoppingCart(ref ShoppingCart shoppingCart, Product product) {
 
         // }
