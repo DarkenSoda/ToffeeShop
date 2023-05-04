@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "SgrdIdRBleBJgWzwPh6T0hdu7tRmophB6cwAcnBnU6BvjDyusv05h16C7xPDoFkE9yFEJUQ5jZpXYoztINjOyw==",
+  "success": true,
+  "projectFilePath": "G:\\Github\\CS251_A3_ToffeeShop\\CS251_A3_ToffeeShop.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file G:\\Github\\CS251_A3_ToffeeShop\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
+}
