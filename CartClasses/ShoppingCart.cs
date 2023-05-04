@@ -8,25 +8,26 @@ using CS251_A3_ToffeeShop.BalanceClasses;
 
 namespace CS251_A3_ToffeeShop.CartClasses {
     public class ShoppingCart {
-        private List<Product> items = new List<Product>();
+        private Dictionary<Product,int> items = new Dictionary<Product,int>();
         private double totalCost = 0;
         private double fixedTotalCost;
-        public void AddItem(Product item) {
-            items.Add(item);
-            totalCost += item.GetDiscountPrice();
+        public void AddItem(Product item, int quantity) {
+            items.Add(item,quantity);
         }
         public void RemoveItem(Product item) {
-            if (items.Remove(item)) {
-                Console.WriteLine("Item Removed Successfully!\n");
-            }
+           if (!items.ContainsKey(item))
+                Console.WriteLine("Item is not Found!");
+            else
+                items.Remove(item);
+
         }
-        public void Updateitems(Product item) {
-            for (int i = 0; i < items.Count(); i++) {
-                if (items[i] == item) {
-                    items[i] = item;
-                } 
+        public void Updateitems(Product oldItem ,Product newItem, int quantity) {
+            if (!items.ContainsKey(oldItem))
+                Console.WriteLine("Item is not Found!");
+            else {
+                items.Remove(oldItem);
+                items.Add(newItem,quantity);
             }
-            Console.WriteLine("Item not Found!");
         }
         public void ClearCart() {
             items.Clear();
@@ -57,7 +58,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         public double CalculateTotalPrice() {
             return totalCost;
         }
-        public List<Product> GetProductList() {
+        public Dictionary<Product,int> GetProductList() {
             return items;
         }
     }
