@@ -1,7 +1,15 @@
 using CS251_A3_ToffeeShop.CartClasses;
 using CS251_A3_ToffeeShop.BalanceClasses;
-namespace CS251_A3_ToffeeShop.UsersClasses {
-    public class Customer : User {
+using CS251_A3_ToffeeShop.Items;
+namespace CS251_A3_ToffeeShop.UsersClasses
+{
+    public class Customer : User
+    {
+        public enum CustomerState
+        {
+            active, inactive
+        }
+        private CustomerState? customerState;
         public string? customerID;
         List<Order> orderHistory = new List<Order>();
         ShoppingCart shoppingCart = new ShoppingCart();
@@ -9,18 +17,71 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         LoyalityPoints loyalityPoints = new LoyalityPoints();
         // List<PaymentMethodstrategy>? PaymentMethods;
         Address address;
-
-        public Customer(string name, string userName, string password, string emailAdress, Address address) : base(name, userName, password, emailAdress) {
-            this.address = address;
+        public Customer(string name, string userName, string password, string emailAdress, Address caddress) : base(name, userName, password, emailAdress)
+        {
+            address = caddress;
+            customerState = CustomerState.active;
         }
         public ShoppingCart GetShoppingCart() {
             return shoppingCart;
         }
-        public List<Order> GetOrderHistory() {
+        public List<Order> GetOrderHistory()
+        {
             return orderHistory;
         }
-        public Address GetAddress() {
+        public Address GetAddress()
+        {
             return address;
+        }
+        public void UpdateShoppingCart(ShoppingCart shoppingCart)
+        {
+            shoppingCart.PrintItems();
+            Console.WriteLine("1-Add New Order.");
+            Console.WriteLine("2-Remove Order.");
+            Console.WriteLine("3-Edit Order quntity.");
+            Console.WriteLine("4-Clear Cart.");
+            int y;
+            Console.WriteLine("Enter Your Choice Please: ");
+            y = Convert.ToInt32(Console.ReadLine());
+            if (y < 1 || y > 4)
+            {
+                UpdateShoppingCart(shoppingCart);
+            }
+            else
+            {
+                if (y == 1)
+                {
+                    Catalogue _catalogue = new Catalogue();
+                    _catalogue.DisplayCatalogue();
+                    int n;
+                    Console.WriteLine("Enter Your Choice Please: ");
+                    n = Convert.ToInt32(Console.ReadLine());
+                    int x;
+                    Console.WriteLine("Enter The Quantity: ");
+                    x = Convert.ToInt32(Console.ReadLine());
+                    shoppingCart.AddItem(_catalogue.GetProductList()[n - 1], x);
+                }
+                else if (y == 2)
+                {
+                    shoppingCart.PrintItems();
+                    int n;
+                    Console.WriteLine("Enter Your Choice Please: ");
+                    n = Convert.ToInt32(Console.ReadLine());
+                    //shoppingCart.RemoveItem(shoppingCart.GetProductList()[n-1].key);
+                }
+                else if (y == 3)
+                {
+                    shoppingCart.PrintItems();
+                    int n;
+                    Console.WriteLine("Enter Your Choice Please: ");
+                    n = Convert.ToInt32(Console.ReadLine());
+                    //shoppingCart.GetProductList()[n-1].key;
+                }
+            }
+        }
+        public void SetCustomerState(CustomerState _customerState)
+        {
+            customerState = _customerState;
         }
     }
 }

@@ -53,7 +53,6 @@ namespace CS251_A3_ToffeeShop.UsersClasses
         {
             int x;
             Console.WriteLine("1-Add Voucher.");
-            Console.WriteLine();
             Console.WriteLine("2-Remove Voucher.");
             x = Convert.ToInt32(Console.ReadLine());
             if (x == 1)
@@ -62,13 +61,12 @@ namespace CS251_A3_ToffeeShop.UsersClasses
                 double discountValue;
                 Console.WriteLine("Enter The Voucher Code: ");
                 voucherCode = Console.ReadLine();
-                Console.WriteLine();
                 Console.WriteLine("Enter The Discount Value: ");
                 discountValue = Convert.ToDouble(Console.ReadLine());
                 Voucher newVoucher = new Voucher(voucherCode, discountValue);
                 AddVoucher(ref voucher, newVoucher);
             }
-            else if (x==2)
+            else if (x == 2)
             {
                 for (int i = 0; i < voucher.Count; i++)
                 {
@@ -86,33 +84,61 @@ namespace CS251_A3_ToffeeShop.UsersClasses
         }
         public void CancelOrder(Order order)
         {
-            order.orderStatus = OrderState.Canceled;
+            order.SetOrderStatue(OrderState.Canceled);
         }
-        public void UpdataOrder(Order order){
+        public void UpdataOrder(Order order)
+        {
             Console.WriteLine("1-Update Order State.");
             Console.WriteLine("2-Update Order Address.");
             int y;
             y = Convert.ToInt32(Console.ReadLine());
-            if (y==1)
+            if (y < 1 || y > 2)
             {
-                order.UpdateState();
-            }else if (y==2)
+                UpdataOrder(order);
+            }
+            else
             {
-                string street;
-                string city;
-                string buildingNumber;
-                Console.WriteLine("Enter The Street Name: ");
-                street = Console.ReadLine();
-                Console.WriteLine("Enter The City: ");
-                city = Console.ReadLine();
-                Console.WriteLine("Enter The Building Number: ");
-                buildingNumber = Console.ReadLine();
-                Address newaddress = new Address(street,city,buildingNumber);
-                order.SetAddress(newaddress);
+                if (y == 1)
+                {
+                    order.UpdateState();
+                }
+                else if (y == 2)
+                {
+                    string street;
+                    string city;
+                    string buildingNumber;
+                    Console.WriteLine("Enter The Street Name: ");
+                    street = Console.ReadLine();
+                    while (string.IsNullOrEmpty(street))
+                    {
+                        Console.WriteLine("Invalid Input Try Again! ");
+                        Console.WriteLine("Enter The Street Name: ");
+                        street = Console.ReadLine();
+                    }
+                    Console.WriteLine("Enter The City: ");
+                    city = Console.ReadLine();
+                    while (string.IsNullOrEmpty(city))
+                    {
+                        Console.WriteLine("Invalid Input Try Again! ");
+                        Console.WriteLine("Enter The City: ");
+                        city = Console.ReadLine();
+                    }
+                    Console.WriteLine("Enter The Building Number: ");
+                    buildingNumber = Console.ReadLine();
+                    while (string.IsNullOrEmpty(buildingNumber))
+                    {
+                        Console.WriteLine("Invalid Input Try Again! ");
+                        Console.WriteLine("Enter The Building Number: ");
+                        buildingNumber = Console.ReadLine();
+                    }
+                    Address newaddress = new Address(street, city, buildingNumber);
+                    order.SetAddress(newaddress);
+                }
             }
         }
-        public void SuspendCustomer(Customer customer){
-            //we have to but flag or statue in customer class to know if the customer is blocked or not
+        public void SuspendCustomer(Customer customer)
+        {
+            customer.SetCustomerState(Customer.CustomerState.inactive);
         }
     }
 }

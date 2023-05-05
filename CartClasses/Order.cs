@@ -11,7 +11,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
     public class Order {
         private int OrderCounter = 0;
         private string? orderID;
-        public OrderState orderStatus;
+        private OrderState orderStatus;
         private ShoppingCart? shoppingCart;
         private Address? deliveryAddress;
         private string? dateTime;
@@ -60,6 +60,9 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         }
         public void SetAddress(Address caddress){
             deliveryAddress = caddress;
+        }
+        public void SetOrderStatue(OrderState state){
+            orderStatus = state;
         }
         public void SetDateTime(string cdateTime){
             dateTime = cdateTime;

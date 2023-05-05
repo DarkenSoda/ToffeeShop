@@ -11,6 +11,14 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         private Dictionary<Product,int> items = new Dictionary<Product,int>();
         private double totalCost = 0;
         private double fixedTotalCost;
+        
+        public void PrintItems(){
+            int i = 1;
+            foreach (var kvp in items) {
+            Console.WriteLine(i+"Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+                i++;
+            }
+        }
         public void AddItem(Product item, int quantity) {
             items.Add(item,quantity);
         }
@@ -19,7 +27,6 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                 Console.WriteLine("Item is not Found!");
             else
                 items.Remove(item);
-
         }
         public void Updateitems(Product oldItem ,Product newItem, int quantity) {
             if (!items.ContainsKey(oldItem))

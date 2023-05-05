@@ -193,8 +193,8 @@ namespace CS251_A3_ToffeeShop {
             if (!TakeRegistrationInputNoRegex(ref street, "Street")) return;
 
             if (!TakeRegistrationInputNoRegex(ref buildingNo, "Building Number")) return;
-
-            User customer = new Customer(name, username, password, emailAdress, new Address(street, city, buildingNo));
+            Address newaddress = new Address(street, city, buildingNo);
+            User customer = new Customer(name, username, password, emailAdress,newaddress);
             users.Add(username, customer);
             Console.WriteLine("Registered Successfully!");
         }
