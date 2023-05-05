@@ -11,6 +11,7 @@ namespace CS251_A3_ToffeeShop {
     public class SystemManager {
         private Catalogue catalogue = new Catalogue();
         private Dictionary<string, User> users = new Dictionary<string, User>();
+        private List<Order> orderList = new List<Order>();
         private User? currentUser;
         private int userInput;
 
@@ -43,11 +44,6 @@ namespace CS251_A3_ToffeeShop {
                         // if his type is Admin
                         if (currentUser is Admin) {
                             AdminSystem();
-                        }
-
-                        // if his type is Staff
-                        else if (currentUser is Staff) {
-                            StaffSystem();
                         }
 
                         // if his type is customer
@@ -108,10 +104,6 @@ namespace CS251_A3_ToffeeShop {
                         break;
                 }
             } while (userInput != 3);
-        }
-
-        private void StaffSystem() {
-
         }
 
         private void AdminSystem() {
@@ -285,7 +277,6 @@ namespace CS251_A3_ToffeeShop {
             catalogue.SaveCatalogueData("./Items/Data.json");
 
             List<CustomerData> customerDataList = new List<CustomerData>();
-            // List<StaffData> StaffDataList = new List<StaffData>();
             // List<AdminData> AdminDataList = new List<AdminData>();
 
             foreach (KeyValuePair<string, User> user in users) {
@@ -295,7 +286,6 @@ namespace CS251_A3_ToffeeShop {
             }
 
             SaveDataLists(customerDataList, "./UsersClasses/Customers.json");
-            // SaveDataLists(StaffDataList, "./UsersClasses/Staffs.json");
             // SaveDataLists(AdminDataList, "./UsersClasses/Admins.json");
         }
 
@@ -306,7 +296,6 @@ namespace CS251_A3_ToffeeShop {
             customerData.password = customer.GetPassword();
             customerData.phone = customer.GetPhonenumber();
             customerData.email = customer.GetEmail();
-            // customerData.id = customer.GetName();
             customerData.orders = customer.GetOrderHistory();
             customerData.vouchers = customer.GetVoucherList();
             customerData.loyalityPoints = customer.GetLoyalityPoints().GetPoints();

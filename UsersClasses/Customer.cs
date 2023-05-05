@@ -7,7 +7,6 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             active, inactive
         }
         private CustomerState? customerState;
-        private string? customerID;
         private List<Order> orderHistory = new List<Order>();
         private ShoppingCart shoppingCart = new ShoppingCart();
         private List<Voucher> voucherList = new List<Voucher>();
@@ -37,7 +36,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             shoppingCart.PrintItems();
             Console.WriteLine("1-Add New Order.");
             Console.WriteLine("2-Remove Order.");
-            Console.WriteLine("3-Edit Order quntity.");
+            Console.WriteLine("3-Edit Order quantity.");
             Console.WriteLine("4-Clear Cart.");
             int y;
             Console.WriteLine("Enter Your Choice Please: ");
@@ -81,7 +80,6 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         public string password { get; set; }
         public string phone { get; set; }
         public string email { get; set; }
-        // public string id { get; set; }
         public List<Order> orders { get; set; }
         public List<Voucher> vouchers { get; set; }
         public int loyalityPoints { get; set; }
