@@ -1,5 +1,6 @@
 using System.IO;
 using CS251_A3_ToffeeShop.Items;
+using CS251_A3_ToffeeShop.CartClasses;
 using CS251_A3_ToffeeShop.UsersClasses;
 using System.Text.RegularExpressions;
 
@@ -41,13 +42,14 @@ namespace CS251_A3_ToffeeShop {
                         }
 
                         // if his type is Staff
-                        if (currentUser is Staff) {
+                        else if (currentUser is Staff) {
                             StaffSystem();
                         }
 
                         // if his type is customer
-                        // if(currentUser is Customer)
-                        CustomerSystem();
+                        if (currentUser is Customer) {
+                            CustomerSystem();
+                        }
                         break;
                     case 4:
                         Console.WriteLine("Closing Program!\n");
@@ -63,22 +65,41 @@ namespace CS251_A3_ToffeeShop {
         }
 
         private void CustomerSystem() {
+            if (currentUser == null) return;
+
             do {
-                Console.WriteLine("\n1) Browser Catalogue\n2) idk\n3) Log out");
+                Console.WriteLine("\n1) Browser Catalogue\n2) Add Item to Shopping Cart\n3) Log out");
                 int.TryParse(Console.ReadLine(), out userInput);
 
                 switch (userInput) {
-                    case 1:
-                        // Browser Catalogue
+                    case 1:     // Browser Catalogue
                         catalogue.DisplayCatalogue();
                         break;
-                    case 2:
+                    case 2:     // Adding Item To Shopping Cart
+                        catalogue.DisplayCatalogue();
+                        int choice, quantity;
+
+                        Console.Write("Pick an Item to Add: ");
+                        int.TryParse(Console.ReadLine(), out choice);
+                        Console.Write("How many do you want to Add: ");
+                        int.TryParse(Console.ReadLine(), out quantity);
+
+                        if (choice <= 0 || choice >= catalogue.GetProductList().Count) {
+                            Console.WriteLine("Invalid choice!");
+                            break;
+                        }
+
+                        if (quantity <= 0) {
+                            Console.WriteLine("Invalid quantity!");
+                            break;
+                        }
+
+                        ((Customer)currentUser).GetShoppingCart().AddItem(catalogue.GetProductList()[choice - 1], quantity);
                         break;
-                    case 3:
-                        // Logged out
+                    case 3:     // Logging out
                         Console.WriteLine("Logged out Successfully!");
                         break;
-                    default:
+                    default:    // Invalid Input
                         Console.WriteLine("Please choose a valid number!\n");
                         break;
                 }
@@ -94,32 +115,21 @@ namespace CS251_A3_ToffeeShop {
         }
 
         private void RegisterUser() {
-            string? name;
-            string? username;
-            string? password;
-            string? emailAdress;
+            string? name = string.Empty;
+            string? username, password, emailAdress;
+            string city = string.Empty;
+            string street = string.Empty;
+            string buildingNo = string.Empty;
             Regex usernamePattern = new Regex("^[a-zA-Z0-9_-]+$");
             Regex passwordPattern = new Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$#&*%^])[A-Za-z\\d$#&*%^]{8,}$");
             Regex emailPattern = new Regex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
             bool correctInput;
 
-            do {
-                correctInput = false;
-                Console.Write("Please Enter your Name (Enter 0 to cancel Registration): ");
-                name = Console.ReadLine();
-                if (name == "0") {
-                    Console.WriteLine("Registration Canceled!");
-                    return;
-                }
+            // Take Name
+            if (!TakeRegistrationInputNoRegex(ref name, "Name")) return;
 
-                if (string.IsNullOrEmpty(name)) {
-                    Console.WriteLine("Invalid name!\nName should not be empty!");
-                } else {
-                    correctInput = true;
-                }
-            } while (!correctInput || string.IsNullOrEmpty(name));
-
+            // Take Username
             bool found;
             do {
                 found = false;
@@ -142,6 +152,7 @@ namespace CS251_A3_ToffeeShop {
                 }
             } while (found || !correctInput || string.IsNullOrEmpty(username));
 
+            // Take Password
             do {
                 correctInput = false;
                 Console.Write("Please Enter your password (Enter 0 to cancel Registration): ");
@@ -159,6 +170,7 @@ namespace CS251_A3_ToffeeShop {
                 }
             } while (!correctInput || string.IsNullOrEmpty(password));
 
+            // Take Email
             do {
                 correctInput = false;
                 Console.Write("Please Enter your Email Address (Enter 0 to cancel Registration): ");
@@ -176,7 +188,13 @@ namespace CS251_A3_ToffeeShop {
                 }
             } while (!correctInput || string.IsNullOrEmpty(emailAdress));
 
-            User customer = new User(name, username, password, emailAdress);
+            if (!TakeRegistrationInputNoRegex(ref city, "City")) return;
+
+            if (!TakeRegistrationInputNoRegex(ref street, "Street")) return;
+
+            if (!TakeRegistrationInputNoRegex(ref buildingNo, "Building Number")) return;
+
+            User customer = new Customer(name, username, password, emailAdress, new Address(street, city, buildingNo));
             users.Add(username, customer);
             Console.WriteLine("Registered Successfully!");
         }
@@ -227,6 +245,31 @@ namespace CS251_A3_ToffeeShop {
             currentUser = users[username];
             Console.WriteLine("Logged in Successfully!");
             Console.WriteLine($"Welcome {currentUser.GetName()}!");
+            return true;
+        }
+
+        private bool TakeRegistrationInputNoRegex(ref string variable, string strname) {
+            bool correctInput;
+            string? input;
+            do {
+                correctInput = false;
+                Console.Write($"Please Enter your {strname} (Enter 0 to cancel Registration): ");
+                input = Console.ReadLine();
+                if (input == "0") {
+                    Console.WriteLine("Registration Canceled!");
+                    return false;
+                }
+
+                if (string.IsNullOrEmpty(input)) {
+                    Console.WriteLine($"Invalid {strname}!");
+                    Console.WriteLine($"{strname} Cannot be Empty!");
+                } else {
+                    correctInput = true;
+                }
+            } while (!correctInput || string.IsNullOrEmpty(input));
+
+            variable = input;
+
             return true;
         }
     }
