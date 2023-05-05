@@ -12,7 +12,9 @@ namespace CS251_A3_ToffeeShop.UsersClasses
         //List<PaymentMethodstrategy>? PaymentMethods;
         Address? address;
 
-        Customer(string name, string userName, string password, string emailAdress) : base(name, userName, password, emailAdress) { }
+        Customer(string name, string userName, string password, string emailAdress,Address caddress) : base(name, userName, password, emailAdress) {
+            address = caddress;
+        }
         public ShoppingCart GetShoppingCart()
         {
             // Console.WriteLine("1-Add Item.");

@@ -1,12 +1,14 @@
 using CS251_A3_ToffeeShop.Items;
+using CS251_A3_ToffeeShop.CartClasses;
 using CS251_A3_ToffeeShop.BalanceClasses;
 
 namespace CS251_A3_ToffeeShop.UsersClasses
 {
-    public class Admin : Staff{
-        
-        public Admin(string name, string userName, string password, string emailAdress):base(name,userName,password,emailAdress){}
-        
+    public class Admin : Staff
+    {
+
+        public Admin(string name, string userName, string password, string emailAdress) : base(name, userName, password, emailAdress) { }
+
         public void UpdateCatalogue(Catalogue catalogue)
         {
             int x;
@@ -82,8 +84,9 @@ namespace CS251_A3_ToffeeShop.UsersClasses
         {
             loyalityPoints.SetDiscountValue();
         }
-        // public CancelOrder(OrderedParallelQuery order){
-        //     Removeorder();
-        // }
+        public void CancelOrder(Order order)
+        {
+            order.Removeorder();
+        }
     }
 }

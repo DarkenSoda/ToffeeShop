@@ -9,12 +9,12 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         Ordered, Delivered, inDelivery, Canceled
     }
     public class Order {
-        private int OrderCounter = 0;
-        private string? orderID;
-        private OrderState orderStatus;
-        private ShoppingCart? shoppingCart;
-        private Address? deliveryAddress;
-        private string? dateTime;
+        protected int OrderCounter = 0;
+        protected string? orderID;
+        protected OrderState orderStatus;
+        protected ShoppingCart? shoppingCart;
+        protected Address? deliveryAddress;
+        protected string? dateTime;
         public Order(ShoppingCart shoppingCart, Address deliveryAddress) {
             this.shoppingCart = shoppingCart;
             this.orderID = "OR"+ Convert.ToString(OrderCounter++); 
