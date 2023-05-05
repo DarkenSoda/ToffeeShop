@@ -3,6 +3,9 @@ using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.CartClasses;
 using CS251_A3_ToffeeShop.UsersClasses;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Text.Json;
+
 
 namespace CS251_A3_ToffeeShop {
     public class SystemManager {
@@ -14,6 +17,7 @@ namespace CS251_A3_ToffeeShop {
         public void SystemRun() {
             // Load Data at the start of the program
             catalogue.LoadCatalogueData("./Items/Data.json");
+            LoadData();
 
 
             // Login/Register
@@ -53,7 +57,7 @@ namespace CS251_A3_ToffeeShop {
                         break;
                     case 4:
                         Console.WriteLine("Closing Program!\n");
-                        return;
+                        break;
                     default:
                         Console.WriteLine("Please choose a valid number!\n");
                         break;
@@ -61,7 +65,7 @@ namespace CS251_A3_ToffeeShop {
             } while (userInput != 4);
 
             // Save Data before Closing the program
-            catalogue.SaveCatalogueData("./Items/Data.json");
+            SaveData();
         }
 
         private void CustomerSystem() {
@@ -194,7 +198,7 @@ namespace CS251_A3_ToffeeShop {
 
             if (!TakeRegistrationInputNoRegex(ref buildingNo, "Building Number")) return;
             Address newaddress = new Address(street, city, buildingNo);
-            User customer = new Customer(name, username, password, emailAdress,newaddress);
+            User customer = new Customer(name, username, password, emailAdress, newaddress);
             users.Add(username, customer);
             Console.WriteLine("Registered Successfully!");
         }
@@ -271,6 +275,53 @@ namespace CS251_A3_ToffeeShop {
             variable = input;
 
             return true;
+        }
+
+        private void LoadData() {
+
+        }
+
+        private void SaveData() {
+            catalogue.SaveCatalogueData("./Items/Data.json");
+
+            List<CustomerData> customerDataList = new List<CustomerData>();
+            // List<StaffData> StaffDataList = new List<StaffData>();
+            // List<AdminData> AdminDataList = new List<AdminData>();
+
+            foreach (KeyValuePair<string, User> user in users) {
+                if (user.Value is Customer) {
+                    customerDataList.Add(SaveCustomerData((Customer)user.Value));
+                }
+            }
+
+            SaveDataLists(customerDataList, "./UsersClasses/Customers.json");
+            // SaveDataLists(StaffDataList, "./UsersClasses/Staffs.json");
+            // SaveDataLists(AdminDataList, "./UsersClasses/Admins.json");
+        }
+
+        private CustomerData SaveCustomerData(Customer customer) {
+            CustomerData customerData = new CustomerData();
+            customerData.name = customer.GetName();
+            customerData.username = customer.GetUsername();
+            customerData.password = customer.GetPassword();
+            customerData.phone = customer.GetPhonenumber();
+            customerData.email = customer.GetEmail();
+            // customerData.id = customer.GetName();
+            customerData.orders = customer.GetOrderHistory();
+            customerData.vouchers = customer.GetVoucherList();
+            customerData.loyalityPoints = customer.GetLoyalityPoints().GetPoints();
+            customerData.address = customer.GetAddress();
+
+            return customerData;
+        }
+
+        private void SaveDataLists<T>(List<T> list, string file) {
+            using (StreamWriter writer = new StreamWriter(file)) {
+                string json = JsonSerializer.Serialize(list.ToArray());
+
+                // write the serialized Json to the file
+                writer.Write(json);
+            }
         }
     }
 }
