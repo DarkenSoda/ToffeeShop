@@ -9,12 +9,12 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         Ordered, Delivered, inDelivery, Canceled
     }
     public class Order {
-        protected int OrderCounter = 0;
-        protected string? orderID;
-        protected OrderState orderStatus;
-        protected ShoppingCart? shoppingCart;
-        protected Address? deliveryAddress;
-        protected string? dateTime;
+        private int OrderCounter = 0;
+        private string? orderID;
+        public OrderState orderStatus;
+        private ShoppingCart? shoppingCart;
+        private Address? deliveryAddress;
+        private string? dateTime;
         public Order(ShoppingCart shoppingCart, Address deliveryAddress) {
             this.shoppingCart = shoppingCart;
             this.orderID = "OR"+ Convert.ToString(OrderCounter++); 
@@ -57,6 +57,12 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             if (dateTime == null) return "";
             else
                 return dateTime;
+        }
+        public void SetAddress(Address caddress){
+            deliveryAddress = caddress;
+        }
+        public void SetDateTime(string cdateTime){
+            dateTime = cdateTime;
         }
     }
 }

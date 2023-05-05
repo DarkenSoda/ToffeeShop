@@ -68,7 +68,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses
                 Voucher newVoucher = new Voucher(voucherCode, discountValue);
                 AddVoucher(ref voucher, newVoucher);
             }
-            else
+            else if (x==2)
             {
                 for (int i = 0; i < voucher.Count; i++)
                 {
@@ -86,7 +86,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses
         }
         public void CancelOrder(Order order)
         {
-            order.Removeorder();
+            order.orderStatus = OrderState.Canceled;
         }
     }
 }
