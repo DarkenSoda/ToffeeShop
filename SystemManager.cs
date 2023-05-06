@@ -1,8 +1,8 @@
 using System.IO;
 using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.CartClasses;
-using CS251_A3_ToffeeShop.BalanceClasses;
 using CS251_A3_ToffeeShop.UsersClasses;
+using CS251_A3_ToffeeShop.BalanceClasses;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -19,6 +19,7 @@ namespace CS251_A3_ToffeeShop {
 
         public void SystemRun() {
             // Load Data at the start of the program
+            catalogue.LoadCatalogueData("./Items/Data.json");
             LoadData();
 
 
@@ -64,13 +65,76 @@ namespace CS251_A3_ToffeeShop {
             // Save Data before Closing the program
             SaveData();
         }
+        public void CustomerLoyalityPointsInterface() {
+            if (currentUser == null) return;
+            Console.WriteLine("Available Points: {0} TP\n-------------------\n1) Redeem.\n2) Cancel.",((Customer)currentUser).GetLoyalityPoints().GetPoints());
+            int userInput;
+             int.TryParse(Console.ReadLine(),out userInput);
+            switch(userInput) {
+                case 1:
+                    int points;
+                    Console.Write("Enter ammount to be redeemed: ");
+                    int.TryParse(Console.ReadLine(), out points);
+                    if (points > ((Customer)currentUser).GetLoyalityPoints().GetPoints()) {
+                        System.Console.WriteLine("Points Exceeded The Limit!");
+                        CustomerLoyalityPointsInterface();
+                    }
+                    ((Customer)currentUser).GetLoyalityPoints().RedeemPoints(points);
+                    return;
+                case 2:
+                    return;
+            }
+        }
+        public void CustomerVoucherInterface() {
+            int i = 1;
+            List<Voucher> availableVoucherList = new List<Voucher>();
+            if (currentUser == null) return; 
+            foreach(var voucher in ((Customer)currentUser).GetVoucherList()) {
+                if (voucher.GetExpiryState() == false) {
+                    Console.WriteLine((i++) + ", " + voucher.GetVoucherCode() + "   " + voucher.GetDiscountValue());
+                    availableVoucherList.Add(voucher);
+                }
+            }
+            Console.Write("Choose an Option: ");
+            int userInput;
+            int.TryParse(Console.ReadLine(), out userInput);
+            ((Customer)currentUser).GetShoppingCart().ApplyVoucher(availableVoucherList[userInput - 1]);
+        }
+        public void ShoppingInterface() {
+            if (currentUser == null) return;
+            Console.WriteLine("//---------//Shopping Cart//---------//");
+            ((Customer)currentUser).GetShoppingCart().PrintItems();
+            int userInput;
+            Console.WriteLine("1) Apply LoyalityPoints.\n2) Apply Vouchers.\n3) Update Quantity.\n4) Cancel.\n5) Check Out.");
+            int.TryParse(Console.ReadLine(),out userInput);
+            do {
+                switch (userInput) {
+                    case 1:
+                        CustomerLoyalityPointsInterface();
+                        break;
+                    case 2:
+                        CustomerVoucherInterface();
+                        break;
+                    case 3:
+                        ((Customer)currentUser).GetShoppingCart().Updateitems();
+                        break;
+                    case 4:
+                        ((Customer)currentUser).GetShoppingCart().RevertChanges();
+                        break;
+                    default:
+                        System.Console.WriteLine("Invalid Input! Try Again!");
+                        break;
+                }
+            } while(userInput != 4);
 
+        }
         private void CustomerSystem() {
             if (currentUser == null) return;
 
             do {
-                Console.WriteLine("\n1) Browser Catalogue\n2) Add Item to Shopping Cart\n3) Log out");
+                Console.WriteLine("\n1) Browser Catalogue.\n2) Add Item to Shopping Cart.\n3) Review Shopping Cart.\n4) Log out.");
                 int.TryParse(Console.ReadLine(), out userInput);
+
                 switch (userInput) {
                     case 1:     // Browser Catalogue
                         catalogue.DisplayCatalogue();
@@ -96,14 +160,17 @@ namespace CS251_A3_ToffeeShop {
 
                         ((Customer)currentUser).GetShoppingCart().AddItem(catalogue.GetProductList()[choice - 1], quantity);
                         break;
-                    case 3:     // Logging out
+                    case 3:
+                        ShoppingInterface();
+                        break;
+                    case 4:     // Logging out
                         Console.WriteLine("Logged out Successfully!");
                         break;
                     default:    // Invalid Input
                         Console.WriteLine("Please choose a valid number!\n");
                         break;
                 }
-            } while (userInput != 3);
+            } while (userInput != 4);
         }
 
         private void AdminSystem() {
@@ -164,7 +231,7 @@ namespace CS251_A3_ToffeeShop {
         }
 
         private void RegisterUser() {
-            string name = string.Empty;
+            string? name = string.Empty;
             string? username, password, emailAdress;
             string city = string.Empty;
             string street = string.Empty;
