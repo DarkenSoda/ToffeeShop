@@ -9,7 +9,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         private CustomerState? customerState;
         private List<Order> orderHistory = new List<Order>();
         private ShoppingCart shoppingCart = new ShoppingCart();
-        private List<Voucher> voucherList = new List<Voucher>();
+        protected List<Voucher> voucherList = new List<Voucher>();
         private LoyalityPoints loyalityPoints = new LoyalityPoints();
         // List<PaymentMethodstrategy>? PaymentMethods;
         Address address;
@@ -71,6 +71,12 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         }
         public void SetCustomerState(CustomerState _customerState) {
             customerState = _customerState;
+        }
+
+        public void CheckOut(){
+            Console.WriteLine("Order Total Price= ");
+            shoppingCart.CalculateTotalPrice();
+            
         }
     }
 

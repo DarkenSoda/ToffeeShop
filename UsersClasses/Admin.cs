@@ -57,7 +57,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 AddVoucher(ref voucher, newVoucher);
             } else if (x == 2) {
                 for (int i = 0; i < voucher.Count; i++) {
-                    Console.Write(voucher[i] + " , ");
+                    Console.WriteLine($"{i}) "+voucher[i].GetType() + " . ");
                 }
                 int y;
                 Console.WriteLine("Chose The Number Of Voucher You Want To Delete:");
@@ -65,8 +65,8 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 RemoveVoucher(ref voucher, y);
             }
         }
-        public void UpdateLoyalityPoint(LoyalityPoints loyalityPoints) {
-            loyalityPoints.SetDiscountValue();
+        public void UpdateLoyalityPoint(double val) {
+            LoyalityPoints.ChangeDiscountValue(val);
         }
         public void CancelOrder(Order order) {
             order.SetOrderStatue(OrderState.Canceled);

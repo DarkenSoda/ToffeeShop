@@ -1,6 +1,7 @@
 using System.IO;
 using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.CartClasses;
+using CS251_A3_ToffeeShop.BalanceClasses;
 using CS251_A3_ToffeeShop.UsersClasses;
 using CS251_A3_ToffeeShop.BalanceClasses;
 using System.Text.RegularExpressions;
@@ -8,15 +9,18 @@ using System.Collections.Generic;
 using System.Text.Json;
 
 
-namespace CS251_A3_ToffeeShop {
-    public class SystemManager {
+namespace CS251_A3_ToffeeShop
+{
+    public class SystemManager
+    {
         private Catalogue catalogue = new Catalogue();
         private Dictionary<string, User> users = new Dictionary<string, User>();
         private List<Order> orderList = new List<Order>();
+        private List<Voucher> voucherList = new List<Voucher>();
         private User? currentUser;
         private int userInput;
-
-        public void SystemRun() {
+        public void SystemRun()
+        {
             // Load Data at the start of the program
             catalogue.LoadCatalogueData("./Items/Data.json");
             LoadData();
@@ -25,11 +29,13 @@ namespace CS251_A3_ToffeeShop {
             // Login/Register
             Console.WriteLine("\nWelcome to Toffee Shop!\n");
 
-            do {
+            do
+            {
                 Console.WriteLine("\n1) Browse Catalogue\n2) Register\n3) Login\n4) Exit");
                 int.TryParse(Console.ReadLine(), out userInput);
 
-                switch (userInput) {
+                switch (userInput)
+                {
                     case 1:
                         catalogue.DisplayCatalogue();
                         break;
@@ -43,12 +49,14 @@ namespace CS251_A3_ToffeeShop {
                         // Check if user is found in DB
 
                         // if his type is Admin
-                        if (currentUser is Admin) {
+                        if (currentUser is Admin)
+                        {
                             AdminSystem();
                         }
 
                         // if his type is customer
-                        if (currentUser is Customer) {
+                        if (currentUser is Customer)
+                        {
                             CustomerSystem();
                         }
                         break;
@@ -65,14 +73,16 @@ namespace CS251_A3_ToffeeShop {
             SaveData();
         }
 
-        private void CustomerSystem() {
+        private void CustomerSystem()
+        {
             if (currentUser == null) return;
 
-            do {
+            do
+            {
                 Console.WriteLine("\n1) Browser Catalogue\n2) Add Item to Shopping Cart\n3) Log out");
                 int.TryParse(Console.ReadLine(), out userInput);
-
-                switch (userInput) {
+                switch (userInput)
+                {
                     case 1:     // Browser Catalogue
                         catalogue.DisplayCatalogue();
                         break;
@@ -85,12 +95,14 @@ namespace CS251_A3_ToffeeShop {
                         Console.Write("How many do you want to Add: ");
                         int.TryParse(Console.ReadLine(), out quantity);
 
-                        if (choice <= 0 || choice >= catalogue.GetProductList().Count) {
+                        if (choice <= 0 || choice >= catalogue.GetProductList().Count)
+                        {
                             Console.WriteLine("Invalid choice!");
                             break;
                         }
 
-                        if (quantity <= 0) {
+                        if (quantity <= 0)
+                        {
                             Console.WriteLine("Invalid quantity!");
                             break;
                         }
@@ -107,11 +119,70 @@ namespace CS251_A3_ToffeeShop {
             } while (userInput != 3);
         }
 
-        private void AdminSystem() {
-
+        private void AdminSystem()
+        {
+            if (currentUser == null) return;
+            do
+            {
+                Console.WriteLine("\n1) Update Catalogue. \n2) Update Vouchers. \n3) Update LoyalityPoints\n4) Cancel Order. \n5) Update Order. \n6) Suspend Customer. \n7) Log out.");
+                int.TryParse(Console.ReadLine(), out userInput);
+                switch (userInput)
+                {
+                    case 1:
+                        ((Admin)(currentUser)).UpdateCatalogue(catalogue);
+                        break;
+                    case 2:
+                        ((Admin)(currentUser)).UpdateVouchers(voucherList);
+                        break;
+                    case 3:
+                        double n;
+                        Console.WriteLine("Enter The New Discount Value Please: ");
+                        n = Convert.ToDouble(Console.ReadLine());
+                        ((Admin)(currentUser)).UpdateLoyalityPoint(n);
+                        break;
+                    case 4:
+                        int i = 1;
+                        int choice;
+                        foreach (var v in orderList)
+                        {
+                            Console.WriteLine($"{i}) " + " " + v.GetOrderShoppingCart() + v.GetOrderState() + " " + v.GetType() + " " + v.GetDateTime());
+                            i++;
+                        }
+                        int.TryParse(Console.ReadLine(), out choice);
+                        ((Admin)(currentUser)).CancelOrder(orderList[choice - 1]);
+                        break;
+                    case 5:
+                        int _i = 1;
+                        int _choice;
+                        foreach (var v in orderList)
+                        {
+                            Console.WriteLine($"{_i}) " + " " + v.GetOrderShoppingCart() + " " + v.GetOrderState() + " " + v.GetType() + " " + v.GetDateTime());
+                            _i++;
+                        }
+                        int.TryParse(Console.ReadLine(), out _choice);
+                        ((Admin)(currentUser)).UpdateOrder(orderList[_choice - 1]);
+                        break;
+                    case 6:
+                        int counter = 1;
+                        int _choice2;
+                        List<Customer> customers = new List<Customer>();
+                        foreach (var user in users)
+                        {
+                            if (user.Value is Customer)
+                            {
+                                Console.WriteLine($"{counter}) " + user.Value.GetName() + " " + user.Value.GetEmail() + " " + user.Value.GetUsername() + " " + user.Value.GetPhonenumber());
+                                customers.Add((Customer)(user.Value));
+                                counter++;
+                            }
+                        }
+                        int.TryParse(Console.ReadLine(), out _choice2);
+                        ((Admin)(currentUser)).SuspendCustomer(customers[_choice2 - 1]);
+                        break;
+                }
+            } while (userInput != 7);
         }
-
-        private void RegisterUser() {
+        private void RegisterUser()
+        {
             string? name = string.Empty;
             string? username, password, emailAdress;
             string city = string.Empty;
@@ -128,21 +199,27 @@ namespace CS251_A3_ToffeeShop {
 
             // Take Username
             bool found;
-            do {
+            do
+            {
                 found = false;
                 correctInput = false;
                 Console.Write("Please Enter your Username (Enter 0 to cancel Registration): ");
                 username = Console.ReadLine();
-                if (username == "0") {
+                if (username == "0")
+                {
                     Console.WriteLine("Registration Canceled!");
                     return;
                 }
 
-                if (string.IsNullOrEmpty(username) || !usernamePattern.IsMatch(username)) {
+                if (string.IsNullOrEmpty(username) || !usernamePattern.IsMatch(username))
+                {
                     Console.WriteLine("Invalid Username!\nUsername should consist of letters, numbers, _, -");
-                } else {
+                }
+                else
+                {
                     correctInput = true;
-                    if (users.ContainsKey(username)) {
+                    if (users.ContainsKey(username))
+                    {
                         Console.WriteLine("This username is already taken!");
                         found = true;
                     }
@@ -150,37 +227,47 @@ namespace CS251_A3_ToffeeShop {
             } while (found || !correctInput || string.IsNullOrEmpty(username));
 
             // Take Password
-            do {
+            do
+            {
                 correctInput = false;
                 Console.Write("Please Enter your password (Enter 0 to cancel Registration): ");
                 password = Console.ReadLine();
-                if (password == "0") {
+                if (password == "0")
+                {
                     Console.WriteLine("Registration Canceled!");
                     return;
                 }
 
-                if (string.IsNullOrEmpty(password) || !passwordPattern.IsMatch(password)) {
+                if (string.IsNullOrEmpty(password) || !passwordPattern.IsMatch(password))
+                {
                     Console.WriteLine("Invalid password!");
                     Console.WriteLine("Password must consist of letters, numbers and one of [$ # & * % ^] and be at least 8 characters long");
-                } else {
+                }
+                else
+                {
                     correctInput = true;
                 }
             } while (!correctInput || string.IsNullOrEmpty(password));
 
             // Take Email
-            do {
+            do
+            {
                 correctInput = false;
                 Console.Write("Please Enter your Email Address (Enter 0 to cancel Registration): ");
                 emailAdress = Console.ReadLine();
-                if (emailAdress == "0") {
+                if (emailAdress == "0")
+                {
                     Console.WriteLine("Registration Canceled!");
                     return;
                 }
 
-                if (string.IsNullOrEmpty(emailAdress) || !emailPattern.IsMatch(emailAdress)) {
+                if (string.IsNullOrEmpty(emailAdress) || !emailPattern.IsMatch(emailAdress))
+                {
                     Console.WriteLine("Invalid Email Address!");
                     Console.WriteLine("Please enter a valid Email Address!");
-                } else {
+                }
+                else
+                {
                     correctInput = true;
                 }
             } while (!correctInput || string.IsNullOrEmpty(emailAdress));
@@ -196,45 +283,57 @@ namespace CS251_A3_ToffeeShop {
             Console.WriteLine("Registered Successfully!");
         }
 
-        private bool LoginUser() {
+        private bool LoginUser()
+        {
             string? username;
             string? password;
             bool correctInput;
 
-            do {
+            do
+            {
                 correctInput = false;
                 Console.WriteLine("Please enter your Username (Enter 0 to cancel Login): ");
                 username = Console.ReadLine();
                 Console.WriteLine("Please enter your Password (Enter 0 to cancel Login): ");
                 password = Console.ReadLine();
 
-                if (username == "0" || password == "0") {
+                if (username == "0" || password == "0")
+                {
                     Console.WriteLine("Login Canceled!");
                     return false;
                 }
 
-                if (string.IsNullOrEmpty(username)) {
+                if (string.IsNullOrEmpty(username))
+                {
                     Console.WriteLine("Username cannot be empty!");
                     continue;
                 }
 
-                if (string.IsNullOrEmpty(password)) {
+                if (string.IsNullOrEmpty(password))
+                {
                     Console.WriteLine("Password cannot be empty!");
                     continue;
                 }
 
-                if (!users.ContainsKey(username)) {
+                if (!users.ContainsKey(username))
+                {
                     Console.WriteLine("User does not exist!");
-                } else {
-                    if (users[username].GetPassword() != password) {
+                }
+                else
+                {
+                    if (users[username].GetPassword() != password)
+                    {
                         Console.WriteLine("Incorrect Password!");
-                    } else {
+                    }
+                    else
+                    {
                         correctInput = true;
                     }
                 }
             } while (!correctInput);
 
-            if (string.IsNullOrEmpty(username)) {
+            if (string.IsNullOrEmpty(username))
+            {
                 Console.WriteLine("Login Failed!");
                 return false;
             }
@@ -245,22 +344,28 @@ namespace CS251_A3_ToffeeShop {
             return true;
         }
 
-        private bool TakeRegistrationInputNoRegex(ref string variable, string strname) {
+        private bool TakeRegistrationInputNoRegex(ref string variable, string strname)
+        {
             bool correctInput;
             string? input;
-            do {
+            do
+            {
                 correctInput = false;
                 Console.Write($"Please Enter your {strname} (Enter 0 to cancel Registration): ");
                 input = Console.ReadLine();
-                if (input == "0") {
+                if (input == "0")
+                {
                     Console.WriteLine("Registration Canceled!");
                     return false;
                 }
 
-                if (string.IsNullOrEmpty(input)) {
+                if (string.IsNullOrEmpty(input))
+                {
                     Console.WriteLine($"Invalid {strname}!");
                     Console.WriteLine($"{strname} Cannot be Empty!");
-                } else {
+                }
+                else
+                {
                     correctInput = true;
                 }
             } while (!correctInput || string.IsNullOrEmpty(input));
@@ -270,18 +375,22 @@ namespace CS251_A3_ToffeeShop {
             return true;
         }
 
-        private void LoadData() {
+        private void LoadData()
+        {
 
         }
 
-        private void SaveData() {
+        private void SaveData()
+        {
             catalogue.SaveCatalogueData("./Items/Data.json");
 
             List<CustomerData> customerDataList = new List<CustomerData>();
             // List<AdminData> AdminDataList = new List<AdminData>();
 
-            foreach (KeyValuePair<string, User> user in users) {
-                if (user.Value is Customer) {
+            foreach (KeyValuePair<string, User> user in users)
+            {
+                if (user.Value is Customer)
+                {
                     customerDataList.Add(SaveCustomerData((Customer)user.Value));
                 }
             }
@@ -290,7 +399,8 @@ namespace CS251_A3_ToffeeShop {
             // SaveDataLists(AdminDataList, "./UsersClasses/Admins.json");
         }
 
-        private CustomerData SaveCustomerData(Customer customer) {
+        private CustomerData SaveCustomerData(Customer customer)
+        {
             CustomerData customerData = new CustomerData();
             customerData.name = customer.GetName();
             customerData.username = customer.GetUsername();
@@ -340,8 +450,10 @@ namespace CS251_A3_ToffeeShop {
             return customerData;
         }
 
-        private void SaveDataLists<T>(List<T> list, string file) {
-            using (StreamWriter writer = new StreamWriter(file)) {
+        private void SaveDataLists<T>(List<T> list, string file)
+        {
+            using (StreamWriter writer = new StreamWriter(file))
+            {
                 string json = JsonSerializer.Serialize(list.ToArray());
 
                 // write the serialized Json to the file

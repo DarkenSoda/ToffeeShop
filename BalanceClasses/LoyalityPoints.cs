@@ -10,12 +10,6 @@ namespace CS251_A3_ToffeeShop.BalanceClasses {
         public static void ChangeDiscountValue(double value) {
             discountValue = value;
         }
-        public void SetDiscountValue(){
-            double x;
-            Console.WriteLine("Enter The New DiscountValue: ");
-            x = Convert.ToDouble(Console.ReadLine());
-            ChangeDiscountValue(x);
-        }
         public void AddPoints(int points) {
             this.points += points;
         }

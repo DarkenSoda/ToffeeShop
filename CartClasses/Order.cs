@@ -48,6 +48,9 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             }
             
         }
+        public ShoppingCart GetOrderShoppingCart(){
+            return shoppingCart;
+        }
         public OrderState GetOrderState() {
             return orderStatus;
         }
