@@ -80,8 +80,8 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         public string password { get; set; }
         public string phone { get; set; }
         public string email { get; set; }
-        public List<Order> orders { get; set; }
-        public List<Voucher> vouchers { get; set; }
+        public List<OrderData> orders { get; set; }
+        public List<VoucherData> vouchers { get; set; }
         public int loyalityPoints { get; set; }
         public Address address { get; set; }
     }

@@ -2,6 +2,7 @@ using System.IO;
 using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.CartClasses;
 using CS251_A3_ToffeeShop.UsersClasses;
+using CS251_A3_ToffeeShop.BalanceClasses;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -296,8 +297,43 @@ namespace CS251_A3_ToffeeShop {
             customerData.password = customer.GetPassword();
             customerData.phone = customer.GetPhonenumber();
             customerData.email = customer.GetEmail();
-            customerData.orders = customer.GetOrderHistory();
-            customerData.vouchers = customer.GetVoucherList();
+
+            // Change orders to OrderData
+            foreach(Order order in customer.GetOrderHistory()) {
+                OrderData orderData = new OrderData();
+                orderData.orderState = order.GetOrderState();
+                
+                ShoppingCartData cartData = new ShoppingCartData();
+                foreach (KeyValuePair<Product, int> product in order.GetShoppingCart().GetProductList()) {
+                    ProductData data = new ProductData();
+                    data.name = product.Key.GetName();
+                    data.category = product.Key.GetCategory();
+                    data.description = product.Key.GetDescription();
+                    data.brand = product.Key.GetBrand();
+                    data.price = product.Key.GetPrice();
+                    data.discountPrice = product.Key.GetDiscountPrice();
+
+                    cartData.items.Add(data, product.Value);
+                }
+                cartData.totalCost = order.GetShoppingCart().CalculateTotalPrice();
+                orderData.shoppingCartData = cartData;
+                
+                orderData.deliveryAddress = order.GetDeliveryAddress();
+                orderData.dateTime = order.GetDateTime();
+
+                customerData.orders.Add(orderData);
+            }
+
+            //Change Vouchers to VoucherData
+            foreach(Voucher voucher in customer.GetVoucherList()) {
+                VoucherData voucherData = new VoucherData();
+                voucherData.voucherCode = voucher.GetVoucherCode();
+                voucherData.discountValue = voucher.GetDiscountValue();
+                voucherData.isExpired = voucher.GetExpiryState();
+                
+                customerData.vouchers.Add(voucherData);
+            }
+
             customerData.loyalityPoints = customer.GetLoyalityPoints().GetPoints();
             customerData.address = customer.GetAddress();
 

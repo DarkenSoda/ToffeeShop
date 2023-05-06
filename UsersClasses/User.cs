@@ -1,6 +1,5 @@
 namespace CS251_A3_ToffeeShop.UsersClasses {
     public class User {
-        protected int userID;
         protected string name;
         protected string userName;
         protected string password;

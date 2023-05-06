@@ -8,16 +8,14 @@ namespace CS251_A3_ToffeeShop.CartClasses {
     public enum OrderState {
         Ordered, Delivered, inDelivery, Canceled
     }
+    
     public class Order {
-        private static int OrderCounter = 0;
-        private string? orderID;
         private OrderState orderStatus;
-        private ShoppingCart? shoppingCart;
-        private Address? deliveryAddress;
-        private string? dateTime;
+        private ShoppingCart shoppingCart;
+        private Address deliveryAddress;
+        private string dateTime;
         public Order(ShoppingCart shoppingCart, Address deliveryAddress) {
             this.shoppingCart = shoppingCart;
-            this.orderID = "OR"+ Convert.ToString(OrderCounter++); 
             this.deliveryAddress = deliveryAddress;
             this.orderStatus = OrderState.Ordered;
             this.dateTime = DateTime.UtcNow.ToLocalTime().ToString("dd/MM/yyyy hh:mm tt");
@@ -61,11 +59,24 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         public void SetAddress(Address address){
             deliveryAddress = address;
         }
+        public Address GetDeliveryAddress() {
+            return deliveryAddress;
+        }
         public void SetOrderStatue(OrderState state){
             orderStatus = state;
         }
         public void SetDateTime(string cdateTime){
             dateTime = cdateTime;
         }
+        public ShoppingCart GetShoppingCart() {
+            return shoppingCart;
+        }
+    }
+
+    public struct OrderData {
+        public OrderState orderState {get; set;}
+        public ShoppingCartData shoppingCartData { get; set; }
+        public Address deliveryAddress { get; set; }
+        public string dateTime { get; set; }
     }
 }
