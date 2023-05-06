@@ -1,12 +1,14 @@
 using CS251_A3_ToffeeShop.CartClasses;
 using CS251_A3_ToffeeShop.BalanceClasses;
 using CS251_A3_ToffeeShop.Items;
+
 namespace CS251_A3_ToffeeShop.UsersClasses {
+    public enum CustomerState {
+        active, inactive
+    }
+
     public class Customer : User {
-        public enum CustomerState {
-            active, inactive
-        }
-        private CustomerState? customerState;
+        private CustomerState customerState;
         private List<Order> orderHistory = new List<Order>();
         private ShoppingCart shoppingCart = new ShoppingCart();
         protected List<Voucher> voucherList = new List<Voucher>();
@@ -73,11 +75,15 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             customerState = _customerState;
         }
 
-        public void CheckOut(){
+        public void CheckOut() {
             Console.WriteLine("Order Total Price= ");
             shoppingCart.CalculateTotalPrice();
-            
         }
+
+        public CustomerState GetCustomerState() {
+            return customerState;
+        }
+
     }
 
     public struct CustomerData {
@@ -90,5 +96,6 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         public List<VoucherData> vouchers { get; set; }
         public int loyalityPoints { get; set; }
         public Address address { get; set; }
+        public CustomerState customerState { get; set; }
     }
 }

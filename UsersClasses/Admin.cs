@@ -112,7 +112,15 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             }
         }
         public void SuspendCustomer(Customer customer) {
-            customer.SetCustomerState(Customer.CustomerState.inactive);
+            customer.SetCustomerState(CustomerState.inactive);
         }
+    }
+
+    public struct AdminData {
+        public string name { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public string phone { get; set; }
+        public string email { get; set; }
     }
 }
