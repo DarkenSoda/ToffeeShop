@@ -8,72 +8,92 @@ using CS251_A3_ToffeeShop.BalanceClasses;
 
 namespace CS251_A3_ToffeeShop.CartClasses {
     public class ShoppingCart {
-        private Dictionary<Product,int> items = new Dictionary<Product,int>();
+        private Dictionary<Product, int> items = new Dictionary<Product, int>();
         private double totalCost = 0;
 
-        
-        public void PrintItems(){
+
+        public void PrintItems() {
             int i = 1;
             foreach (var kvp in items) {
-            Console.WriteLine(i  +  ",  {0}   Quantity: {2}      Cost: {1} L.E", kvp.Key.GetName(),kvp.Key.GetDiscountPrice()*kvp.Value, kvp.Value);
+                Console.WriteLine(i + ",  {0}   Quantity: {2}      Cost: {1} L.E", kvp.Key.GetName(), kvp.Key.GetDiscountPrice() * kvp.Value, kvp.Value);
                 i++;
             }
-             Console.WriteLine("--------------[ Total Cost: {0} L.E ]--------------",CalculateTotalPrice());
+            Console.WriteLine("--------------[ Total Cost: {0} L.E ]--------------", CalculateTotalPrice());
         }
         public void AddItem(Product item, int quantity) {
-            items.Add(item,quantity);
+            items.Add(item, quantity);
             totalCost += item.GetDiscountPrice() * quantity;
         }
         public void RemoveItem(Product item) {
-           if (!items.ContainsKey(item))
+            if (!items.ContainsKey(item))
                 Console.WriteLine("Item is not Found!");
             else
                 items.Remove(item);
         }
         public void ChangeQuantity(string identifier) {
+            if(items.Count <= 0 || items == null) {
+                Console.WriteLine("Item List is empty!");
+                return;
+            }
+
             int userInput;
             do {
-                System.Console.Write("Enter Product number: ");
+                System.Console.Write("Enter Product number (Enter 0 to Cancel): ");
                 int.TryParse(Console.ReadLine(), out userInput);
-            } while (userInput <= 0 && userInput > items.Count());
-            ChangeItem(identifier,userInput);
 
+                if(userInput == 0) {
+                    Console.WriteLine("Process Canceled!");
+                    return;
+                }
+
+                if(userInput < 0 || userInput > items.Count()) {
+                    Console.WriteLine("Invalid Choice!\nPlease pick an item from the list!");
+                }
+            } while (userInput < 0 || userInput > items.Count());
+            ChangeItem(identifier, userInput);
         }
-        public void ChangeItem(string identifier,int index) {
-            foreach(var item in items) {
+        public void ChangeItem(string identifier, int index) {
+            foreach (var item in items) {
                 if (index == 1) {
                     int newQuantity = identifier == "+" ? item.Value + 1 : item.Value - 1;
-                    RemoveItem(item.Key);
-                    AddItem(item.Key,newQuantity);
+
+                    if (newQuantity <= 0) {
+                        Console.WriteLine("Item removed!");
+                        RemoveItem(item.Key);
+                    }
+                    else if(newQuantity>50) {
+                        Console.WriteLine("Cannot add more than 50!");
+                    }
+                    else {
+                        items[item.Key] = newQuantity;
+                    }
                     break;
                 }
                 index--;
             }
         }
         public void Updateitems() {
-            PrintItems();
-            Console.WriteLine("Choose an option: ");
-            Console.WriteLine("1) Increase a Product's Quantity");
-            Console.WriteLine("2) Decrease a Product's Quantity");
-            Console.WriteLine("3) Go to Catalogue.");
             int userInput;
-            int.TryParse(Console.ReadLine(), out userInput);
             do {
-            switch(userInput) {
-                case 1:
-                    ChangeQuantity("+");
-                    Updateitems();
-                    break;
-                case 2:
-                    ChangeQuantity("-");
-                    Updateitems();
-                    break;
-                case 3:
-                    return;
-                default:
-                    System.Console.WriteLine("Invalid Input, Please try again!");
-                    break;
-            }
+                PrintItems();
+                Console.WriteLine("1) Increase a Product's Quantity");
+                Console.WriteLine("2) Decrease a Product's Quantity");
+                Console.WriteLine("3) Go to Catalogue.");
+                Console.Write("Choose an option: ");
+                int.TryParse(Console.ReadLine(), out userInput);
+                switch (userInput) {
+                    case 1:
+                        ChangeQuantity("+");
+                        break;
+                    case 2:
+                        ChangeQuantity("-");
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        System.Console.WriteLine("Invalid Input, Please try again!");
+                        break;
+                }
             } while (userInput != 3);
 
         }
@@ -88,9 +108,8 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                 voucher.SetDiscountValue(voucher.GetDiscountValue() - tempCost);
                 if (voucher.GetDiscountValue() < 0) {
                     voucher.RedeemVoucher();
-                }
-                else if (totalCost < 0) {
-                    totalCost = 0; 
+                } else if (totalCost < 0) {
+                    totalCost = 0;
                 }
             }
         }
@@ -107,7 +126,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             }
             return totalCost;
         }
-        public Dictionary<Product,int> GetProductList() {
+        public Dictionary<Product, int> GetProductList() {
             return items;
         }
         public void RevertChanges() {
