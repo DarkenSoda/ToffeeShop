@@ -294,6 +294,11 @@ namespace CS251_A3_ToffeeShop {
                 return false;
             }
 
+            if(users[username] is Customer && ((Customer)users[username]).GetCustomerState() == CustomerState.inactive) {
+                Console.WriteLine("Suspended User Account!");
+                return false;
+            }
+
             currentUser = users[username];
             Console.WriteLine("Logged in Successfully!");
             Console.WriteLine($"Welcome {currentUser.GetName()}!");

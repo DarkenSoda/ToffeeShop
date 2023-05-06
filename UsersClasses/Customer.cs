@@ -74,12 +74,10 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         public void SetCustomerState(CustomerState _customerState) {
             customerState = _customerState;
         }
-
         public void CheckOut() {
             Console.WriteLine("Order Total Price= ");
             shoppingCart.CalculateTotalPrice();
         }
-
         public CustomerState GetCustomerState() {
             return customerState;
         }

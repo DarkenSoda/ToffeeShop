@@ -8,38 +8,28 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         public Admin(string name, string userName, string password, string emailAdress) : base(name, userName, password, emailAdress) { }
 
         public void UpdateCatalogue(Catalogue catalogue) {
-            int x;
-            Console.WriteLine("1-Add Item." + '\n' + "2-Remove Item.");
-            x = Convert.ToInt32(Console.ReadLine());
+            int userInput;
 
-            if (x == 1) {
-                string? name;
-                string? category;
-                double price;
-                Console.WriteLine("Enter The Product Name:");
-                name = Console.ReadLine();
-                Console.WriteLine();
-                Console.WriteLine("Enter The Product Category:");
-                category = Console.ReadLine();
-                Console.WriteLine();
-                Console.WriteLine("Enter The Product Price:");
-                price = Convert.ToDouble(Console.ReadLine());
-                Console.WriteLine();
-                Product newProduct = new Product(name, category, price);
-                catalogue.AddProduct(newProduct);
-            } else if (x == 2) {
-                int y;
+            do {
                 catalogue.DisplayCatalogue();
-                Console.WriteLine("Chose The Number Of Product You Want To Delete:");
-                y = Convert.ToInt32(Console.ReadLine());
-                catalogue.RemoveProduct(catalogue.GetProductList()[y - 1]);
-            }
+                Console.WriteLine("1) Add Product\n2) Remove Product\n3) Update Product\n4) Cancel");
+                int.TryParse(Console.ReadLine(), out userInput);
+
+                switch (userInput) {
+                    case 4:
+                        Console.WriteLine("Process Canceled!");
+                        break;
+                    default:    // Invalid Input
+                        Console.WriteLine("Please choose a valid number!\n");
+                        break;
+                }
+            } while (userInput != 4);
         }
-        private void AddVoucher(ref List<Voucher> voucher, Voucher newVoucher) {
-            voucher.Add(newVoucher);
+        private void AddVoucher(ref List<Voucher> voucherList, Voucher newVoucher) {
+            voucherList.Add(newVoucher);
         }
-        private void RemoveVoucher(ref List<Voucher> voucher, int x) {
-            voucher.RemoveAt(x - 1);
+        private void RemoveVoucher(ref List<Voucher> voucher, int index) {
+            voucher.RemoveAt(index - 1);
         }
         public void UpdateVouchers(List<Voucher> voucher) {
             int x;
@@ -57,7 +47,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 AddVoucher(ref voucher, newVoucher);
             } else if (x == 2) {
                 for (int i = 0; i < voucher.Count; i++) {
-                    Console.WriteLine($"{i}) "+voucher[i].GetType() + " . ");
+                    Console.WriteLine($"{i}) " + voucher[i].GetType() + " . ");
                 }
                 int y;
                 Console.WriteLine("Chose The Number Of Voucher You Want To Delete:");
@@ -65,8 +55,8 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 RemoveVoucher(ref voucher, y);
             }
         }
-        public void UpdateLoyalityPoint(double val) {
-            LoyalityPoints.ChangeDiscountValue(val);
+        public void UpdateLoyalityPoint(double value) {
+            LoyalityPoints.ChangeDiscountValue(value);
         }
         public void CancelOrder(Order order) {
             order.SetOrderStatue(OrderState.Canceled);
