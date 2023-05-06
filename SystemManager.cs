@@ -110,8 +110,12 @@ namespace CS251_A3_ToffeeShop {
             if (currentUser == null) return;
 
             do {
-                Console.WriteLine("\n1) Update Catalogue. \n2) Update Vouchers. \n3) Update LoyalityPoints\n4) Cancel Order. \n5) Update Order. \n6) Suspend Customer. \n7) Log out.");
+                Console.WriteLine("\n1) Update Catalogue.\n2) Update Vouchers.\n3) Update LoyalityPoints.\n4) Cancel Order.\n5) Update Order.\n6) Suspend Customer. \n7) Log out.");
                 int.TryParse(Console.ReadLine(), out userInput);
+                int i = 1;
+                int choice;
+
+                // NEED TO ADD Validation checks on choices of each case
                 switch (userInput) {
                     case 1:
                         ((Admin)(currentUser)).UpdateCatalogue(catalogue);
@@ -120,44 +124,40 @@ namespace CS251_A3_ToffeeShop {
                         ((Admin)(currentUser)).UpdateVouchers(voucherList);
                         break;
                     case 3:
-                        double n;
+                        double value;
                         Console.WriteLine("Enter The New Discount Value Please: ");
-                        n = Convert.ToDouble(Console.ReadLine());
-                        ((Admin)(currentUser)).UpdateLoyalityPoint(n);
+                        while(!double.TryParse(Console.ReadLine(), out value)) {
+                            Console.WriteLine("Please Enter a valid value!");
+                        }
+                        ((Admin)(currentUser)).UpdateLoyalityPoint(value);
                         break;
                     case 4:
-                        int i = 1;
-                        int choice;
-                        foreach (var v in orderList) {
-                            Console.WriteLine($"{i}) " + " " + v.GetOrderShoppingCart() + v.GetOrderState() + " " + v.GetType() + " " + v.GetDateTime());
-                            i++;
+                        i = 1;
+                        foreach (var order in orderList) {
+                            Console.WriteLine($"{i++}) " + " " + order.GetOrderShoppingCart() + order.GetOrderState() + " " + order.GetType() + " " + order.GetDateTime());
                         }
                         int.TryParse(Console.ReadLine(), out choice);
                         ((Admin)(currentUser)).CancelOrder(orderList[choice - 1]);
                         break;
                     case 5:
-                        int _i = 1;
-                        int _choice;
+                        i = 1;
                         foreach (var v in orderList) {
-                            Console.WriteLine($"{_i}) " + " " + v.GetOrderShoppingCart() + " " + v.GetOrderState() + " " + v.GetType() + " " + v.GetDateTime());
-                            _i++;
+                            Console.WriteLine($"{i++}) " + " " + v.GetOrderShoppingCart() + " " + v.GetOrderState() + " " + v.GetType() + " " + v.GetDateTime());
                         }
-                        int.TryParse(Console.ReadLine(), out _choice);
-                        ((Admin)(currentUser)).UpdateOrder(orderList[_choice - 1]);
+                        int.TryParse(Console.ReadLine(), out choice);
+                        ((Admin)(currentUser)).UpdateOrder(orderList[choice - 1]);
                         break;
                     case 6:
-                        int counter = 1;
-                        int _choice2;
+                        i = 1;
                         List<Customer> customers = new List<Customer>();
                         foreach (var user in users) {
                             if (user.Value is Customer) {
-                                Console.WriteLine($"{counter}) " + user.Value.GetName() + " " + user.Value.GetEmail() + " " + user.Value.GetUsername() + " " + user.Value.GetPhonenumber());
+                                Console.WriteLine($"{i++}) " + user.Value.GetName() + " " + user.Value.GetEmail() + " " + user.Value.GetUsername() + " " + user.Value.GetPhonenumber());
                                 customers.Add((Customer)(user.Value));
-                                counter++;
                             }
                         }
-                        int.TryParse(Console.ReadLine(), out _choice2);
-                        ((Admin)(currentUser)).SuspendCustomer(customers[_choice2 - 1]);
+                        int.TryParse(Console.ReadLine(), out choice);
+                        ((Admin)(currentUser)).SuspendCustomer(customers[choice - 1]);
                         break;
                 }
             } while (userInput != 7);
