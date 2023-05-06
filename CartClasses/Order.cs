@@ -9,7 +9,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         Ordered, Delivered, inDelivery, Canceled
     }
     public class Order {
-        private int OrderCounter = 0;
+        private static int OrderCounter = 0;
         private string? orderID;
         private OrderState orderStatus;
         private ShoppingCart? shoppingCart;
@@ -58,8 +58,8 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             else
                 return dateTime;
         }
-        public void SetAddress(Address caddress){
-            deliveryAddress = caddress;
+        public void SetAddress(Address address){
+            deliveryAddress = address;
         }
         public void SetOrderStatue(OrderState state){
             orderStatus = state;

@@ -15,7 +15,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         public void PrintItems(){
             int i = 1;
             foreach (var kvp in items) {
-            Console.WriteLine(i+"Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+            Console.WriteLine(i  +  ",  {0}   {1} L.E   Quantity: {2}", kvp.Key.GetName(),kvp.Key.GetPrice(), kvp.Value);
                 i++;
             }
         }
@@ -28,13 +28,53 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             else
                 items.Remove(item);
         }
-        public void Updateitems(Product oldItem ,Product newItem, int quantity) {
-            if (!items.ContainsKey(oldItem))
-                Console.WriteLine("Item is not Found!");
-            else {
-                items.Remove(oldItem);
-                items.Add(newItem,quantity);
+        public void ChangeQuantity(string identifier) {
+            int userInput;
+            do {
+                System.Console.Write("Enter Product number: ");
+                int.TryParse(Console.ReadLine(), out userInput);
+            } while (userInput <= 0 && userInput > items.Count());
+            ChangeItem(identifier,userInput);
+
+        }
+        public void ChangeItem(string identifier,int index) {
+            foreach(var item in items) {
+                if (index == 1) {
+                    int newQuantity = identifier == "+" ? item.Value + 1 : item.Value - 1;
+                    RemoveItem(item.Key);
+                    AddItem(item.Key,newQuantity);
+                    break;
+                }
+                index--;
             }
+        }
+        public void Updateitems() {
+            PrintItems();
+            System.Console.WriteLine("----------------------------");
+            Console.WriteLine("Choose an option: ");
+            Console.WriteLine("1) Increase a Product's Quantity");
+            Console.WriteLine("2) Decrease a Product's Quantity");
+            Console.WriteLine("3) Go to Catalogue.");
+            int userInput;
+            int.TryParse(Console.ReadLine(), out userInput);
+            do {
+            switch(userInput) {
+                case 1:
+                    ChangeQuantity("+");
+                    Updateitems();
+                    break;
+                case 2:
+                    ChangeQuantity("-");
+                    Updateitems();
+                    break;
+                case 3:
+                    break;
+                default:
+                    System.Console.WriteLine("Invalid Input, Please try again!");
+                    break;
+            }
+            } while (userInput != 3);
+
         }
         public void ClearCart() {
             items.Clear();
@@ -58,7 +98,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         }
         public void ApplyLoyalityPoints(LoyalityPoints loyalityPoints, int points) {
             if (points * loyalityPoints.GetDiscountValue() > totalCost) {
-                points = (int)(totalCost / 1.2);
+                points = (int)(totalCost / loyalityPoints.GetDiscountValue());
             }
             totalCost -= loyalityPoints.RedeemPoints(points);
         }
