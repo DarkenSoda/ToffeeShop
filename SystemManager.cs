@@ -125,7 +125,6 @@ namespace CS251_A3_ToffeeShop {
                     AdminSystem();
                     return;
                 } else {
-                    // NEED TO ADD Validation checks on choices of each case //FIXED
                     switch (userInput) {
                         case 1:
                             ((Admin)(currentUser)).UpdateCatalogue(catalogue);
