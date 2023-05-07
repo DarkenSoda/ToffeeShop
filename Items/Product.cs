@@ -7,7 +7,7 @@ namespace CS251_A3_ToffeeShop.Items {
         private double price;
         private double discountPrice;
 
-        public Product(string name, string category, double price = 0) {
+        public Product(string name, string category, double price) {
             this.name = name;
             this.category = category;
             this.price = this.discountPrice = price;

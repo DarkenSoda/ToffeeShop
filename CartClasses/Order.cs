@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CS251_A3_ToffeeShop.CartClasses {
 
@@ -22,8 +19,8 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             this.dateTime = DateTime.UtcNow.ToLocalTime().ToString("dd/MM/yyyy hh:mm tt");
         }
         public void UpdateState() {
-            Console.WriteLine("Enter a State to change:");
             Console.WriteLine("1) Ordered.\n2) Delivered.\n3) In Delivery.\n4) Canceled.");
+            Console.WriteLine("Enter a State to change:");
             string? choice;
             while (true) {
                 choice = Console.ReadLine();
@@ -40,7 +37,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                     orderStatus = OrderState.Canceled;
                     break;
                 } else {
-                    System.Console.WriteLine("Invalid choice! Try again!");
+                    Console.WriteLine("Invalid choice! Try again!");
                 }
             }
 

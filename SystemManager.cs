@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.CartClasses;
@@ -459,6 +460,8 @@ namespace CS251_A3_ToffeeShop {
 
         private void LoadData() {
             catalogue.LoadCatalogueData("./Items/Data.json");
+            LoadCustomerData("./UsersClasses/Customers.json");
+            LoadAdminData("./UsersClasses/Admins.json");
         }
 
         private void SaveData() {
@@ -509,7 +512,7 @@ namespace CS251_A3_ToffeeShop {
 
                     cartData.items.Add(new KeyValuePair<ProductData, int>(data, product.Value));
                 }
-                cartData.totalCost = order.GetOrderShoppingCart().CalculateTotalPrice();
+                cartData.totalCost = order.GetOrderShoppingCart().GetTotalCost();
                 orderData.shoppingCartData = cartData;
 
                 orderData.deliveryAddress = order.GetDeliveryAddress();
@@ -561,7 +564,127 @@ namespace CS251_A3_ToffeeShop {
                     writer.Write(json);
                 }
             } catch {
-                Console.WriteLine("Failed to save customer data!");
+                Console.WriteLine("Failed to Save User Data!");
+            }
+        }
+
+        private void LoadCustomerData(string file) {
+            // Return if can't Open file
+            if (!file.EndsWith(".json")) {
+                Console.WriteLine("Failed To Open File!");
+                return;
+            }
+            try {
+                // Open in Read mode
+                using (StreamReader reader = new StreamReader(file)) {
+                    // Read All File
+                    string json = reader.ReadToEnd();
+
+                    // Put all data in CustomerData Struct
+                    List<CustomerData>? customerDataList = JsonSerializer.Deserialize<List<CustomerData>>(json);
+
+                    // Return If no Items in file
+                    if (customerDataList == null || customerDataList.Count <= 0) return;
+
+                    // Loop on each struct and convert it to Customer class
+                    // To insert in users list
+                    foreach (CustomerData customerData in customerDataList) {
+                        // take main customer data
+                        string name = customerData.name;
+                        string username = customerData.username;
+                        string password = customerData.password;
+                        string phone = customerData.phone;
+                        string email = customerData.email;
+                        Address address = customerData.address;
+
+                        // create new customer
+                        Customer customer = new Customer(name, username, password, email, address);
+
+                        // Check if customer has phonenumber
+                        if (!string.IsNullOrEmpty(phone)) {
+                            customer.SetPhonenumber(phone);
+                        }
+
+                        // Convert OrderData to Order and add it to customer's orderList
+                        foreach (OrderData orderData in customerData.orders) {
+                            // Convert Shopping 
+                            ShoppingCart shoppingCart = new ShoppingCart();
+                            foreach (KeyValuePair<ProductData, int> productData in orderData.shoppingCartData.items) {
+                                Product product = new Product(productData.Key.name, productData.Key.category, productData.Key.price);
+                                if (!string.IsNullOrEmpty(productData.Key.description)) product.SetDescription(productData.Key.description);
+                                if (!string.IsNullOrEmpty(productData.Key.brand)) product.SetBrand(productData.Key.brand);
+                                if (productData.Key.discountPrice != 0) product.SetDiscountPrice(productData.Key.discountPrice);
+
+                                shoppingCart.AddItem(product, productData.Value);
+                            }
+                            shoppingCart.SetTotalCost(orderData.shoppingCartData.totalCost);
+
+                            // Create new Order with shopping cart and add it to OrderHistory
+                            Order order = new Order(shoppingCart, orderData.deliveryAddress);
+                            order.SetOrderStatue(orderData.orderState);
+                            order.SetDateTime(orderData.dateTime);
+                            customer.GetOrderHistory().Add(order);
+                        }
+
+                        // Convert VoucherData to Voucher and add it to customer's voucherList
+                        foreach(VoucherData voucherData in customerData.vouchers) {
+                            Voucher voucher = new Voucher(voucherData.voucherCode, voucherData.discountValue, voucherData.isExpired);
+
+                            customer.GetVoucherList().Add(voucher);
+                        }
+
+                        // Get LoyalityPoints
+                        customer.GetLoyalityPoints().AddPoints(customerData.loyalityPoints);
+                        
+                        // Get CustomerState
+                        customer.SetCustomerState(customerData.customerState);
+
+                        // Insert in users list
+                        users.Add(username, customer);
+                    }
+                }
+            } catch {
+                Console.WriteLine("Failed to Load Admin Data!");
+            }
+        }
+
+        private void LoadAdminData(string file) {
+            // Return if can't Open file
+            if (!file.EndsWith(".json")) {
+                Console.WriteLine("Failed To Open File!");
+                return;
+            }
+            try {
+                // Open in Read mode
+                using (StreamReader reader = new StreamReader(file)) {
+                    // Read All File
+                    string json = reader.ReadToEnd();
+
+                    // Put all data in AdminData Struct
+                    List<AdminData>? adminDataList = JsonSerializer.Deserialize<List<AdminData>>(json);
+
+                    // Return If no Items in file
+                    if (adminDataList == null || adminDataList.Count <= 0) return;
+
+                    // Loop on each struct and convert it to Admin class
+                    // To insert in users list
+                    foreach (AdminData adminData in adminDataList) {
+                        string name = adminData.name;
+                        string username = adminData.username;
+                        string password = adminData.password;
+                        string phone = adminData.phone;
+                        string email = adminData.email;
+                        Admin admin = new Admin(name, username, password, email);
+
+                        if (!string.IsNullOrEmpty(phone)) {
+                            admin.SetPhonenumber(phone);
+                        }
+
+                        users.Add(username, admin);
+                    }
+                }
+            } catch {
+                Console.WriteLine("Failed to Load Admin Data!");
             }
         }
     }

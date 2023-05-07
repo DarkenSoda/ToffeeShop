@@ -48,11 +48,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         public void UserInterface() {
 
         }
-        /*public void Authernicate()
-        {
-        }
-        public void BrowseCatalogue(cataloge Catalogue){
-
-        }*/
+        // public void Authernicate() {
+        // }
     }
 }

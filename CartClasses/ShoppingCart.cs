@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.BalanceClasses;
-
 
 namespace CS251_A3_ToffeeShop.CartClasses {
     public class ShoppingCart {
@@ -18,7 +14,6 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                 this.items.Add(item.Key, item.Value);
             }
         }
-
         public void PrintItems() {
             int i = 1;
             foreach (var kvp in items) {
@@ -115,7 +110,6 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             } while (userInput != 3);
 
         }
-
         public void ClearCart() {
             items.Clear();
         }
@@ -149,6 +143,12 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         }
         public void RevertChanges() {
             totalCost = CalculateTotalPrice();
+        }
+        public double GetTotalCost() {
+            return totalCost;
+        }
+        public void SetTotalCost(double totalCost) {
+            this.totalCost = totalCost;
         }
     }
 }

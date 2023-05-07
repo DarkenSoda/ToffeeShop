@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CS251_A3_ToffeeShop.CartClasses;
 
 namespace CS251_A3_ToffeeShop.BalanceClasses {
     public class Voucher {
