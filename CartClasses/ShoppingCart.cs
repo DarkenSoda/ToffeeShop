@@ -11,11 +11,11 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         private Dictionary<Product, int> items = new Dictionary<Product, int>();
         private double totalCost = 0;
 
-        public ShoppingCart(){}
+        public ShoppingCart() { }
         public ShoppingCart(ShoppingCart shoppingCart) {
             this.totalCost = shoppingCart.totalCost;
             foreach (var item in shoppingCart.items) {
-                this.items.Add(item.Key,item.Value);
+                this.items.Add(item.Key, item.Value);
             }
         }
 
@@ -30,8 +30,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         public void AddItem(Product item, int quantity) {
             if (items.ContainsKey(item)) {
                 items[item] += quantity;
-            }
-            else {
+            } else {
                 items.Add(item, quantity);
             }
             totalCost += item.GetDiscountPrice() * quantity;
@@ -42,8 +41,8 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             else
                 items.Remove(item);
         }
-        public void ChangeQuantity(string identifier,int quantity) {
-            if(items.Count <= 0 || items == null) {
+        public void ChangeQuantity(string identifier, int quantity) {
+            if (items.Count <= 0 || items == null) {
                 Console.WriteLine("Item List is empty!");
                 return;
             }
@@ -53,18 +52,18 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                 System.Console.Write("Enter Product number (Enter 0 to Cancel): ");
                 int.TryParse(Console.ReadLine(), out userInput);
 
-                if(userInput == 0) {
+                if (userInput == 0) {
                     Console.WriteLine("Process Canceled!");
                     return;
                 }
 
-                if(userInput < 0 || userInput > items.Count()) {
+                if (userInput < 0 || userInput > items.Count()) {
                     Console.WriteLine("Invalid Choice!\nPlease pick an item from the list!");
                 }
             } while (userInput < 0 || userInput > items.Count());
-            ChangeItem(identifier, userInput,quantity);
+            ChangeItem(identifier, userInput, quantity);
         }
-        public void ChangeItem(string identifier, int index,int quantity) {
+        public void ChangeItem(string identifier, int index, int quantity) {
             if (quantity < 0) {
                 Console.WriteLine("Invalid Quantity!");
                 return;
@@ -75,11 +74,9 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                     if (newQuantity <= 0) {
                         Console.WriteLine("Item removed!");
                         RemoveItem(item.Key);
-                    }
-                    else if(newQuantity>50) {
+                    } else if (newQuantity > 50) {
                         Console.WriteLine("Cannot add more than 50!");
-                    }
-                    else {
+                    } else {
                         items[item.Key] = newQuantity;
                     }
                     break;
@@ -102,12 +99,12 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                     case 1:
                         Console.Write("Enter a Quantity: ");
                         int.TryParse(Console.ReadLine(), out quantity);
-                        ChangeQuantity("+",quantity);
+                        ChangeQuantity("+", quantity);
                         break;
                     case 2:
                         Console.Write("Enter a Quantity: ");
                         int.TryParse(Console.ReadLine(), out quantity);
-                        ChangeQuantity("-",quantity);
+                        ChangeQuantity("-", quantity);
                         break;
                     case 3:
                         break;
@@ -157,6 +154,6 @@ namespace CS251_A3_ToffeeShop.CartClasses {
 }
 
 public struct ShoppingCartData {
-    public List<KeyValuePair<ProductData,int>> items { get; set; }
+    public List<KeyValuePair<ProductData, int>> items { get; set; }
     public double totalCost { get; set; }
 }

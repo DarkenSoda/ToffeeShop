@@ -24,10 +24,10 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         public void PrintOrders() {
             int i = 1;
             System.Console.WriteLine("{}-----------------{[ Orders ]}-----------------{}");
-            foreach(var order in orderHistory) {
-                Console.WriteLine("[ Order {0}  {1} ]----- {2} ----",i++,order.GetDateTime(),order.GetOrderState());
+            foreach (var order in orderHistory) {
+                Console.WriteLine("[ Order {0}  {1} ]----- {2} ----", i++, order.GetDateTime(), order.GetOrderState());
                 order.GetOrderShoppingCart().PrintItems();
-                System.Console.WriteLine(" Address: {0}\n",order.GetDeliveryAddress().GetAddress());
+                System.Console.WriteLine(" Address: {0}\n", order.GetDeliveryAddress().GetAddress());
             }
         }
         public double GetTotalMoneySpent() {

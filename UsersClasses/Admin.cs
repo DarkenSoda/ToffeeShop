@@ -2,30 +2,24 @@ using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.CartClasses;
 using CS251_A3_ToffeeShop.BalanceClasses;
 
-namespace CS251_A3_ToffeeShop.UsersClasses
-{
-    public class Admin : User
-    {
+namespace CS251_A3_ToffeeShop.UsersClasses {
+    public class Admin : User {
 
         public Admin(string name, string userName, string password, string emailAdress) : base(name, userName, password, emailAdress) { }
 
-        public void UpdateCatalogue(Catalogue catalogue)
-        {
+        public void UpdateCatalogue(Catalogue catalogue) {
             int userInput;
 
-            do
-            {
+            do {
                 catalogue.DisplayCatalogue();
                 Console.WriteLine("1) Add Product\n2) Remove Product\n3) Update Product\n4) Cancel");
                 int.TryParse(Console.ReadLine(), out userInput);
-                while (!int.TryParse(Console.ReadLine(), out userInput))
-                {
+                while (!int.TryParse(Console.ReadLine(), out userInput)) {
                     Console.WriteLine("Invalid Input Try Again! ");
                     Console.WriteLine("1) Add Product\n2) Remove Product\n3) Update Product\n4) Cancel");
                     int.TryParse(Console.ReadLine(), out userInput);
                 }
-                switch (userInput)
-                {
+                switch (userInput) {
                     case 1:
                         string? name;
                         string? category;
@@ -34,29 +28,25 @@ namespace CS251_A3_ToffeeShop.UsersClasses
                         double price;
                         Console.WriteLine("Enter Product Name: ");
                         name = Console.ReadLine();
-                        while (String.IsNullOrEmpty(name))
-                        {
+                        while (String.IsNullOrEmpty(name)) {
                             Console.WriteLine("Enter Product Name: ");
                             name = Console.ReadLine();
                         }
                         Console.WriteLine("Enter Product Category: ");
                         category = Console.ReadLine();
-                        while (String.IsNullOrEmpty(category))
-                        {
+                        while (String.IsNullOrEmpty(category)) {
                             Console.WriteLine("Enter Product Category: ");
                             category = Console.ReadLine();
                         }
                         Console.WriteLine("Enter Product Description ");
                         description = Console.ReadLine();
-                        while (String.IsNullOrEmpty(description))
-                        {
+                        while (String.IsNullOrEmpty(description)) {
                             Console.WriteLine("Enter Product Description ");
                             description = Console.ReadLine();
                         }
                         Console.WriteLine("Enter Product Brand: ");
                         brand = Console.ReadLine();
-                        while (String.IsNullOrEmpty(brand))
-                        {
+                        while (String.IsNullOrEmpty(brand)) {
                             Console.WriteLine("Enter Product Brand: ");
                             brand = Console.ReadLine();
                         }
@@ -87,29 +77,24 @@ namespace CS251_A3_ToffeeShop.UsersClasses
                 }
             } while (userInput != 4);
         }
-        private void AddVoucher(ref List<Voucher> voucherList, Voucher newVoucher)
-        {
+        private void AddVoucher(ref List<Voucher> voucherList, Voucher newVoucher) {
             voucherList.Add(newVoucher);
         }
-        private void RemoveVoucher(ref List<Voucher> voucher, int index)
-        {
+        private void RemoveVoucher(ref List<Voucher> voucher, int index) {
             voucher.RemoveAt(index - 1);
         }
-        public void UpdateVouchers(List<Voucher> voucher)
-        {
+        public void UpdateVouchers(List<Voucher> voucher) {
             int x;
             Console.WriteLine("1-Add Voucher.");
             Console.WriteLine("2-Remove Voucher.");
             x = Convert.ToInt32(Console.ReadLine());
-            switch (x)
-            {
+            switch (x) {
                 case 1:
                     string? voucherCode;
                     double discountValue;
                     Console.WriteLine("Enter The Voucher Code: ");
                     voucherCode = Console.ReadLine();
-                    while (string.IsNullOrEmpty(voucherCode))
-                    {
+                    while (string.IsNullOrEmpty(voucherCode)) {
                         Console.WriteLine("Invalid Input Try Again! ");
                         Console.WriteLine("Enter The Voucher Code: ");
                         voucherCode = Console.ReadLine();
@@ -120,8 +105,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses
                     AddVoucher(ref voucher, newVoucher);
                     break;
                 case 2:
-                    for (int i = 0; i < voucher.Count; i++)
-                    {
+                    for (int i = 0; i < voucher.Count; i++) {
                         Console.WriteLine($"{i}) " + voucher[i].GetType() + ".");
                     }
                     int y;
@@ -131,8 +115,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses
                     break;
             }
         }
-        private void UpdateProduct(Product product)
-        {
+        private void UpdateProduct(Product product) {
             Console.WriteLine("1) Update Name.\n2) Update Category\n 3) Update Description\n 4) Update Price\n5) Update Brand\n6) Cancel");
             int choice;
             string? name;
@@ -141,33 +124,29 @@ namespace CS251_A3_ToffeeShop.UsersClasses
             string? brand;
             double price;
             while (!int.TryParse(Console.ReadLine(), out choice)) { }
-            switch (choice)
-            {
+            switch (choice) {
                 case 1:
                     Console.WriteLine("Enter The New Name: ");
                     name = Console.ReadLine();
-                    while (String.IsNullOrEmpty(name))
-                    {
+                    while (String.IsNullOrEmpty(name)) {
                         Console.WriteLine("Enter Product Name: ");
                         name = Console.ReadLine();
                     }
                     product.SetName(name);
                     break;
                 case 2:
-                Console.WriteLine("Enter The New Category: ");
+                    Console.WriteLine("Enter The New Category: ");
                     category = Console.ReadLine();
-                    while (String.IsNullOrEmpty(category))
-                    {
+                    while (String.IsNullOrEmpty(category)) {
                         Console.WriteLine("Enter The New Category: ");
                         category = Console.ReadLine();
                     }
                     product.SetCategory(category);
                     break;
                 case 3:
-                Console.WriteLine("Enter The New description: ");
+                    Console.WriteLine("Enter The New description: ");
                     description = Console.ReadLine();
-                    while (String.IsNullOrEmpty(description))
-                    {
+                    while (String.IsNullOrEmpty(description)) {
                         Console.WriteLine("Enter The New Description: ");
                         description = Console.ReadLine();
                     }
@@ -175,17 +154,16 @@ namespace CS251_A3_ToffeeShop.UsersClasses
                     break;
                 case 4:
                     Console.WriteLine("Enter Product Price: ");
-                    while (!double.TryParse(Console.ReadLine(), out price)) {}
+                    while (!double.TryParse(Console.ReadLine(), out price)) { }
                     product.SetPrice(price);
                     break;
                 case 5:
                     Console.WriteLine("Enter The New Brand: ");
+                    brand = Console.ReadLine();
+                    while (String.IsNullOrEmpty(brand)) {
+                        Console.WriteLine("Enter Product Brand: ");
                         brand = Console.ReadLine();
-                        while (String.IsNullOrEmpty(brand))
-                        {
-                            Console.WriteLine("Enter Product Brand: ");
-                            brand = Console.ReadLine();
-                        }
+                    }
                     product.SetBrand(brand);
                     break;
                 case 6:
@@ -195,23 +173,19 @@ namespace CS251_A3_ToffeeShop.UsersClasses
 
         }
 
-        public void UpdateLoyalityPoint(double value)
-        {
+        public void UpdateLoyalityPoint(double value) {
             LoyalityPoints.ChangeDiscountValue(value);
         }
-        public void CancelOrder(Order order)
-        {
+        public void CancelOrder(Order order) {
             order.SetOrderStatue(OrderState.Canceled);
         }
-        public void UpdateOrder(Order order)
-        {
+        public void UpdateOrder(Order order) {
             Console.WriteLine("1-Update Order State.");
             Console.WriteLine("2-Update Order Address.");
             int y;
             y = Convert.ToInt32(Console.ReadLine());
             int.TryParse(Console.ReadLine(), out y);
-            switch (y)
-            {
+            switch (y) {
                 case 1:
                     order.UpdateState();
                     break;
@@ -221,24 +195,21 @@ namespace CS251_A3_ToffeeShop.UsersClasses
                     string? buildingNumber;
                     Console.WriteLine("Enter The Street Name: ");
                     street = Console.ReadLine();
-                    while (string.IsNullOrEmpty(street))
-                    {
+                    while (string.IsNullOrEmpty(street)) {
                         Console.WriteLine("Invalid Input Try Again! ");
                         Console.WriteLine("Enter The Street Name: ");
                         street = Console.ReadLine();
                     }
                     Console.WriteLine("Enter The City: ");
                     city = Console.ReadLine();
-                    while (string.IsNullOrEmpty(city))
-                    {
+                    while (string.IsNullOrEmpty(city)) {
                         Console.WriteLine("Invalid Input Try Again! ");
                         Console.WriteLine("Enter The City: ");
                         city = Console.ReadLine();
                     }
                     Console.WriteLine("Enter The Building Number: ");
                     buildingNumber = Console.ReadLine();
-                    while (string.IsNullOrEmpty(buildingNumber))
-                    {
+                    while (string.IsNullOrEmpty(buildingNumber)) {
                         Console.WriteLine("Invalid Input Try Again! ");
                         Console.WriteLine("Enter The Building Number: ");
                         buildingNumber = Console.ReadLine();
@@ -248,14 +219,12 @@ namespace CS251_A3_ToffeeShop.UsersClasses
                     break;
             }
         }
-        public void SuspendCustomer(Customer customer)
-        {
+        public void SuspendCustomer(Customer customer) {
             customer.SetCustomerState(CustomerState.inactive);
         }
     }
 
-    public struct AdminData
-    {
+    public struct AdminData {
         public string name { get; set; }
         public string username { get; set; }
         public string password { get; set; }
