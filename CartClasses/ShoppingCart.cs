@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.BalanceClasses;
+
 
 namespace CS251_A3_ToffeeShop.CartClasses {
     public class ShoppingCart {
@@ -14,6 +18,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                 this.items.Add(item.Key, item.Value);
             }
         }
+
         public void PrintItems() {
             int i = 1;
             foreach (var kvp in items) {
@@ -36,21 +41,24 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             else
                 items.Remove(item);
         }
-        public void ChangeQuantity(string identifier, int quantity) {
+        public void ChangeQuantity(string identifier) {
             if (items.Count <= 0 || items == null) {
                 Console.WriteLine("Item List is empty!");
                 return;
             }
-
+            int quantity;
             int userInput;
             do {
                 System.Console.Write("Enter Product number (Enter 0 to Cancel): ");
                 int.TryParse(Console.ReadLine(), out userInput);
-
+                
                 if (userInput == 0) {
                     Console.WriteLine("Process Canceled!");
                     return;
                 }
+                
+                Console.Write("Enter a Quantity: ");
+                int.TryParse(Console.ReadLine(), out quantity);
 
                 if (userInput < 0 || userInput > items.Count()) {
                     Console.WriteLine("Invalid Choice!\nPlease pick an item from the list!");
@@ -92,14 +100,10 @@ namespace CS251_A3_ToffeeShop.CartClasses {
 
                 switch (userInput) {
                     case 1:
-                        Console.Write("Enter a Quantity: ");
-                        int.TryParse(Console.ReadLine(), out quantity);
-                        ChangeQuantity("+", quantity);
+                        ChangeQuantity("+");
                         break;
                     case 2:
-                        Console.Write("Enter a Quantity: ");
-                        int.TryParse(Console.ReadLine(), out quantity);
-                        ChangeQuantity("-", quantity);
+                        ChangeQuantity("-");
                         break;
                     case 3:
                         break;
@@ -110,6 +114,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             } while (userInput != 3);
 
         }
+
         public void ClearCart() {
             items.Clear();
         }

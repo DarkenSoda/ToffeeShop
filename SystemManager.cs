@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.CartClasses;
@@ -179,7 +178,7 @@ namespace CS251_A3_ToffeeShop {
             do {
                 ((Customer)currentUser).PrintOrders();
                 System.Console.WriteLine("");
-                System.Console.WriteLine("1) Cancel Order.\n2) Go to Menu.");
+                System.Console.WriteLine("1) Cancel Order.\n2) Re-Order.\n3) Go to Menu.");
                 int.TryParse(Console.ReadLine(), out orderInput);
                 switch (orderInput) {
                     case 1:
@@ -195,12 +194,20 @@ namespace CS251_A3_ToffeeShop {
                         ((Customer)currentUser).GetOrderHistory()[orderNumber - 1].SetOrderStatue(OrderState.Canceled);
                         break;
                     case 2:
+                        if (((Customer)currentUser).GetOrderHistory().Count > 0) {
+                            ((Customer)currentUser).ReOrder(catalogue);
+                        }
+                        else {
+                            Console.WriteLine("List is empty!");
+                        }
+                        break;
+                    case 3:
                         break;
                     default:
                         Console.WriteLine("Invalid Input! Try Again!");
                         break;
                 }
-            } while (orderInput != 2);
+            } while (orderInput != 3);
 
         }
 
@@ -257,7 +264,7 @@ namespace CS251_A3_ToffeeShop {
 
             int userInput;
             do {
-                Console.WriteLine("//---------------//Shopping Cart//---------------//");
+                Console.WriteLine("{}---------------{[ Shopping Cart ]}---------------{}");
                 ((Customer)currentUser).GetShoppingCart().PrintItems();
                 Console.WriteLine("1) Apply LoyalityPoints\n2) Apply Vouchers\n3) Update Quantity\n4) Clear\n5) Check Out\n6) Cancel");
                 int.TryParse(Console.ReadLine(), out userInput);
@@ -276,10 +283,18 @@ namespace CS251_A3_ToffeeShop {
                         Console.WriteLine("Cart Cleared!");
                         break;
                     case 5:
+                        Random randInt = new Random();
+                        if (((Customer)currentUser).GetShoppingCart().GetProductList().Count == 0) {
+                            Console.WriteLine("Cart is Empty!");
+                            break;
+                        }
                         ((Customer)currentUser).CheckOut();
+                        if (voucherList.Count > 0) {
+                            ((Customer)currentUser).AddVoucher(voucherList[randInt.Next(0,voucherList.Count - 1)]);
+                        }
+                        ((Customer)currentUser).GetLoyalityPoints().AddPoints(randInt.Next(1,100));
                         ((Customer)currentUser).GetShoppingCart().ClearCart();
-                        Console.WriteLine("Order has been Processed!");
-                        break;
+                        return;
                     case 6:
                         ((Customer)currentUser).GetShoppingCart().RevertChanges();
                         break;
@@ -287,7 +302,7 @@ namespace CS251_A3_ToffeeShop {
                         System.Console.WriteLine("Invalid Input! Try Again!");
                         break;
                 }
-            } while (userInput != 6 && userInput != 5 && userInput != 4);
+            } while (userInput != 6 && userInput != 4);
         }
 
         private void RegisterUser() {
@@ -511,7 +526,7 @@ namespace CS251_A3_ToffeeShop {
 
                     cartData.items.Add(new KeyValuePair<ProductData, int>(data, product.Value));
                 }
-                cartData.totalCost = order.GetOrderShoppingCart().GetTotalCost();
+                cartData.totalCost = order.GetOrderShoppingCart().CalculateTotalPrice();
                 orderData.shoppingCartData = cartData;
 
                 orderData.deliveryAddress = order.GetDeliveryAddress();
