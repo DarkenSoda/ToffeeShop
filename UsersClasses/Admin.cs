@@ -26,46 +26,54 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         string? description;
                         string? brand;
                         double price;
-                        Console.WriteLine("Enter Product Name: ");
+                        Console.WriteLine("Enter Product Name: (if you want to cancel enter '0') ");//////////////////
                         name = Console.ReadLine();
                         while (String.IsNullOrEmpty(name)) {
-                            Console.WriteLine("Enter Product Name: ");
+                            Console.WriteLine("Invalid Input Try Again!");
+                            Console.WriteLine("Enter Product Name: (if you want to cancel enter '0') ");
                             name = Console.ReadLine();
                         }
-                        Console.WriteLine("Enter Product Category: ");
+                        if (name == "0") { break; }
+                        Console.WriteLine("Enter Product Category: (if you want to cancel enter '0') ");
                         category = Console.ReadLine();
                         while (String.IsNullOrEmpty(category)) {
-                            Console.WriteLine("Enter Product Category: ");
+                            Console.WriteLine("Invalid Input Try Again!");
+                            Console.WriteLine("Enter Product Category: (if you want to cancel enter '0') ");
                             category = Console.ReadLine();
                         }
-                        Console.WriteLine("Enter Product Description ");
+                        if (category == "0") { break; }
+                        Console.WriteLine("Enter Product Description (if you want to cancel enter '0') ");
                         description = Console.ReadLine();
                         while (String.IsNullOrEmpty(description)) {
-                            Console.WriteLine("Enter Product Description ");
+                            Console.WriteLine("Invalid Input Try Again!");
+                            Console.WriteLine("Enter Product Description (if you want to cancel enter '0') ");
                             description = Console.ReadLine();
                         }
-                        Console.WriteLine("Enter Product Brand: ");
+                        if (description == "0") { break; }
+                        Console.WriteLine("Enter Product Brand: (if you want to cancel enter '0') ");
                         brand = Console.ReadLine();
                         while (String.IsNullOrEmpty(brand)) {
-                            Console.WriteLine("Enter Product Brand: ");
+                            Console.WriteLine("Invalid Input Try Again!");
+                            Console.WriteLine("Enter Product Brand: (if you want to cancel enter '0') ");
                             brand = Console.ReadLine();
                         }
+                        if (brand == "0") { break; }
                         Console.WriteLine("Enter Product Price: ");
-                        while (!double.TryParse(Console.ReadLine(), out price)) { }
+                        while (!double.TryParse(Console.ReadLine(), out price)) { Console.WriteLine("Invalid Input Try Again!");}
                         catalogue.AddProduct(new Product(name, category, price));
                         break;
                     case 2:
                         catalogue.DisplayCatalogue();
                         int choice;
                         System.Console.WriteLine("Pick a Product To Remove: ");
-                        while (!int.TryParse(Console.ReadLine(), out choice)) { }
+                        while (!int.TryParse(Console.ReadLine(), out choice)) { Console.WriteLine("Invalid Input Try Again!");}
                         catalogue.RemoveProduct(catalogue.GetProductList()[choice - 1]);
                         break;
                     case 3:
                         catalogue.DisplayCatalogue();
                         int _choice;
                         System.Console.WriteLine("Pick a Product To Update: ");
-                        while (!int.TryParse(Console.ReadLine(), out _choice)) { }
+                        while (!int.TryParse(Console.ReadLine(), out _choice)) { Console.WriteLine("Invalid Input Try Again!");}
                         UpdateProduct(catalogue.GetProductList()[_choice - 1]);
                         break;
                     case 4:
