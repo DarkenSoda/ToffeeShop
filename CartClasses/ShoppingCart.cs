@@ -21,7 +21,12 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             Console.WriteLine("--------------[ Total Cost: {0} L.E ]--------------", CalculateTotalPrice());
         }
         public void AddItem(Product item, int quantity) {
-            items.Add(item, quantity);
+            if (items.ContainsKey(item)) {
+                items[item] += quantity;
+            }
+            else {
+                items.Add(item, quantity);
+            }
             totalCost += item.GetDiscountPrice() * quantity;
         }
         public void RemoveItem(Product item) {
@@ -30,7 +35,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             else
                 items.Remove(item);
         }
-        public void ChangeQuantity(string identifier) {
+        public void ChangeQuantity(string identifier,int quantity) {
             if(items.Count <= 0 || items == null) {
                 Console.WriteLine("Item List is empty!");
                 return;
@@ -50,13 +55,16 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                     Console.WriteLine("Invalid Choice!\nPlease pick an item from the list!");
                 }
             } while (userInput < 0 || userInput > items.Count());
-            ChangeItem(identifier, userInput);
+            ChangeItem(identifier, userInput,quantity);
         }
-        public void ChangeItem(string identifier, int index) {
+        public void ChangeItem(string identifier, int index,int quantity) {
+            if (quantity < 0) {
+                Console.WriteLine("Invalid Quantity!");
+                return;
+            }
             foreach (var item in items) {
                 if (index == 1) {
-                    int newQuantity = identifier == "+" ? item.Value + 1 : item.Value - 1;
-
+                    int newQuantity = identifier == "+" ? item.Value + quantity : item.Value - quantity;
                     if (newQuantity <= 0) {
                         Console.WriteLine("Item removed!");
                         RemoveItem(item.Key);
@@ -81,12 +89,18 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                 Console.WriteLine("3) Go to Catalogue.");
                 Console.Write("Choose an option: ");
                 int.TryParse(Console.ReadLine(), out userInput);
+                int quantity;
+
                 switch (userInput) {
                     case 1:
-                        ChangeQuantity("+");
+                        Console.Write("Enter a Quantity: ");
+                        int.TryParse(Console.ReadLine(), out quantity);
+                        ChangeQuantity("+",quantity);
                         break;
                     case 2:
-                        ChangeQuantity("-");
+                        Console.Write("Enter a Quantity: ");
+                        int.TryParse(Console.ReadLine(), out quantity);
+                        ChangeQuantity("-",quantity);
                         break;
                     case 3:
                         break;

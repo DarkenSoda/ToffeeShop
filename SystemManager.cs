@@ -219,9 +219,9 @@ namespace CS251_A3_ToffeeShop {
             
             int userInput;
             do {
-                Console.WriteLine("//---------//Shopping Cart//---------//");
+                Console.WriteLine("//---------------//Shopping Cart//---------------//");
                 ((Customer)currentUser).GetShoppingCart().PrintItems();
-                Console.WriteLine("1) Apply LoyalityPoints\n2) Apply Vouchers\n3) Update Quantity\n4) Check Out\n5) Cancel");
+                Console.WriteLine("1) Apply LoyalityPoints\n2) Apply Vouchers\n3) Update Quantity\n4) Clear\n5) Check Out\n6) Cancel");
                 int.TryParse(Console.ReadLine(), out userInput);
                 switch (userInput) {
                     case 1:
@@ -233,14 +233,23 @@ namespace CS251_A3_ToffeeShop {
                     case 3:
                         ((Customer)currentUser).GetShoppingCart().Updateitems();
                         break;
+                    case 4:
+                        ((Customer)currentUser).GetShoppingCart().ClearCart();
+                        Console.WriteLine("Cart Cleared!");
+                        break;
                     case 5:
+                        ((Customer)currentUser).CheckOut();
+                        ((Customer)currentUser).GetShoppingCart().ClearCart();
+                        Console.WriteLine("Order has been Processed!");
+                        break;
+                    case 6:
                         ((Customer)currentUser).GetShoppingCart().RevertChanges();
                         break;
                     default:
                         System.Console.WriteLine("Invalid Input! Try Again!");
                         break;
                 }
-            } while (userInput != 5);
+            } while (userInput != 6 && userInput != 5 && userInput != 4);
         }
 
         private void RegisterUser() {
