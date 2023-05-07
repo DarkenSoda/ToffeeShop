@@ -15,7 +15,8 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         private Address deliveryAddress;
         private string dateTime;
         public Order(ShoppingCart shoppingCart, Address deliveryAddress) {
-            this.shoppingCart = shoppingCart;
+            
+            this.shoppingCart = new ShoppingCart(shoppingCart);
             this.deliveryAddress = deliveryAddress;
             this.orderStatus = OrderState.Ordered;
             this.dateTime = DateTime.UtcNow.ToLocalTime().ToString("dd/MM/yyyy hh:mm tt");
@@ -70,9 +71,6 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         }
         public void SetDateTime(string cdateTime){
             dateTime = cdateTime;
-        }
-        public ShoppingCart GetShoppingCart() {
-            return shoppingCart;
         }
     }
 
