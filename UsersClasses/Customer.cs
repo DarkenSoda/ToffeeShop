@@ -100,7 +100,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             int.TryParse(Console.ReadLine(), out choice);
             switch (choice) {
                 case 1:
-                    System.Console.WriteLine("Enter an Address Please");
+                    System.Console.WriteLine("Enter an Address Please!");
                     string? street;
                     string? city;
                     string? buildingNumber;

@@ -157,6 +157,6 @@ namespace CS251_A3_ToffeeShop.CartClasses {
 }
 
 public struct ShoppingCartData {
-    public Dictionary<ProductData, int> items { get; set; }
+    public List<KeyValuePair<ProductData,int>> items { get; set; }
     public double totalCost { get; set; }
 }

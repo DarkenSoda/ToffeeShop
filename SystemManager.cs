@@ -286,7 +286,7 @@ namespace CS251_A3_ToffeeShop {
         }
 
         private void RegisterUser() {
-            string? name = string.Empty;
+            string name = string.Empty;
             string? username, password, emailAdress;
             string city = string.Empty;
             string street = string.Empty;
@@ -492,7 +492,7 @@ namespace CS251_A3_ToffeeShop {
                 orderData.orderState = order.GetOrderState();
 
                 ShoppingCartData cartData = new ShoppingCartData();
-                cartData.items = new Dictionary<ProductData, int>();
+                cartData.items = new List<KeyValuePair<ProductData, int>>();
                 foreach (KeyValuePair<Product, int> product in order.GetOrderShoppingCart().GetProductList()) {
                     ProductData data = new ProductData();
                     data.name = product.Key.GetName();
@@ -502,7 +502,7 @@ namespace CS251_A3_ToffeeShop {
                     data.price = product.Key.GetPrice();
                     data.discountPrice = product.Key.GetDiscountPrice();
 
-                    cartData.items.Add(data, product.Value);
+                    cartData.items.Add(new KeyValuePair<ProductData, int>(data, product.Value));
                 }
                 cartData.totalCost = order.GetOrderShoppingCart().CalculateTotalPrice();
                 orderData.shoppingCartData = cartData;
