@@ -21,6 +21,15 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             address = caddress;
             customerState = CustomerState.active;
         }
+        public void PrintOrders() {
+            int i = 1;
+            System.Console.WriteLine("{}-----------------{[ Orders ]}-----------------{}");
+            foreach(var order in orderHistory) {
+                Console.WriteLine("[ Order {0}  {1} ]----- {2} ----",i++,order.GetDateTime(),order.GetOrderState());
+                order.GetOrderShoppingCart().PrintItems();
+                System.Console.WriteLine(" Address: {0}\n",order.GetDeliveryAddress().GetAddress());
+            }
+        }
         public double GetTotalMoneySpent() {
             return totalMoneySpent;
         }
@@ -91,7 +100,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             int.TryParse(Console.ReadLine(), out choice);
             switch (choice) {
                 case 1:
-                    System.Console.WriteLine("Enter an Address Please");
+                    System.Console.WriteLine("Enter an Address Please!");
                     string? street;
                     string? city;
                     string? buildingNumber;

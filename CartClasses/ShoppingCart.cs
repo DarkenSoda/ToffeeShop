@@ -11,6 +11,13 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         private Dictionary<Product, int> items = new Dictionary<Product, int>();
         private double totalCost = 0;
 
+        public ShoppingCart(){}
+        public ShoppingCart(ShoppingCart shoppingCart) {
+            this.totalCost = shoppingCart.totalCost;
+            foreach (var item in shoppingCart.items) {
+                this.items.Add(item.Key,item.Value);
+            }
+        }
 
         public void PrintItems() {
             int i = 1;
@@ -150,6 +157,6 @@ namespace CS251_A3_ToffeeShop.CartClasses {
 }
 
 public struct ShoppingCartData {
-    public Dictionary<ProductData, int> items { get; set; }
+    public List<KeyValuePair<ProductData,int>> items { get; set; }
     public double totalCost { get; set; }
 }

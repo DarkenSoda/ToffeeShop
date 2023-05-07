@@ -71,13 +71,40 @@ namespace CS251_A3_ToffeeShop
             // Save Data before Closing the program
             SaveData();
         }
+        public void OrderInterface() {
+            if (currentUser == null) return;
+            int orderInput;
+            do {
+                ((Customer)currentUser).PrintOrders();
+                System.Console.WriteLine("");
+                System.Console.WriteLine("1) Cancel Order.\n2) Go to Menu.");
+                int.TryParse(Console.ReadLine(), out orderInput);
+                switch(orderInput) {
+                    case 1:
+                        int orderNumber;
+                        Console.Write("Enter an Order Number(Press 0 to Cancel): ");
+                        int.TryParse(Console.ReadLine(),out orderNumber);
+                        if (orderNumber < 0 || orderNumber > ((Customer)currentUser).GetOrderHistory().Count){
+                            Console.WriteLine("Order is Invalid");
+                            break;
+                        }
+                        else if (orderNumber == 0){
+                            return;
+                        }
+                        ((Customer)currentUser).GetOrderHistory()[orderNumber - 1].SetOrderStatue(OrderState.Canceled);
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Input! Try Again!");
+                        break;
+                }
+            }while (orderInput != 2);
 
-        private void CustomerSystem()
-        {
+        private void CustomerSystem() {
             if (currentUser == null) return;
 
-            do
-            {
+            do {
                 Console.WriteLine("\n1) Browser Catalogue.\n2) Add Item to Shopping Cart.\n3) Review Shopping Cart.\n4) Log out.");
                 int.TryParse(Console.ReadLine(), out userInput);
 
@@ -111,14 +138,17 @@ namespace CS251_A3_ToffeeShop
                     case 3:
                         ShoppingInterface();
                         break;
-                    case 4:     // Logging out
+                    case 4:
+                        OrderInterface();
+                        break;
+                    case 5:     // Logging out
                         Console.WriteLine("Logged out Successfully!");
                         break;
                     default:    // Invalid Input
                         Console.WriteLine("Please choose a valid number!\n");
                         break;
                 }
-            } while (userInput != 4);
+            } while (userInput != 5);
         }
 
         private void AdminSystem()
@@ -290,8 +320,7 @@ namespace CS251_A3_ToffeeShop
             } while (userInput != 6 && userInput != 5 && userInput != 4);
         }
 
-        private void RegisterUser()
-        {
+        private void RegisterUser() {
             string? name = string.Empty;
             string? username, password, emailAdress;
             string city = string.Empty;
@@ -525,6 +554,8 @@ namespace CS251_A3_ToffeeShop
         private CustomerData SaveCustomerData(Customer customer)
         {
             CustomerData customerData = new CustomerData();
+            customerData.orders = new List<OrderData>();
+            customerData.vouchers = new List<VoucherData>();
             customerData.name = customer.GetName();
             customerData.username = customer.GetUsername();
             customerData.password = customer.GetPassword();
@@ -538,8 +569,7 @@ namespace CS251_A3_ToffeeShop
                 orderData.orderState = order.GetOrderState();
 
                 ShoppingCartData cartData = new ShoppingCartData();
-                foreach (KeyValuePair<Product, int> product in order.GetShoppingCart().GetProductList())
-                {
+                foreach (KeyValuePair<Product, int> product in order.GetShoppingCart().GetProductList()) {
                     ProductData data = new ProductData();
                     data.name = product.Key.GetName();
                     data.category = product.Key.GetCategory();
@@ -548,9 +578,9 @@ namespace CS251_A3_ToffeeShop
                     data.price = product.Key.GetPrice();
                     data.discountPrice = product.Key.GetDiscountPrice();
 
-                    cartData.items.Add(data, product.Value);
+                    cartData.items.Add(new KeyValuePair<ProductData, int>(data, product.Value));
                 }
-                cartData.totalCost = order.GetShoppingCart().CalculateTotalPrice();
+                cartData.totalCost = order.GetOrderShoppingCart().CalculateTotalPrice();
                 orderData.shoppingCartData = cartData;
 
                 orderData.deliveryAddress = order.GetDeliveryAddress();
