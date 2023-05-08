@@ -17,6 +17,33 @@ namespace CS251_A3_ToffeeShop {
         private User? currentUser;
         private int userInput;
 
+        public void ForgotPassword() {
+            if (currentUser == null) return;
+            Console.Write("Enter your Email(Press 0 to Cancel): ");
+            string? input = Console.ReadLine();
+            while (input == null) {
+                Console.WriteLine("You can't enter an empty string!");
+                Console.Write("Enter your Email(Press 0 to Cancel): ");
+                input = Console.ReadLine();
+            }
+            if (input == "0") {
+                return;
+            }
+            if (Authentication.Authenticate(input)) {
+                Console.Write("Enter your new Password(Press 0 to Cancel): ");
+                input = Console.ReadLine();
+                while(input == null){
+                    Console.WriteLine("You can't enter an empty string!");
+                    Console.Write("Enter your new Password(Press 0 to Cancel): ");
+                    input = Console.ReadLine();
+                }
+                if (input == "0") {
+                    return;
+                }
+                currentUser.SetPassword(input);
+            }
+        }
+
         public void SystemRun() {
             // Load Data at the start of the program
             LoadData();
@@ -25,7 +52,7 @@ namespace CS251_A3_ToffeeShop {
             Console.WriteLine("\nWelcome to Toffee Shop!\n");
 
             do {
-                Console.WriteLine("\n1) Browse Catalogue\n2) Register\n3) Log in\n4) Exit");
+                Console.WriteLine("\n1) Browse Catalogue\n2) Register\n3) Log in\n4) I forgot my Password!\n5) Exit");
                 int.TryParse(Console.ReadLine(), out userInput);
 
                 switch (userInput) {
@@ -52,13 +79,16 @@ namespace CS251_A3_ToffeeShop {
                         }
                         break;
                     case 4:
+                        ForgotPassword();
+                        break;
+                    case 5:
                         Console.WriteLine("Closing Program!\n");
                         break;
                     default:
                         Console.WriteLine("Please choose a valid number!\n");
                         break;
                 }
-            } while (userInput != 4);
+            } while (userInput != 5);
 
             // Save Data before Closing the program
             SaveData();
@@ -68,7 +98,7 @@ namespace CS251_A3_ToffeeShop {
             if (currentUser == null) return;
 
             do {
-                Console.WriteLine("\n1) Browser Catalogue.\n2) Add Item to Shopping Cart.\n3) Review Shopping Cart.\n4) Review Orders\n5) Log out.");
+                Console.WriteLine("\n1) Browser Catalogue.\n2) Add Item to Shopping Cart.\n3) Review Shopping Cart.\n4) Review Orders.\n5) Authenticate.\n6) Log out.");
                 int.TryParse(Console.ReadLine(), out userInput);
 
                 switch (userInput) {
@@ -101,21 +131,26 @@ namespace CS251_A3_ToffeeShop {
                     case 4:
                         OrderInterface();
                         break;
-                    case 5:     // Logging out
+                    case 5:
+                        if (Authentication.Authenticate(((Customer)currentUser).GetEmail())) {
+                            ((Customer)currentUser).SetAuthentication(true);
+                        }
+                        break;
+                    case 6:     // Logging out
                         Console.WriteLine("Logged out Successfully!");
                         break;
                     default:    // Invalid Input
                         Console.WriteLine("Please choose a valid number!\n");
                         break;
                 }
-            } while (userInput != 5);
+            } while (userInput != 6);
         }
 
         private void AdminSystem() {
             if (currentUser == null) return;
 
             do {
-                Console.WriteLine("\n1) Update Catalogue.\n2) Update Vouchers.\n3) Update LoyalityPoints.\n4) Cancel Order.\n5) Update Order.\n6) Suspend Customer. \n7) Log out.");
+                Console.WriteLine("\n1) Update Catalogue.\n2) Update Vouchers.\n3) Update LoyalityPoints.\n4) Cancel Order.\n5) Update Order.\n6) Suspend Customer.\n7) Authenicate.\n8) Log out.");
                 int.TryParse(Console.ReadLine(), out userInput);
                 int i = 1;
                 int choice;
@@ -166,9 +201,14 @@ namespace CS251_A3_ToffeeShop {
                             int.TryParse(Console.ReadLine(), out choice);
                             ((Admin)(currentUser)).SuspendCustomer(customers[choice - 1]);
                             break;
+                        case 7:
+                            if (Authentication.Authenticate(((Admin)currentUser).GetEmail())) {
+                                ((Admin)currentUser).SetAuthentication(true);
+                            }
+                            break;
                     }
                 }
-            } while (userInput != 7);
+            } while (userInput != 8);
         }
 
         public void OrderInterface() {
