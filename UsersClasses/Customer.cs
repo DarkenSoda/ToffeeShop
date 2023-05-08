@@ -66,43 +66,45 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             return loyalityPoints;
         }
 
-        public void UpdateShoppingCart(ShoppingCart shoppingCart) {
-            shoppingCart.PrintItems();
-            Console.WriteLine("1-Add New Order.");
-            Console.WriteLine("2-Remove Order.");
-            Console.WriteLine("3-Edit Order quantity.");
-            Console.WriteLine("4-Clear Cart.");
-            int y;
-            Console.WriteLine("Enter Your Choice Please: ");
-            y = Convert.ToInt32(Console.ReadLine());
-            if (y < 1 || y > 4) {
-                UpdateShoppingCart(shoppingCart);
-            } else {
-                if (y == 1) {
-                    Catalogue _catalogue = new Catalogue();
-                    _catalogue.DisplayCatalogue();
-                    int n;
-                    Console.WriteLine("Enter Your Choice Please: ");
-                    n = Convert.ToInt32(Console.ReadLine());
-                    int x;
-                    Console.WriteLine("Enter The Quantity: ");
-                    x = Convert.ToInt32(Console.ReadLine());
-                    shoppingCart.AddItem(_catalogue.GetProductList()[n - 1], x);
-                } else if (y == 2) {
-                    shoppingCart.PrintItems();
-                    int n;
-                    Console.WriteLine("Enter Your Choice Please: ");
-                    n = Convert.ToInt32(Console.ReadLine());
-                    //shoppingCart.RemoveItem(shoppingCart.GetProductList()[n-1].key);
-                } else if (y == 3) {
-                    shoppingCart.PrintItems();
-                    int n;
-                    Console.WriteLine("Enter Your Choice Please: ");
-                    n = Convert.ToInt32(Console.ReadLine());
-                    //shoppingCart.GetProductList()[n-1].key;
-                }
-            }
-        }
+        //this Function is never used.
+
+        // public void UpdateShoppingCart(ShoppingCart shoppingCart) {
+        //     shoppingCart.PrintItems();
+        //     Console.WriteLine("1-Add New Order.");
+        //     Console.WriteLine("2-Remove Order.");
+        //     Console.WriteLine("3-Edit Order quantity.");
+        //     Console.WriteLine("4-Clear Cart.");
+        //     int y;
+        //     Console.WriteLine("Enter Your Choice Please: ");
+        //     y = Convert.ToInt32(Console.ReadLine());
+        //     if (y < 1 || y > 4) {
+        //         UpdateShoppingCart(shoppingCart);
+        //     } else {
+        //         if (y == 1) {
+        //             Catalogue _catalogue = new Catalogue();
+        //             _catalogue.DisplayCatalogue();
+        //             int n;
+        //             Console.WriteLine("Enter Your Choice Please: ");
+        //             n = Convert.ToInt32(Console.ReadLine());
+        //             int x;
+        //             Console.WriteLine("Enter The Quantity: ");
+        //             x = Convert.ToInt32(Console.ReadLine());
+        //             shoppingCart.AddItem(_catalogue.GetProductList()[n - 1], x);
+        //         } else if (y == 2) {
+        //             shoppingCart.PrintItems();
+        //             int n;
+        //             Console.WriteLine("Enter Your Choice Please: ");
+        //             n = Convert.ToInt32(Console.ReadLine());
+        //             //shoppingCart.RemoveItem(shoppingCart.GetProductList()[n-1].key);
+        //         } else if (y == 3) {
+        //             shoppingCart.PrintItems();
+        //             int n;
+        //             Console.WriteLine("Enter Your Choice Please: ");
+        //             n = Convert.ToInt32(Console.ReadLine());
+        //             //shoppingCart.GetProductList()[n-1].key;
+        //         }
+        //     }
+        // }
 
         public void AddVoucher(Voucher voucher) {
             totalMoneySpent += shoppingCart.CalculateTotalPrice();
@@ -122,6 +124,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             int.TryParse(Console.ReadLine(), out choice);
             switch (choice) {
                 case 1:
+                    currentPaymentMethod = new OnDeliveryStrategy(emailAdress);
                     System.Console.WriteLine("Enter an Address Please!");
                     string? street;
                     string? city;
@@ -147,6 +150,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         Console.WriteLine("Enter The Building Number: ");
                         buildingNumber = Console.ReadLine();
                     }
+                    currentPaymentMethod.ValidatePayment();
                     Address newaddress = new Address(street, city, buildingNumber);
                     Order newOrder = new Order(shoppingCart, newaddress);
                     orderHistory.Add(newOrder);
