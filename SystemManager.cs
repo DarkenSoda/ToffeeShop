@@ -168,6 +168,10 @@ namespace CS251_A3_ToffeeShop
                             break;
                         case 4:
                             i = 1;
+                            if(orderList == null || orderList.Count <=0){
+                                Console.WriteLine("No Orders Found");
+                                break;
+                            }
                             foreach (var order in orderList)
                             {
                                 Console.WriteLine($"{i++}) " + " " + order.GetOrderShoppingCart() + order.GetOrderState() + " " + order.GetType() + " " + order.GetDateTime());
@@ -177,6 +181,10 @@ namespace CS251_A3_ToffeeShop
                             break;
                         case 5:
                             i = 1;
+                            if(orderList == null || orderList.Count <=0){
+                                Console.WriteLine("No Orders Found");
+                                break;
+                            }
                             foreach (var v in orderList)
                             {
                                 Console.WriteLine($"{i++}) " + " " + v.GetOrderShoppingCart() + " " + v.GetOrderState() + " " + v.GetType() + " " + v.GetDateTime());
