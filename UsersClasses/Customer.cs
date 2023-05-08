@@ -66,46 +66,6 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             return loyalityPoints;
         }
 
-        //this Function is never used.
-
-        // public void UpdateShoppingCart(ShoppingCart shoppingCart) {
-        //     shoppingCart.PrintItems();
-        //     Console.WriteLine("1-Add New Order.");
-        //     Console.WriteLine("2-Remove Order.");
-        //     Console.WriteLine("3-Edit Order quantity.");
-        //     Console.WriteLine("4-Clear Cart.");
-        //     int y;
-        //     Console.WriteLine("Enter Your Choice Please: ");
-        //     y = Convert.ToInt32(Console.ReadLine());
-        //     if (y < 1 || y > 4) {
-        //         UpdateShoppingCart(shoppingCart);
-        //     } else {
-        //         if (y == 1) {
-        //             Catalogue _catalogue = new Catalogue();
-        //             _catalogue.DisplayCatalogue();
-        //             int n;
-        //             Console.WriteLine("Enter Your Choice Please: ");
-        //             n = Convert.ToInt32(Console.ReadLine());
-        //             int x;
-        //             Console.WriteLine("Enter The Quantity: ");
-        //             x = Convert.ToInt32(Console.ReadLine());
-        //             shoppingCart.AddItem(_catalogue.GetProductList()[n - 1], x);
-        //         } else if (y == 2) {
-        //             shoppingCart.PrintItems();
-        //             int n;
-        //             Console.WriteLine("Enter Your Choice Please: ");
-        //             n = Convert.ToInt32(Console.ReadLine());
-        //             //shoppingCart.RemoveItem(shoppingCart.GetProductList()[n-1].key);
-        //         } else if (y == 3) {
-        //             shoppingCart.PrintItems();
-        //             int n;
-        //             Console.WriteLine("Enter Your Choice Please: ");
-        //             n = Convert.ToInt32(Console.ReadLine());
-        //             //shoppingCart.GetProductList()[n-1].key;
-        //         }
-        //     }
-        // }
-
         public void AddVoucher(Voucher voucher) {
             totalMoneySpent += shoppingCart.CalculateTotalPrice();
             if (totalMoneySpent >= maxMoneySpendForVoucher) {
@@ -118,7 +78,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             customerState = _customerState;
         }
 
-        public void CheckOut() {
+        public bool CheckOut() {
             int choice;
             Console.WriteLine("1) Cash.\n2) PayPal.\n3) Credit Card.\n4) Cancel Check Out!");
             int.TryParse(Console.ReadLine(), out choice);
@@ -161,12 +121,12 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                     break;
                 case 4:
                     Console.WriteLine("Check Out Canceled!");
-                    return;
+                    return false;
                 default:
                     Console.WriteLine("Invalid Input! Try Again!");
                     break;
             }
-
+            return true;
         }
 
         public void ReOrder(Catalogue catalogue) {

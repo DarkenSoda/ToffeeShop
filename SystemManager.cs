@@ -17,33 +17,6 @@ namespace CS251_A3_ToffeeShop {
         private User? currentUser;
         private int userInput;
 
-        public void ForgotPassword() {
-            if (currentUser == null) return;
-            Console.Write("Enter your Email(Press 0 to Cancel): ");
-            string? input = Console.ReadLine();
-            while (input == null) {
-                Console.WriteLine("You can't enter an empty string!");
-                Console.Write("Enter your Email(Press 0 to Cancel): ");
-                input = Console.ReadLine();
-            }
-            if (input == "0") {
-                return;
-            }
-            if (Authentication.Authenticate(input)) {
-                Console.Write("Enter your new Password(Press 0 to Cancel): ");
-                input = Console.ReadLine();
-                while(input == null){
-                    Console.WriteLine("You can't enter an empty string!");
-                    Console.Write("Enter your new Password(Press 0 to Cancel): ");
-                    input = Console.ReadLine();
-                }
-                if (input == "0") {
-                    return;
-                }
-                currentUser.SetPassword(input);
-            }
-        }
-
         public void SystemRun() {
             // Load Data at the start of the program
             LoadData();
@@ -326,18 +299,15 @@ namespace CS251_A3_ToffeeShop {
                             Console.WriteLine("Cart is Empty!");
                             break;
                         }
-                        ((Customer)currentUser).CheckOut();
 
-                        // Don't add anything and don't clear list if CheckOut is canceled
-                        // Check if he spent more than max first
+                        if (!((Customer)currentUser).CheckOut()) break;
+
                         if (voucherList.Count > 0) {
-                            ((Customer)currentUser).AddVoucher(voucherList[randInt.Next(0, voucherList.Count - 1)]);
+                            ((Customer)currentUser).AddVoucher(voucherList[randInt.Next(0, voucherList.Count)]);
                         }
                         ((Customer)currentUser).GetLoyalityPoints().AddPoints(randInt.Next(1, 101));
                         ((Customer)currentUser).GetShoppingCart().ClearCart();
-                        
-                        // Only return if CheckOut is complete!
-                        // if CheckOut canceled break instead
+
                         return;
                     case 6:
                         ((Customer)currentUser).GetShoppingCart().RevertChanges();
@@ -515,7 +485,7 @@ namespace CS251_A3_ToffeeShop {
             if (users[username].GetAuthentication()) {
                 int bypass;
                 Console.WriteLine("Enter 1 Bypass Verification (ONLY WHEN OFFLINE OR WANT A FAST REGISTRATION)");
-                if(int.TryParse(Console.ReadLine(), out bypass) && bypass == 1) {
+                if (int.TryParse(Console.ReadLine(), out bypass) && bypass == 1) {
                     Console.WriteLine("Bypassed Authentication!");
                 } else {
                     if (!Authentication.Authenticate(users[username].GetEmail())) {
@@ -554,6 +524,48 @@ namespace CS251_A3_ToffeeShop {
             variable = input;
 
             return true;
+        }
+
+        public void ForgotPassword() {
+            // Take username from customer then check if it's found first
+            Console.Write("Please Enter your username (Enter 0 to cancel Registration): ");
+            string? username = Console.ReadLine();
+            if(username == "0") {
+                Console.WriteLine("Process Canceled!");
+                return;
+            }
+
+            if(string.IsNullOrEmpty(username) || !users.ContainsKey(username)) {
+                Console.WriteLine("User not found!");
+                return;
+            }
+
+            Regex passwordPattern = new Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$#&*%^])[A-Za-z\\d$#&*%^]{8,}$");
+            string? password;
+            bool correctInput;
+
+            if (Authentication.Authenticate(users[username].GetEmail())) {
+                do {
+                    correctInput = false;
+                    Console.Write("Please Enter your new Password (Enter 0 to cancel Registration): ");
+                    password = Console.ReadLine();
+                    if (password == "0") {
+                        Console.WriteLine("Registration Canceled!");
+                        return;
+                    }
+
+                    if (string.IsNullOrEmpty(password) || !passwordPattern.IsMatch(password)) {
+                        Console.WriteLine("Invalid password!");
+                        Console.WriteLine("Password must consist of letters, numbers and one of [$ # & * % ^] and be at least 8 characters long");
+                    } else {
+                        correctInput = true;
+                    }
+                } while (!correctInput || string.IsNullOrEmpty(password));
+
+                users[username].SetPassword(password);
+            } else {
+                Console.WriteLine("Process Failed!");
+            }
         }
 
         private void LoadData() {
