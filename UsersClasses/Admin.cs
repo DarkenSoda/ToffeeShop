@@ -6,7 +6,6 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
     public class Admin : User {
 
         public Admin(string name, string userName, string password, string emailAdress) : base(name, userName, password, emailAdress) { }
-
         public void UpdateCatalogue(Catalogue catalogue) {
             int userInput;
 
@@ -103,27 +102,19 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 userInput = Convert.ToInt32(Console.ReadLine());
                 switch (userInput) {
                     case 1:
-                        string? voucherCode;
                         double discountValue;
-                        Console.Write("Enter The Voucher Code: (if you want to cancel enter '0') ");
-                        voucherCode = Console.ReadLine();
-                        if (voucherCode == "0") { return; }
-                        while (string.IsNullOrEmpty(voucherCode)) {
-                            Console.WriteLine("Invalid Input Try Again! ");
-                            Console.Write("Enter The Voucher Code: (if you want to cancel enter '0') ");
-                            voucherCode = Console.ReadLine();
-                        }
                         Console.Write("Enter The Discount Value: (if you want to cancel enter '0') ");
                         while (!double.TryParse(Console.ReadLine(), out discountValue) || discountValue < 0) {
                             Console.Write("Invalid Input Try Again!");
                         }
                         if (discountValue == 0) { return; }
-                        Voucher newVoucher = new Voucher(voucherCode, discountValue);
+                        Voucher newVoucher = new Voucher(discountValue);
+                        Voucher.SetVoucherNumber(Voucher.GetVoucherNumber()+1);
                         AddVoucher(ref voucher, newVoucher);
                         break;
                     case 2:
                         for (int i = 0; i < voucher.Count; i++) {
-                            Console.WriteLine($"{i}) " + voucher[i].GetType() + ".");
+                            Console.WriteLine($"{i+1}) " + voucher[i].GetVoucherCode() + ".");
                         }
                         int choice;
                         // Check input
