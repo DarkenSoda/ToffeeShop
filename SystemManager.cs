@@ -21,12 +21,11 @@ namespace CS251_A3_ToffeeShop {
             // Load Data at the start of the program
             LoadData();
 
-
             // Login/Register
             Console.WriteLine("\nWelcome to Toffee Shop!\n");
 
             do {
-                Console.WriteLine("\n1) Browse Catalogue\n2) Register\n3) Login\n4) Exit");
+                Console.WriteLine("\n1) Browse Catalogue\n2) Register\n3) Log in\n4) Exit");
                 int.TryParse(Console.ReadLine(), out userInput);
 
                 switch (userInput) {
@@ -196,8 +195,7 @@ namespace CS251_A3_ToffeeShop {
                     case 2:
                         if (((Customer)currentUser).GetOrderHistory().Count > 0) {
                             ((Customer)currentUser).ReOrder(catalogue);
-                        }
-                        else {
+                        } else {
                             Console.WriteLine("List is empty!");
                         }
                         break;
@@ -289,11 +287,17 @@ namespace CS251_A3_ToffeeShop {
                             break;
                         }
                         ((Customer)currentUser).CheckOut();
+
+                        // Don't add anything and don't clear list if CheckOut is canceled
+                        // Check if he spent more than max first
                         if (voucherList.Count > 0) {
-                            ((Customer)currentUser).AddVoucher(voucherList[randInt.Next(0,voucherList.Count - 1)]);
+                            ((Customer)currentUser).AddVoucher(voucherList[randInt.Next(0, voucherList.Count - 1)]);
                         }
-                        ((Customer)currentUser).GetLoyalityPoints().AddPoints(randInt.Next(1,100));
+                        ((Customer)currentUser).GetLoyalityPoints().AddPoints(randInt.Next(1, 101));
                         ((Customer)currentUser).GetShoppingCart().ClearCart();
+                        
+                        // Only return if CheckOut is complete!
+                        // if CheckOut canceled break instead
                         return;
                     case 6:
                         ((Customer)currentUser).GetShoppingCart().RevertChanges();
@@ -375,7 +379,33 @@ namespace CS251_A3_ToffeeShop {
                     Console.WriteLine("Invalid Email Address!");
                     Console.WriteLine("Please enter a valid Email Address!");
                 } else {
-                    correctInput = true;
+                    // Send OTP to email to check if it's valid
+                    while (true) {
+                        if (Authentication.Authenticate(emailAdress)) {
+                            correctInput = true;
+                            break;
+                        }
+
+                        int input;
+                        do {
+                            Console.WriteLine("Email Verification Failed!");
+                            Console.WriteLine("1) Resend code\n2) Change Email\n3) Cancel Registration\n4) Bypass Verification (ONLY WHEN OFFLINE OR WANT A FAST REGISTRATION)");
+                            if (!int.TryParse(Console.ReadLine(), out input)) {
+                                Console.WriteLine("Invalid Input!");
+                            }
+                        } while (!Enumerable.Range(1, 4).Contains(input));
+
+                        if (input == 2) break;
+
+                        if (input == 3) return;
+
+                        // ONLY WHEN OFFLINE OR WANT A FAST REGISTRATION
+                        if (input == 4) {
+                            correctInput = true;
+                            break;
+                        }
+                    }
+
                 }
             } while (!correctInput || string.IsNullOrEmpty(emailAdress));
 
@@ -400,13 +430,13 @@ namespace CS251_A3_ToffeeShop {
 
             do {
                 correctInput = false;
-                Console.WriteLine("Please enter your Username (Enter 0 to cancel Login): ");
+                Console.WriteLine("Please enter your Username (Enter 0 to cancel Log in): ");
                 username = Console.ReadLine();
-                Console.WriteLine("Please enter your Password (Enter 0 to cancel Login): ");
+                Console.WriteLine("Please enter your Password (Enter 0 to cancel Log in): ");
                 password = Console.ReadLine();
 
                 if (username == "0" || password == "0") {
-                    Console.WriteLine("Login Canceled!");
+                    Console.WriteLine("Log in Canceled!");
                     return false;
                 }
 
@@ -432,13 +462,27 @@ namespace CS251_A3_ToffeeShop {
             } while (!correctInput);
 
             if (string.IsNullOrEmpty(username)) {
-                Console.WriteLine("Login Failed!");
+                Console.WriteLine("Log in Failed!");
                 return false;
             }
 
             if (users[username] is Customer && ((Customer)users[username]).GetCustomerState() == CustomerState.inactive) {
                 Console.WriteLine("Suspended User Account!");
                 return false;
+            }
+
+            // Authenticate user if 2FA is enabled
+            if (users[username].GetAuthentication()) {
+                int bypass;
+                Console.WriteLine("Enter 1 Bypass Verification (ONLY WHEN OFFLINE OR WANT A FAST REGISTRATION)");
+                if(int.TryParse(Console.ReadLine(), out bypass) && bypass == 1) {
+                    Console.WriteLine("Bypassed Authentication!");
+                } else {
+                    if (!Authentication.Authenticate(users[username].GetEmail())) {
+                        Console.WriteLine("Log in Failed!");
+                        return false;
+                    }
+                }
             }
 
             currentUser = users[username];
@@ -507,6 +551,10 @@ namespace CS251_A3_ToffeeShop {
             customerData.password = customer.GetPassword();
             customerData.phone = customer.GetPhonenumber();
             customerData.email = customer.GetEmail();
+            customerData.loyalityPoints = customer.GetLoyalityPoints().GetPoints();
+            customerData.address = customer.GetAddress();
+            customerData.customerState = customer.GetCustomerState();
+            customerData.isAuthenticated = customer.GetAuthentication();
 
             // Change orders to OrderData
             foreach (Order order in customer.GetOrderHistory()) {
@@ -545,10 +593,6 @@ namespace CS251_A3_ToffeeShop {
                 customerData.vouchers.Add(voucherData);
             }
 
-            customerData.loyalityPoints = customer.GetLoyalityPoints().GetPoints();
-            customerData.address = customer.GetAddress();
-            customerData.customerState = customer.GetCustomerState();
-
             return customerData;
         }
 
@@ -560,6 +604,7 @@ namespace CS251_A3_ToffeeShop {
             adminData.password = admin.GetPassword();
             adminData.phone = admin.GetPhonenumber();
             adminData.email = admin.GetEmail();
+            adminData.isAuthenticated = admin.GetAuthentication();
 
             return adminData;
         }
@@ -641,7 +686,7 @@ namespace CS251_A3_ToffeeShop {
                         }
 
                         // Convert VoucherData to Voucher and add it to customer's voucherList
-                        foreach(VoucherData voucherData in customerData.vouchers) {
+                        foreach (VoucherData voucherData in customerData.vouchers) {
                             Voucher voucher = new Voucher(voucherData.voucherCode, voucherData.discountValue, voucherData.isExpired);
 
                             customer.GetVoucherList().Add(voucher);
@@ -649,9 +694,12 @@ namespace CS251_A3_ToffeeShop {
 
                         // Get LoyalityPoints
                         customer.GetLoyalityPoints().AddPoints(customerData.loyalityPoints);
-                        
+
                         // Get CustomerState
                         customer.SetCustomerState(customerData.customerState);
+
+                        // Get Authentication State
+                        customer.SetAuthentication(customerData.isAuthenticated);
 
                         // Insert in users list
                         users.Add(username, customer);
@@ -693,6 +741,8 @@ namespace CS251_A3_ToffeeShop {
                         if (!string.IsNullOrEmpty(phone)) {
                             admin.SetPhonenumber(phone);
                         }
+
+                        admin.SetAuthentication(adminData.isAuthenticated);
 
                         users.Add(username, admin);
                     }

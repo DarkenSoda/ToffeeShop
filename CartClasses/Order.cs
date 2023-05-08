@@ -11,13 +11,14 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         private ShoppingCart shoppingCart;
         private Address deliveryAddress;
         private string dateTime;
-        public Order(ShoppingCart shoppingCart, Address deliveryAddress) {
 
+        public Order(ShoppingCart shoppingCart, Address deliveryAddress) {
             this.shoppingCart = new ShoppingCart(shoppingCart);
             this.deliveryAddress = deliveryAddress;
             this.orderStatus = OrderState.Ordered;
             this.dateTime = DateTime.UtcNow.ToLocalTime().ToString("dd/MM/yyyy hh:mm tt");
         }
+
         public void UpdateState() {
             Console.WriteLine("1) Ordered.\n2) Delivered.\n3) In Delivery.\n4) Canceled.");
             Console.WriteLine("Enter a State to change:");
@@ -42,26 +43,33 @@ namespace CS251_A3_ToffeeShop.CartClasses {
             }
 
         }
+
         public ShoppingCart GetOrderShoppingCart() {
             return shoppingCart;
         }
+
         public OrderState GetOrderState() {
             return orderStatus;
         }
+
         public string GetDateTime() {
             if (dateTime == null) return "";
             else
                 return dateTime;
         }
+
         public void SetAddress(Address address) {
             deliveryAddress = address;
         }
+
         public Address GetDeliveryAddress() {
             return deliveryAddress;
         }
+
         public void SetOrderStatue(OrderState state) {
             orderStatus = state;
         }
+
         public void SetDateTime(string cdateTime) {
             dateTime = cdateTime;
         }

@@ -106,9 +106,5 @@ namespace CS251_A3_ToffeeShop.Items {
                 }
             }
         }
-
-        // public void AddToShoppingCart(ref ShoppingCart shoppingCart, Product product) {
-
-        // }
     }
 }

@@ -5,25 +5,30 @@ namespace CS251_A3_ToffeeShop.BalanceClasses {
         private string voucherCode;
         private double discountValue = 0;
         private bool isExpired = false;
-        
+
         public Voucher(string voucherCode, double discountValue, bool isExpired = false) {
             this.voucherCode = voucherCode;
             this.discountValue = discountValue;
             this.isExpired = isExpired;
         }
+
         public double RedeemVoucher() {
             isExpired = true;
             return discountValue;
         }
+
         public bool GetExpiryState() {
             return isExpired;
         }
+
         public void SetDiscountValue(double discountValue) {
             this.discountValue = discountValue;
         }
+
         public double GetDiscountValue() {
             return discountValue;
         }
+
         public string GetVoucherCode() {
             return voucherCode;
         }
