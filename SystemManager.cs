@@ -388,7 +388,7 @@ namespace CS251_A3_ToffeeShop
                             break;
                         }
 
-                        if (!((Customer)currentUser).CheckOut()) {
+                        if (!((Customer)currentUser).CheckOut(orderList)) {
                             break;
                         }
                         if (voucherList.Count > 0)
@@ -406,6 +406,7 @@ namespace CS251_A3_ToffeeShop
                         }
                         ((Customer)currentUser).GetLoyalityPoints().AddPoints(randInt.Next(1, 101));
                         ((Customer)currentUser).GetShoppingCart().ClearCart();
+                        ((Customer)currentUser).GetShoppingCart().GetAppliedVouchers().Clear();
                         return;
                     case 6:
                         ((Customer)currentUser).GetShoppingCart().RevertChanges();

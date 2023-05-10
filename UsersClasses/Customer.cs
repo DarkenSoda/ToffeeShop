@@ -78,7 +78,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             customerState = _customerState;
         }
 
-        public bool CheckOut() {
+        public bool CheckOut(List<Order> systemList) {
             int choice;
             Console.WriteLine("1) Cash.\n2) PayPal.\n3) Credit Card.\n4) Cancel Check Out!");
             int.TryParse(Console.ReadLine(), out choice);
@@ -114,6 +114,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                     Address newaddress = new Address(street, city, buildingNumber);
                     Order newOrder = new Order(shoppingCart, newaddress);
                     orderHistory.Add(newOrder);
+                    systemList.Add(newOrder);
                     break;
                 case 2:
                     break;
