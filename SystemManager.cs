@@ -172,11 +172,21 @@ namespace CS251_A3_ToffeeShop
                                 Console.WriteLine("No Orders Found");
                                 break;
                             }
-                            foreach (var order in orderList)
-                            {
-                                Console.WriteLine($"{i++}) " + " " + order.GetOrderShoppingCart() + order.GetOrderState() + " " + order.GetType() + " " + order.GetDateTime());
+                            i = 1;
+                            System.Console.WriteLine("{}-----------------{[ Orders ]}-----------------{}");
+                            foreach (var order in orderList) {
+                                Console.WriteLine("[ Order {0}  {1} ]----- {2} ----", i++, order.GetDateTime(), order.GetOrderState());
+                                order.GetOrderShoppingCart().PrintItems();
+                                System.Console.WriteLine(" Address: {0}\n", order.GetDeliveryAddress().GetAddress());
                             }
-                            int.TryParse(Console.ReadLine(), out choice);
+                            Console.Write("Enter The Order You Want To Cancel Please(enter 0 if you want to cancel): ");
+                            while(!int.TryParse(Console.ReadLine(), out choice)){
+                                Console.WriteLine("Invalid Input Try Again!");
+                            }
+                            if(choice <= 0){
+                                break;
+                            }
+
                             ((Admin)(currentUser)).CancelOrder(orderList[choice - 1]);
                             break;
                         case 5:
@@ -185,11 +195,20 @@ namespace CS251_A3_ToffeeShop
                                 Console.WriteLine("No Orders Found");
                                 break;
                             }
-                            foreach (var v in orderList)
-                            {
-                                Console.WriteLine($"{i++}) " + " " + v.GetOrderShoppingCart() + " " + v.GetOrderState() + " " + v.GetType() + " " + v.GetDateTime());
+                            i = 1;
+                            System.Console.WriteLine("{}-----------------{[ Orders ]}-----------------{}");
+                            foreach (var order in orderList) {
+                                Console.WriteLine("[ Order {0}  {1} ]----- {2} ----", i++, order.GetDateTime(), order.GetOrderState());
+                                order.GetOrderShoppingCart().PrintItems();
+                                System.Console.WriteLine(" Address: {0}\n", order.GetDeliveryAddress().GetAddress());
                             }
-                            int.TryParse(Console.ReadLine(), out choice);
+                            Console.Write("Enter The Order You Want To Update Please(enter 0 if you want to cancel): ");
+                            while(!int.TryParse(Console.ReadLine(), out choice)){
+                                Console.WriteLine("Invalid Input Try Again!");
+                            }
+                            if(choice <= 0){
+                                break;
+                            }
                             ((Admin)(currentUser)).UpdateOrder(orderList[choice - 1]);
                             break;
                         case 6:
@@ -204,7 +223,7 @@ namespace CS251_A3_ToffeeShop
                                     i++;
                                 }
                             }
-                            if (customers == null || customers.Count <=0)
+                            if (customers == null || customers.Count <= 0)
                             {
                                 Console.WriteLine("NO Customers Found!");
                                 break;
