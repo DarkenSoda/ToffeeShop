@@ -308,21 +308,18 @@ namespace CS251_A3_ToffeeShop
         {
             if (currentUser == null) return;
             int i = 1;
-            List<Voucher> availableVoucherList = ((Customer)currentUser).GetVoucherList();
-
+            var availableVoucherList = ((Customer)currentUser).GetVoucherList().Where(v => !v.GetExpiryState() && !((Customer)currentUser).GetShoppingCart().GetAppliedVouchers().Contains(v)).ToList();
             if (availableVoucherList == null || availableVoucherList.Count <= 0)
             {
                 Console.WriteLine("You don't have any Vouchers!");
                 Console.WriteLine("Vouchers can be obtained by spending 50 L.E or more!");    // the amount will be changed to a variable
                 return;
             }
-
-            foreach (var voucher in availableVoucherList)
-            {
-                if (voucher.GetExpiryState() == false)
-                {
-                    Console.WriteLine((i++) + ", " + voucher.GetVoucherCode() + "   " + voucher.GetDiscountValue());
+            foreach (var voucher in availableVoucherList) {
+                if (((Customer)currentUser).GetShoppingCart().GetAppliedVouchers().Contains(voucher)) {
+                    availableVoucherList.Remove(voucher);
                 }
+                Console.WriteLine((i++) + ", " + voucher.GetVoucherCode() + "   " + voucher.GetDiscountValue());
             }
             Console.Write("Choose an Option: ");
             int choice;
@@ -342,7 +339,8 @@ namespace CS251_A3_ToffeeShop
 
             int userInput;
             do
-            {
+            {   
+
                 Console.WriteLine("{}---------------{[ Shopping Cart ]}---------------{}");
                 ((Customer)currentUser).GetShoppingCart().PrintItems();
                 Console.WriteLine("1) Apply LoyalityPoints\n2) Apply Vouchers\n3) Update Quantity\n4) Clear\n5) Check Out\n6) Cancel");
@@ -360,6 +358,7 @@ namespace CS251_A3_ToffeeShop
                         break;
                     case 4:
                         ((Customer)currentUser).GetShoppingCart().ClearCart();
+                        ((Customer)currentUser).GetShoppingCart().GetAppliedVouchers().Clear();
                         Console.WriteLine("Cart Cleared!");
                         break;
                     case 5:
@@ -370,18 +369,28 @@ namespace CS251_A3_ToffeeShop
                             break;
                         }
 
-                        if (!((Customer)currentUser).CheckOut()) break;
-
+                        if (!((Customer)currentUser).CheckOut()) {
+                            break;
+                        }
                         if (voucherList.Count > 0)
                         {
                             ((Customer)currentUser).AddVoucher(voucherList[randInt.Next(0, voucherList.Count)]);
                         }
+
+                        // Redeem every voucher in the applied list in the checkout.
+                        foreach(var voucher in ((Customer)currentUser).GetShoppingCart().GetAppliedVouchers()) {
+                            voucher.SetDiscountValue(voucher.GetDiscountValue() - ((Customer)currentUser).GetShoppingCart().GetTotalCost());
+                            if (voucher.GetDiscountValue() < 0) {
+                                voucher.SetDiscountValue(0);
+                            }
+                            voucher.RedeemVoucher();
+                        }
                         ((Customer)currentUser).GetLoyalityPoints().AddPoints(randInt.Next(1, 101));
                         ((Customer)currentUser).GetShoppingCart().ClearCart();
-
                         return;
                     case 6:
                         ((Customer)currentUser).GetShoppingCart().RevertChanges();
+                        ((Customer)currentUser).GetShoppingCart().GetAppliedVouchers().Clear();
                         break;
                     default:
                         System.Console.WriteLine("Invalid Input! Try Again!");

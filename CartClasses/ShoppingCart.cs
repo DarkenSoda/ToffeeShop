@@ -9,6 +9,7 @@ using CS251_A3_ToffeeShop.BalanceClasses;
 namespace CS251_A3_ToffeeShop.CartClasses {
     public class ShoppingCart {
         private Dictionary<Product, int> items = new Dictionary<Product, int>();
+        private List<Voucher> currentApplied = new List<Voucher>();
         private double totalCost = 0;
 
         public ShoppingCart() { }
@@ -25,7 +26,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                 Console.WriteLine(i + ",  {0}   Quantity: {2}      Cost: {1} L.E", kvp.Key.GetName(), kvp.Key.GetDiscountPrice() * kvp.Value, kvp.Value);
                 i++;
             }
-            Console.WriteLine("--------------[ Total Cost: {0} L.E ]--------------", CalculateTotalPrice());
+            Console.WriteLine("--------------[ Total Cost: {0} L.E ]--------------", totalCost);
         }
 
         public void AddItem(Product item, int quantity) {
@@ -121,18 +122,17 @@ namespace CS251_A3_ToffeeShop.CartClasses {
 
         public void ClearCart() {
             items.Clear();
+            totalCost = 0;
         }
 
         public void ApplyVoucher(Voucher voucher) {
             if (!voucher.GetExpiryState()) {
                 double tempCost = totalCost;
                 totalCost -= voucher.GetDiscountValue();
-                voucher.SetDiscountValue(voucher.GetDiscountValue() - tempCost);
-                if (voucher.GetDiscountValue() < 0) {
-                    voucher.RedeemVoucher();
-                } else if (totalCost < 0) {
+                if (totalCost < 0) {
                     totalCost = 0;
                 }
+                currentApplied.Add(voucher);
             }
         }
 
@@ -157,6 +157,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
 
         public void RevertChanges() {
             totalCost = CalculateTotalPrice();
+            
         }
 
         public double GetTotalCost() {
@@ -165,6 +166,9 @@ namespace CS251_A3_ToffeeShop.CartClasses {
 
         public void SetTotalCost(double totalCost) {
             this.totalCost = totalCost;
+        }
+        public List<Voucher> GetAppliedVouchers() {
+            return currentApplied;
         }
     }
 }

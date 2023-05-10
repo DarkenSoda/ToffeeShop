@@ -25,9 +25,12 @@ namespace CS251_A3_ToffeeShop.BalanceClasses
         }
         public double RedeemVoucher()
         {
-            isExpired = true;
+            if (discountValue == 0) {
+                isExpired = true;
+            }
             return discountValue;
         }
+
 
         public bool GetExpiryState()
         {
@@ -46,6 +49,8 @@ namespace CS251_A3_ToffeeShop.BalanceClasses
 
         public string GetVoucherCode()
         {
+            if (string.IsNullOrEmpty(voucherCode)) 
+                return "";
             return voucherCode;
         }
     }
