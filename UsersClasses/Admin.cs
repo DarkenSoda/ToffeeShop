@@ -216,8 +216,9 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 Console.WriteLine("1) Update Order State");
                 Console.WriteLine("2) Update Order Address");
                 Console.WriteLine("3) Go Back!");
-                userInput = Convert.ToInt32(Console.ReadLine());
-                int.TryParse(Console.ReadLine(), out userInput);
+                while(!int.TryParse(Console.ReadLine(), out userInput)){
+                    Console.WriteLine("Invalid Input!");
+                }
                 switch (userInput) {
                     case 1:
                         order.UpdateState();

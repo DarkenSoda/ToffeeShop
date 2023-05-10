@@ -203,7 +203,7 @@ namespace CS251_A3_ToffeeShop
                                 System.Console.WriteLine(" Address: {0}\n", order.GetDeliveryAddress().GetAddress());
                             }
                             Console.Write("Enter The Order You Want To Update Please(enter 0 if you want to cancel): ");
-                            while(!int.TryParse(Console.ReadLine(), out choice)){
+                            while(!int.TryParse(Console.ReadLine(), out choice) || choice > orderList.Count){
                                 Console.WriteLine("Invalid Input Try Again!");
                             }
                             if(choice <= 0){
