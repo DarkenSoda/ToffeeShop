@@ -121,7 +121,8 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             // Add update discount price
             int choice;
             do {
-                Console.Write($"Name: {product.GetName()} - Price: {product.GetDiscountPrice()} L.E.\n");
+                Console.WriteLine($"Name: {product.GetName()}");
+                Console.WriteLine($"\tPrice: {product.GetPrice()} L.E. - Discount Price: {product.GetDiscountPrice()} L.E.");
                 Console.Write($"\tCategory: {product.GetCategory()}");
 
                 // Don't display null or empty brand

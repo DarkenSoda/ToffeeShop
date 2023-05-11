@@ -91,7 +91,8 @@ namespace CS251_A3_ToffeeShop.Items {
         public void DisplayCatalogue() {
             int i = 1;
             foreach (Product product in GetProductList()) {
-                Console.Write($"{i++}) Name: {product.GetName()} - Price: {product.GetDiscountPrice()} L.E.\n");
+                Console.WriteLine($"{i++}) Name: {product.GetName()}");
+                Console.WriteLine($"\tPrice: {product.GetPrice()} L.E. - Discount Price: {product.GetDiscountPrice()} L.E.");
                 Console.Write($"\tCategory: {product.GetCategory()}");
 
                 // Don't display null or empty brand
