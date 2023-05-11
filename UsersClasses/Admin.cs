@@ -90,7 +90,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             voucherList.Add(newVoucher / 100);
         }
         private void RemoveVoucher(ref List<double> voucher, int index) {
-            if (index <= 0 || index > voucher.Count - 1)
+            
             voucher.RemoveAt(index - 1);
         }
         public void UpdateVouchers(List<double> voucher) {
@@ -104,25 +104,31 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 switch (userInput) {
                     case 1:
                         double discountValue;
-                        Console.Write("Enter The Discount Value: (if you want to cancel enter '0') ");
+                        Console.Write("Enter The Discount Percentage: (if you want to cancel enter '0') ");
                         while (!double.TryParse(Console.ReadLine(), out discountValue) || discountValue < 0 || discountValue > 100) {
-                            Console.Write("Invalid Input Try Again!");
+                            Console.WriteLine("Invalid Input Try Again!");
+                            Console.Write("Enter The Discount Percentage: (if you want to cancel enter '0') ");
                         }
-                        if (discountValue == 0) { return; }
+                        if (discountValue == 0) { break; }
                         Voucher.SetVoucherNumber(Voucher.GetVoucherNumber()+1);
                         AddVoucher(ref voucher, discountValue);
                         break;
                     case 2:
+                        if(voucher.Count == 0){
+                            Console.WriteLine("Voucher List Is Empty!");
+                            break;
+                        }
                         for (int i = 0; i < voucher.Count; i++) {
                             Console.WriteLine($"{i+1}) Voucher: " + voucher[i] * 100 + "%");
                         }
                         int choice;
                         // Check input
                         Console.Write("Chose The Number Of Voucher You Want To Delete: (if you want to cancel enter '0') ");
-                        while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0) {
-                            Console.Write("Invalid Input Try Again!");
+                        while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > voucher.Count - 1) {
+                            Console.WriteLine("Invalid Input Try Again!");
+                            Console.Write("Chose The Number Of Voucher You Want To Delete: (if you want to cancel enter '0') ");
                         }
-                        if (choice == 0) { return; }
+                        if (choice == 0) {break;}
                         RemoveVoucher(ref voucher, choice);
                         break;
                     case 3:
@@ -135,7 +141,20 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             // Add update discount price
             int choice;
             do {
-                Console.WriteLine("1) Update Name.\n2) Update Category\n3) Update Description\n4) Update Original Price\n5) Update Brand\n6) Update Discount Price\n7) Cancel");
+                Console.Write($"Name: {product.GetName()} - Price: {product.GetDiscountPrice()} L.E.\n");
+                Console.Write($"\tCategory: {product.GetCategory()}");
+
+                // Don't display null or empty brand
+                if (!string.IsNullOrEmpty(product.GetBrand())) {
+                    Console.Write($" - Brand: {product.GetBrand()}");
+                }
+                Console.WriteLine();
+
+                // Don't display null or empty description
+                if (!string.IsNullOrEmpty(product.GetDescription())) {
+                    Console.WriteLine($"\tDescription: {product.GetDescription()}");
+                }
+                Console.WriteLine("1) Update Name.\n2) Update Category\n3) Update Description\n4) Update Brand\n5) Update Original Price\n6) Update Discount Price\n7) Cancel");
                 string? name;
                 string? category;
                 string? description;
@@ -154,6 +173,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         }
                         if (name == "0") { break; }
                         product.SetName(name);
+                        Console.WriteLine("Product Name Updated Succesfully!");
                         break;
                     case 2:
                         Console.Write("Enter The New Category: (if you want to cancel enter '0') ");
@@ -164,6 +184,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         }
                         if (category == "0") { break; };
                         product.SetCategory(category);
+                        Console.WriteLine("Product Category Updated Succesfully!");
                         break;
                     case 3:
                         Console.Write("Enter The New description: (if you want to cancel enter '0') ");
@@ -174,13 +195,9 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         }
                         if (description == "0") { break; };
                         product.SetDescription(description);
+                        Console.WriteLine("Product Description Updated Succesfully!");
                         break;
-                    case 4:
-                        Console.Write("Enter Product Price: ");
-                        while (!double.TryParse(Console.ReadLine(), out price) || price < 0) { }
-                        product.SetPrice(price);
-                        break;
-                    case 5:
+                        case 4:
                         Console.Write("Enter The New Brand: (if you want to cancel enter '0') ");
                         brand = Console.ReadLine();
                         while (String.IsNullOrEmpty(brand)) {
@@ -189,11 +206,20 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         }
                         if (brand == "0") { break; }
                         product.SetBrand(brand);
+                        Console.WriteLine("Product Brand Updated Succesfully!");
                         break;
+                    case 5:
+                        Console.Write("Enter Product Price: ");
+                        while (!double.TryParse(Console.ReadLine(), out price) || price < 0) { }
+                        product.SetPrice(price);
+                        Console.WriteLine("Product Price Updated Succesfully!");
+                        break;
+                    
                     case 6:
                         Console.Write("Enter Product Discount Price: ");
                         while (!double.TryParse(Console.ReadLine(), out discountPrice) || discountPrice < 0) { }
                         product.SetDiscountPrice(discountPrice);
+                        Console.WriteLine("Product Discount Price Updated Succesfully!");
                         break;
                     case 7:
                         Console.WriteLine("Process Canceled!");
