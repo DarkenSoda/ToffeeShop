@@ -244,9 +244,8 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 Console.WriteLine("1) Update Order State");
                 Console.WriteLine("2) Update Order Address");
                 Console.WriteLine("3) Go Back!");
-                while (!int.TryParse(Console.ReadLine(), out userInput)) {
-                    Console.WriteLine("Invalid Input!");
-                }
+
+                int.TryParse(Console.ReadLine(), out userInput);
                 switch (userInput) {
                     case 1:
                         order.UpdateState();
@@ -255,27 +254,27 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         string? street;
                         string? city;
                         string? buildingNumber;
-                        Console.Write("Enter The Street Name: (if you want to cancel enter '0') ");
+                        Console.Write("Enter The Street Name (if you want to cancel enter '0'): ");
                         street = Console.ReadLine();
                         while (string.IsNullOrEmpty(street)) {
                             Console.WriteLine("Invalid Input Try Again! ");
-                            Console.Write("Enter The Street Name: (if you want to cancel enter '0') ");
+                            Console.Write("Enter The Street Name (if you want to cancel enter '0'): ");
                             street = Console.ReadLine();
                         }
                         if (name == "0") { break; }
-                        Console.Write("Enter The City: (if you want to cancel enter '0') ");
+                        Console.Write("Enter The City (if you want to cancel enter '0'): ");
                         city = Console.ReadLine();
                         while (string.IsNullOrEmpty(city)) {
                             Console.WriteLine("Invalid Input Try Again! ");
-                            Console.Write("Enter The City: (if you want to cancel enter '0') ");
+                            Console.Write("Enter The City (if you want to cancel enter '0'): ");
                             city = Console.ReadLine();
                         }
                         if (city == "0") { break; }
-                        Console.Write("Enter The Building Number: (if you want to cancel enter '0') ");
+                        Console.Write("Enter The Building Number (if you want to cancel enter '0'): ");
                         buildingNumber = Console.ReadLine();
                         while (string.IsNullOrEmpty(buildingNumber)) {
                             Console.WriteLine("Invalid Input Try Again! ");
-                            Console.Write("Enter The Building Number: (if you want to cancel enter '0') ");
+                            Console.Write("Enter The Building Number (if you want to cancel enter '0'): ");
                             buildingNumber = Console.ReadLine();
                         }
                         if (buildingNumber == "0") { break; }
@@ -285,17 +284,18 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                     case 3:
                         Console.WriteLine("Process Canceled!");
                         break;
+                    default:
+                        Console.WriteLine("Invalid Input!");
+                        break;
                 }
             } while (userInput != 3);
         }
 
         public void SuspendCustomer(Customer customer) {
-            if(customer.GetCustomerState() == CustomerState.active){
+            if (customer.GetCustomerState() == CustomerState.active) {
                 customer.SetCustomerState(CustomerState.inactive);
-                Console.WriteLine("Customer: " + customer.GetName() + " State: inactive");
-            }else{
+            } else {
                 customer.SetCustomerState(CustomerState.active);
-                Console.WriteLine("Customer: " + customer.GetName() + " State: active");
             }
         }
     }

@@ -121,7 +121,7 @@ namespace CS251_A3_ToffeeShop {
             if (currentUser == null) return;
 
             do {
-                Console.WriteLine("\n1) Update Catalogue.\n2) Update Vouchers.\n3) Update LoyalityPoints.\n4) Cancel Order.\n5) Update Order.\n6) Suspend Customer.\n7) Authenicate.\n8) Log out.");
+                Console.WriteLine("\n1) Update Catalogue.\n2) Update Vouchers.\n3) Update LoyalityPoints.\n4) Cancel Order.\n5) Update Order.\n6) Suspend/Unsuspend Customer.\n7) Authenicate.\n8) Log out.");
                 int.TryParse(Console.ReadLine(), out userInput);
                 int i = 1;
                 int choice;
@@ -143,7 +143,7 @@ namespace CS251_A3_ToffeeShop {
                             while (!double.TryParse(Console.ReadLine(), out value)) {
                                 Console.Write("Please Enter a valid value!");
                             }
-                            if(value == 0) {
+                            if (value == 0) {
                                 Console.WriteLine("Process Canceled!");
                                 break;
                             }
@@ -163,7 +163,7 @@ namespace CS251_A3_ToffeeShop {
                                 order.GetOrderShoppingCart().PrintItems();
                                 System.Console.WriteLine(" Address: {0}\n", order.GetDeliveryAddress().GetAddress());
                             }
-                            Console.Write("Enter The Order You Want To Cancel Please(enter 0 if you want to cancel): ");
+                            Console.Write("Enter The Order You Want To Cancel Please (Enter 0 if you want to cancel): ");
                             while (!int.TryParse(Console.ReadLine(), out choice)) {
                                 Console.WriteLine("Invalid Input Try Again!");
                             }
@@ -203,7 +203,12 @@ namespace CS251_A3_ToffeeShop {
                             foreach (var user in users) {
                                 if (user.Value is Customer) {
                                     customers.Add((Customer)(user.Value));
-                                    Console.WriteLine($"{i}) " + customers[i - 1].GetName() + " " + customers[i - 1].GetEmail() + " " + customers[i - 1].GetUsername() + " " + customers[i - 1].GetPhonenumber());
+                                    Console.WriteLine($"{i}) Name: {customers[i - 1].GetName()} - Username: {customers[i - 1].GetUsername()}");
+                                    Console.Write($"\tEmail: {customers[i - 1].GetEmail()}");
+                                    if (!string.IsNullOrEmpty(customers[i - 1].GetPhonenumber())) {
+                                        Console.Write($" - Phone number: {customers[i - 1].GetPhonenumber()}");
+                                    }
+                                    Console.WriteLine(customers[i - 1].GetCustomerState() == CustomerState.active ? " - State: Active" : " - State: Suspended");
                                     i++;
                                 }
                             }
@@ -211,9 +216,10 @@ namespace CS251_A3_ToffeeShop {
                                 Console.WriteLine("NO Customers Found!");
                                 break;
                             }
-                            Console.Write("Enter The User You Want To Suspend Please (Enter 0 to cancel): ");
+                            Console.Write("Enter The User You Want To Suspend/Unsuspend Please (Enter 0 to cancel): ");
                             while (!int.TryParse(Console.ReadLine(), out choice) || choice < 0 || choice > customers.Count) {
                                 Console.WriteLine("Invalid Input Try Again!");
+                                Console.Write("Enter The User You Want To Suspend/Unsuspend Please (Enter 0 to cancel): ");
                             }
                             if (choice == 0) {
                                 break;
@@ -225,7 +231,7 @@ namespace CS251_A3_ToffeeShop {
                             currentUser.Authernicate();
                             break;
                         case 8:
-                            Console.WriteLine("Process Canceled!");
+                            Console.WriteLine("Logged out Successfully!");
                             break;
                     }
                 }
@@ -243,12 +249,13 @@ namespace CS251_A3_ToffeeShop {
                 switch (orderInput) {
                     case 1:
                         int orderNumber;
-                        Console.Write("Enter an Order Number(Press 0 to Cancel): ");
+                        Console.Write("Enter an Order Number (Press 0 to Cancel): ");
                         int.TryParse(Console.ReadLine(), out orderNumber);
                         if (orderNumber < 0 || orderNumber > ((Customer)currentUser).GetOrderHistory().Count) {
                             Console.WriteLine("Order is Invalid");
                             break;
-                        } else if (orderNumber == 0) {
+                        }
+                        if (orderNumber == 0) {
                             return;
                         }
                         ((Customer)currentUser).GetOrderHistory()[orderNumber - 1].SetOrderStatue(OrderState.Canceled);
@@ -663,6 +670,7 @@ namespace CS251_A3_ToffeeShop {
             customerData.address = customer.GetAddress();
             customerData.customerState = customer.GetCustomerState();
             customerData.isAuthenticated = customer.GetAuthentication();
+            customerData.totalMoneySpent = customer.GetTotalMoneySpent();
 
             // Change orders to OrderData
             foreach (Order order in customer.GetOrderHistory()) {
@@ -791,14 +799,20 @@ namespace CS251_A3_ToffeeShop {
                             order.SetOrderStatue(orderData.orderState);
                             order.SetDateTime(orderData.dateTime);
                             customer.GetOrderHistory().Add(order);
+                            orderList.Add(order);
                         }
 
                         // Convert VoucherData to Voucher and add it to customer's voucherList
                         foreach (VoucherData voucherData in customerData.vouchers) {
                             Voucher voucher = new Voucher(voucherData.discountValue, voucherData.isExpired);
+                            voucher.SetvoucherCode(voucherData.voucherCode);
+                            Voucher.SetVoucherNumber(Voucher.GetVoucherNumber() + 1);
 
                             customer.GetVoucherList().Add(voucher);
                         }
+
+                        // Load total money spent for voucher
+                        customer.SetTotalMoneySpent(customerData.totalMoneySpent);
 
                         // Get LoyalityPoints
                         customer.GetLoyalityPoints().AddPoints(customerData.loyalityPoints);

@@ -38,6 +38,10 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             return totalMoneySpent;
         }
 
+        public void SetTotalMoneySpent(double value) {
+            this.totalMoneySpent = value;
+        }
+
         public static double GetMaxMoneySpentForVoucher() {
             return maxMoneySpendForVoucher;
         }
@@ -132,7 +136,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
 
         public void ReOrder(Catalogue catalogue) {
             int userInput;
-            Console.Write("Enter an item to change:");
+            Console.Write("Enter an item to change: ");
             int.TryParse(Console.ReadLine(), out userInput);
             while (userInput < 0 || userInput > orderHistory.Count) {
                 System.Console.WriteLine("Invalid Input! Try Again!");
@@ -194,6 +198,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         public string password { get; set; }
         public string phone { get; set; }
         public string email { get; set; }
+        public double totalMoneySpent { get; set; }
         public List<OrderData> orders { get; set; }
         public List<VoucherData> vouchers { get; set; }
         public int loyalityPoints { get; set; }
