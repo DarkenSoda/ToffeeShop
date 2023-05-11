@@ -67,12 +67,12 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         }
 
         public void Authernicate() {
-            if(isAuthenticated) {
+            if (isAuthenticated) {
                 Console.WriteLine("Authentication Removed!");
                 isAuthenticated = false;
                 return;
             }
-            
+
             if (!Authentication.Authenticate(emailAdress)) {
                 Console.WriteLine("Failed To  Authenticate Account!");
                 return;

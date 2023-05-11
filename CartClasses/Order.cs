@@ -41,7 +41,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                     orderStatus = OrderState.Canceled;
                     break;
                 }
-                if(choice == "5") {
+                if (choice == "5") {
                     break;
                 }
 
