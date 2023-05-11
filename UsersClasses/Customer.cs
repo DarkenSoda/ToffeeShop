@@ -114,11 +114,17 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         Console.WriteLine("Enter The Building Number: ");
                         buildingNumber = Console.ReadLine();
                     }
-                    currentPaymentMethod.ValidatePayment();
+                    int bybass;
+                    Console.Write("Press 1 to bybass the verifcation, otherwise press any other key:");
+                    int.TryParse(Console.ReadLine(), out bybass);
+                    if (bybass != 1) {
+                        currentPaymentMethod.ValidatePayment();
+                    }
                     Address newaddress = new Address(street, city, buildingNumber);
                     Order newOrder = new Order(shoppingCart, newaddress);
                     orderHistory.Add(newOrder);
                     systemList.Add(newOrder);
+                    shoppingCart.SetAppliedPoints(0);
                     break;
                 case 2:
                     break;

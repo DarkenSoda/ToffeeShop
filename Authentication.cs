@@ -46,7 +46,6 @@ namespace CS251_A3_ToffeeShop {
 
         private int GenerateRandomNumber() {
             Random rnd = new Random();
-
             return rnd.Next(100000, 1000000);
         }
     }

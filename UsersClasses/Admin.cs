@@ -91,7 +91,8 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             do {
                 Console.WriteLine("1) Add Voucher");
                 Console.WriteLine("2) Remove Voucher");
-                Console.WriteLine("3) Go Back!");
+                Console.WriteLine("3) Update Maximum Amount Spent!");
+                Console.WriteLine("4) Go Back!");
                 userInput = Convert.ToInt32(Console.ReadLine());
                 switch (userInput) {
                     case 1:
@@ -125,6 +126,13 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         Console.WriteLine("Voucher Removed Successfully!");
                         break;
                     case 3:
+                        Console.Write("enter the new amount to be added[1 ~ 100]:");
+                        while (!int.TryParse(Console.ReadLine(), out choice) || choice <= 0 || choice > 100) {
+                            Console.WriteLine("Enter a Valid Input!"); 
+                        }
+                        Customer.SetMaxMoneySpentForVoucher(choice);
+                        break;
+                    case 4:
                         Console.WriteLine("Process canceled.");
                         break;
                 }

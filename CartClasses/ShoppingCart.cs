@@ -11,7 +11,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         private Dictionary<Product, int> items = new Dictionary<Product, int>();
         private List<Voucher> currentApplied = new List<Voucher>();
         private double totalCost = 0;
-
+        private int currentAppliedPoints = 0;
         public ShoppingCart() { }
         public ShoppingCart(ShoppingCart shoppingCart) {
             this.totalCost = shoppingCart.totalCost;
@@ -86,6 +86,11 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                         Console.WriteLine("Cannot add more than 50!");
                     } else {
                         items[item.Key] = newQuantity;
+                        totalCost = CalculateTotalPrice();  //calculate the total cost.
+                        foreach(var voucher in currentApplied) {  // apply every voucher again on the new cost.
+                            totalCost -= totalCost * voucher.GetDiscountValue();
+                        }
+                        totalCost -= currentAppliedPoints * LoyalityPoints.GetDiscountValue(); //apply added loyality points.
                     }
                     break;
                 }
@@ -135,18 +140,6 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                 currentApplied.Add(voucher);
             }
         }
-
-        public void ApplyLoyalityPoints(LoyalityPoints loyalityPoints, int points) {
-            if (points > loyalityPoints.GetPoints() || points < 0) {
-                Console.WriteLine("Invalid number of points!");
-                return;
-            }
-            if (points * LoyalityPoints.GetDiscountValue() > totalCost) {
-                points = (int)(totalCost / LoyalityPoints.GetDiscountValue());
-            }
-            totalCost -= loyalityPoints.RedeemPoints(points);
-        }
-
         public double CalculateTotalPrice() {
             totalCost = 0;
             foreach (var item in items) {
@@ -161,7 +154,6 @@ namespace CS251_A3_ToffeeShop.CartClasses {
 
         public void RevertChanges() {
             totalCost = CalculateTotalPrice();
-            
         }
 
         public double GetTotalCost() {
@@ -173,6 +165,14 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         }
         public List<Voucher> GetAppliedVouchers() {
             return currentApplied;
+        }
+
+        public void SetAppliedPoints(int points) {
+            this.currentAppliedPoints = points;
+        }
+
+        public int GetAppliedPoints() {
+            return currentAppliedPoints;
         }
     }
 }
