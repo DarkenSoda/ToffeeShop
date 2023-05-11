@@ -18,7 +18,7 @@ namespace CS251_A3_ToffeeShop.BalanceClasses {
             return discountValue * points;
         }
 
-        public double GetDiscountValue() {
+        public static double GetDiscountValue() {
             return discountValue;
         }
 

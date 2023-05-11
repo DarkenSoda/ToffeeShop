@@ -141,8 +141,8 @@ namespace CS251_A3_ToffeeShop.CartClasses {
                 Console.WriteLine("Invalid number of points!");
                 return;
             }
-            if (points * loyalityPoints.GetDiscountValue() > totalCost) {
-                points = (int)(totalCost / loyalityPoints.GetDiscountValue());
+            if (points * LoyalityPoints.GetDiscountValue() > totalCost) {
+                points = (int)(totalCost / LoyalityPoints.GetDiscountValue());
             }
             totalCost -= loyalityPoints.RedeemPoints(points);
         }
