@@ -635,6 +635,7 @@ namespace CS251_A3_ToffeeShop {
             catalogue.LoadCatalogueData("./Items/Data.json");
             LoadCustomerData("./UsersClasses/Customers.json");
             LoadAdminData("./UsersClasses/Admins.json");
+            LoadBalanceData("./BalanceClasses/BalanceClasses.json");
         }
 
         private void SaveData() {
@@ -655,6 +656,7 @@ namespace CS251_A3_ToffeeShop {
 
             SaveDataLists(customerDataList, "./UsersClasses/Customers.json");
             SaveDataLists(AdminDataList, "./UsersClasses/Admins.json");
+            SaveBalanceData("./BalanceClasses/BalanceClasses.json");
         }
 
         private CustomerData SaveCustomerData(Customer customer) {
@@ -723,6 +725,35 @@ namespace CS251_A3_ToffeeShop {
             adminData.isAuthenticated = admin.GetAuthentication();
 
             return adminData;
+        }
+
+        private void SaveBalanceData(string file) {
+            if (!file.EndsWith(".json")) {
+                Console.WriteLine("Failed To Open File!");
+                return;
+            }
+
+            try {
+                using (StreamWriter writer = new StreamWriter(file)) {
+                    BalanceClassesStruct balanceClassesStruct = new BalanceClassesStruct();
+                    balanceClassesStruct.voucherValueList = new List<double>();
+
+                    // Save Voucher values
+                    foreach (double discountValue in voucherList) {
+                        balanceClassesStruct.voucherValueList.Add(discountValue);
+                    }
+
+                    // Save LoyalityPoints value
+                    balanceClassesStruct.loyalityPointsValue = LoyalityPoints.GetDiscountValue();
+
+                    string json = JsonSerializer.Serialize(balanceClassesStruct);
+
+                    // write the serialized Json to the file
+                    writer.Write(json);
+                }
+            } catch {
+                Console.WriteLine("Failed to Save User Data!");
+            }
         }
 
         private void SaveDataLists<T>(List<T> list, string file) {
@@ -868,6 +899,32 @@ namespace CS251_A3_ToffeeShop {
 
                         users.Add(username, admin);
                     }
+                }
+            } catch {
+                Console.WriteLine("Failed to Load Admin Data!");
+            }
+        }
+
+        private void LoadBalanceData(string file) {
+            // Return if can't Open file
+            if (!file.EndsWith(".json")) {
+                Console.WriteLine("Failed To Open File!");
+                return;
+            }
+            try {
+                // Open in Read mode
+                using (StreamReader reader = new StreamReader(file)) {
+                    // Read All File
+                    string json = reader.ReadToEnd();
+
+                    // Put all data in Struct Struct
+                    BalanceClassesStruct balanceClassesStruct = JsonSerializer.Deserialize<BalanceClassesStruct>(json);
+
+                    foreach (double discountValue in balanceClassesStruct.voucherValueList) {
+                        voucherList.Add(discountValue);
+                    }
+
+                    LoyalityPoints.ChangeDiscountValue(balanceClassesStruct.loyalityPointsValue);
                 }
             } catch {
                 Console.WriteLine("Failed to Load Admin Data!");
