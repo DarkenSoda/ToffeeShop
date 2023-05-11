@@ -47,14 +47,18 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         catalogue.DisplayCatalogue();
                         int choice;
                         System.Console.Write("Pick a Product To Remove: ");
-                        while (!int.TryParse(Console.ReadLine(), out choice)) { Console.WriteLine("Invalid Input Try Again!"); }
+                        while (!int.TryParse(Console.ReadLine(), out choice) || choice <= 0 || choice > catalogue.GetProductList().Count) {
+                             Console.WriteLine("Invalid Input Try Again!"); 
+                        }
                         catalogue.RemoveProduct(catalogue.GetProductList()[choice - 1]);
                         break;
                     case 3:
                         catalogue.DisplayCatalogue();
                         int _choice;
                         System.Console.Write("Pick a Product To Update: ");
-                        while (!int.TryParse(Console.ReadLine(), out _choice)) { Console.WriteLine("Invalid Input Try Again!"); }
+                        while (!int.TryParse(Console.ReadLine(), out _choice) || _choice <= 0 || _choice > catalogue.GetProductList().Count) {
+                             Console.WriteLine("Invalid Input Try Again!");
+                        }
                         UpdateProduct(catalogue.GetProductList()[_choice - 1]);
                         break;
                     case 4:
@@ -66,13 +70,16 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 }
             } while (userInput != 4);
         }
+        
         private void AddVoucher(ref List<double> voucherList, double newVoucher) {
             voucherList.Add(newVoucher / 100);
         }
+        
         private void RemoveVoucher(ref List<double> voucher, int index) {
             
             voucher.RemoveAt(index - 1);
         }
+        
         public void UpdateVouchers(List<double> voucher) {
             // Add Cancel
             int userInput;
@@ -117,6 +124,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 }
             } while (userInput != 3);
         }
+        
         private void UpdateProduct(Product product) {
             // Add update discount price
             int choice;
@@ -219,9 +227,11 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         public void UpdateLoyalityPoint(double value) {
             LoyalityPoints.ChangeDiscountValue(value);
         }
+        
         public void CancelOrder(Order order) {
             order.SetOrderStatue(OrderState.Canceled);
         }
+        
         public void UpdateOrder(Order order) {
             // Add Cancel
             int userInput;
@@ -273,6 +283,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 }
             } while (userInput != 3);
         }
+        
         public void SuspendCustomer(Customer customer) {
             customer.SetCustomerState(CustomerState.inactive);
         }
