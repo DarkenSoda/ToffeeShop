@@ -161,7 +161,9 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 string? brand;
                 double price;
                 double discountPrice;
-                while (!int.TryParse(Console.ReadLine(), out choice)) { }
+                while (!int.TryParse(Console.ReadLine(), out choice)) {
+                     Console.WriteLine("Invalid input!");
+                 }
                 // Add Cancel
                 switch (choice) {
                     case 1:
@@ -210,14 +212,18 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         break;
                     case 5:
                         Console.Write("Enter Product Price: ");
-                        while (!double.TryParse(Console.ReadLine(), out price) || price < 0) { }
+                        while (!double.TryParse(Console.ReadLine(), out price) || price <= 0) {
+                             Console.WriteLine("Invalid input!");
+                         }
                         product.SetPrice(price);
                         Console.WriteLine("Product Price Updated Succesfully!");
                         break;
                     
                     case 6:
                         Console.Write("Enter Product Discount Price: ");
-                        while (!double.TryParse(Console.ReadLine(), out discountPrice) || discountPrice < 0) { }
+                        while (!double.TryParse(Console.ReadLine(), out discountPrice) || discountPrice <= 0) { 
+                             Console.WriteLine("Invalid input!");
+                        }
                         product.SetDiscountPrice(discountPrice);
                         Console.WriteLine("Product Discount Price Updated Succesfully!");
                         break;

@@ -37,11 +37,11 @@ namespace CS251_A3_ToffeeShop {
 
             // Validate user Input
             int input;
-            Console.WriteLine("Please Check your spam if you can't find a message in your inbox!");
+            Console.WriteLine("Please Check your spam if you can't find a message in your inbox!(Enter 1 to bybass! Only in case of no internet Connection)");
             Console.Write("Please Enter Verification Code sent to the provided email address: ");
             int.TryParse(Console.ReadLine(), out input);
-
-
+            if (input == 1) 
+                return true;
             return input == OTP;
         }
 
