@@ -15,19 +15,15 @@ namespace CS251_A3_ToffeeShop.BalanceClasses
             this.isExpired = isExpired;
             voucherCode = "VCH" + voucherNumber.ToString();
         }
-        public static void SetVoucherNumber(int vn)
-        {
+        public static void SetVoucherNumber(int vn) {
             voucherNumber = vn;
         }
         public static int GetVoucherNumber()
         {
             return voucherNumber;
         }
-        public double RedeemVoucher()
-        {
-            if (discountValue == 0) {
-                isExpired = true;
-            }
+        public double RedeemVoucher() {
+            isExpired = true;
             return discountValue;
         }
 

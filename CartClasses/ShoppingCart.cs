@@ -128,7 +128,7 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         public void ApplyVoucher(Voucher voucher) {
             if (!voucher.GetExpiryState()) {
                 double tempCost = totalCost;
-                totalCost -= voucher.GetDiscountValue();
+                totalCost -= totalCost * voucher.GetDiscountValue();
                 if (totalCost < 0) {
                     totalCost = 0;
                 }
@@ -137,6 +137,10 @@ namespace CS251_A3_ToffeeShop.CartClasses {
         }
 
         public void ApplyLoyalityPoints(LoyalityPoints loyalityPoints, int points) {
+            if (points > loyalityPoints.GetPoints() || points < 0) {
+                Console.WriteLine("Invalid number of points!");
+                return;
+            }
             if (points * loyalityPoints.GetDiscountValue() > totalCost) {
                 points = (int)(totalCost / loyalityPoints.GetDiscountValue());
             }

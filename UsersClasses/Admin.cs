@@ -86,13 +86,14 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                 }
             } while (userInput != 4);
         }
-        private void AddVoucher(ref List<Voucher> voucherList, Voucher newVoucher) {
-            voucherList.Add(newVoucher);
+        private void AddVoucher(ref List<double> voucherList, double newVoucher) {
+            voucherList.Add(newVoucher / 100);
         }
-        private void RemoveVoucher(ref List<Voucher> voucher, int index) {
+        private void RemoveVoucher(ref List<double> voucher, int index) {
+            if (index <= 0 || index > voucher.Count - 1)
             voucher.RemoveAt(index - 1);
         }
-        public void UpdateVouchers(List<Voucher> voucher) {
+        public void UpdateVouchers(List<double> voucher) {
             // Add Cancel
             int userInput;
             do {
@@ -104,17 +105,16 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                     case 1:
                         double discountValue;
                         Console.Write("Enter The Discount Value: (if you want to cancel enter '0') ");
-                        while (!double.TryParse(Console.ReadLine(), out discountValue) || discountValue < 0) {
+                        while (!double.TryParse(Console.ReadLine(), out discountValue) || discountValue < 0 || discountValue > 100) {
                             Console.Write("Invalid Input Try Again!");
                         }
                         if (discountValue == 0) { return; }
-                        Voucher newVoucher = new Voucher(discountValue);
                         Voucher.SetVoucherNumber(Voucher.GetVoucherNumber()+1);
-                        AddVoucher(ref voucher, newVoucher);
+                        AddVoucher(ref voucher, discountValue);
                         break;
                     case 2:
                         for (int i = 0; i < voucher.Count; i++) {
-                            Console.WriteLine($"{i+1}) " + voucher[i].GetVoucherCode() + ".");
+                            Console.WriteLine($"{i+1}) Voucher: " + voucher[i] * 100 + "%");
                         }
                         int choice;
                         // Check input

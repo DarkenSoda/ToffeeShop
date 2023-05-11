@@ -15,7 +15,7 @@ namespace CS251_A3_ToffeeShop
         private Catalogue catalogue = new Catalogue();
         private Dictionary<string, User> users = new Dictionary<string, User>();
         private List<Order> orderList = new List<Order>();
-        private List<Voucher> voucherList = new List<Voucher>();
+        private List<double> voucherList = new List<double>();
         private User? currentUser;
         private int userInput;
 
@@ -338,7 +338,7 @@ namespace CS251_A3_ToffeeShop
                 if (((Customer)currentUser).GetShoppingCart().GetAppliedVouchers().Contains(voucher)) {
                     availableVoucherList.Remove(voucher);
                 }
-                Console.WriteLine((i++) + ", " + voucher.GetVoucherCode() + "   " + voucher.GetDiscountValue());
+                Console.WriteLine((i++) + ", " + voucher.GetVoucherCode() + "   " + voucher.GetDiscountValue() * 100 + "%");
             }
             Console.Write("Choose an Option: ");
             int choice;
@@ -391,17 +391,12 @@ namespace CS251_A3_ToffeeShop
                         if (!((Customer)currentUser).CheckOut(orderList)) {
                             break;
                         }
-                        if (voucherList.Count > 0)
-                        {
-                            ((Customer)currentUser).AddVoucher(voucherList[randInt.Next(0, voucherList.Count)]);
+                        if (voucherList.Count > 0) {
+                            ((Customer)currentUser).AddVoucher(new Voucher(voucherList[randInt.Next(0, voucherList.Count)]));
                         }
 
                         // Redeem every voucher in the applied list in the checkout.
                         foreach(var voucher in ((Customer)currentUser).GetShoppingCart().GetAppliedVouchers()) {
-                            voucher.SetDiscountValue(voucher.GetDiscountValue() - ((Customer)currentUser).GetShoppingCart().GetTotalCost());
-                            if (voucher.GetDiscountValue() < 0) {
-                                voucher.SetDiscountValue(0);
-                            }
                             voucher.RedeemVoucher();
                         }
                         ((Customer)currentUser).GetLoyalityPoints().AddPoints(randInt.Next(1, 101));
