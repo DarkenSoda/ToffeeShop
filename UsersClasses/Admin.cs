@@ -290,7 +290,13 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         }
 
         public void SuspendCustomer(Customer customer) {
-            customer.SetCustomerState(CustomerState.inactive);
+            if(customer.GetCustomerState() == CustomerState.active){
+                customer.SetCustomerState(CustomerState.inactive);
+                Console.WriteLine("Customer: " + customer.GetName() + " State: inactive");
+            }else{
+                customer.SetCustomerState(CustomerState.active);
+                Console.WriteLine("Customer: " + customer.GetName() + " State: active");
+            }
         }
     }
 

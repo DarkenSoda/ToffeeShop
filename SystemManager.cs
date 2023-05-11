@@ -172,6 +172,7 @@ namespace CS251_A3_ToffeeShop {
                             }
 
                             ((Admin)(currentUser)).CancelOrder(orderList[choice - 1]);
+                            Console.WriteLine("Order Canceled Succesfully!");
                             break;
                         case 5:
                             i = 1;
@@ -194,6 +195,7 @@ namespace CS251_A3_ToffeeShop {
                                 break;
                             }
                             ((Admin)(currentUser)).UpdateOrder(orderList[choice - 1]);
+                            Console.WriteLine("Order Modified Succesfully!");
                             break;
                         case 6:
                             i = 1;
@@ -217,7 +219,7 @@ namespace CS251_A3_ToffeeShop {
                                 break;
                             }
                             ((Admin)(currentUser)).SuspendCustomer(customers[choice - 1]);
-                            Console.WriteLine("Customer Suspended.");
+                            Console.WriteLine("Customer State Changed Succesfully!.");
                             break;
                         case 7:
                             currentUser.Authernicate();
