@@ -21,8 +21,6 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                     case 1:
                         string? name;
                         string? category;
-                        string? description;
-                        string? brand;
                         double price;
                         Console.Write("Enter Product Name: (Enter 0 to Cancel): ");
                         name = Console.ReadLine();
@@ -40,27 +38,9 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                             category = Console.ReadLine();
                         }
                         if (category == "0") { break; }
-                        Console.Write("Enter Product Description (Enter 0 to Cancel): ");
-                        description = Console.ReadLine();
-                        while (String.IsNullOrEmpty(description)) {
-                            Console.WriteLine("Invalid Input Try Again!");
-                            Console.Write("Enter Product Description (Enter 0 to Cancel): ");
-                            description = Console.ReadLine();
-                        }
-                        if (description == "0") { break; }
-                        Console.Write("Enter Product Brand (Enter 0 to Cancel): ");
-                        brand = Console.ReadLine();
-                        while (String.IsNullOrEmpty(brand)) {
-                            Console.WriteLine("Invalid Input Try Again!");
-                            Console.Write("Enter Product Brand (Enter 0 to Cancel): ");
-                            brand = Console.ReadLine();
-                        }
-                        if (brand == "0") { break; }
                         Console.Write("Enter Product Price: ");
                         while (!double.TryParse(Console.ReadLine(), out price) || price < 0) { Console.WriteLine("Invalid Input Try Again!"); }
                         Product newProduct = new Product(name, category, price);
-                        newProduct.SetBrand(brand);
-                        newProduct.SetDescription(description);
                         catalogue.AddProduct(newProduct);
                         break;
                     case 2:
