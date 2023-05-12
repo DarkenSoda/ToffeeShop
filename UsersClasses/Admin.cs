@@ -136,7 +136,7 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                         Console.WriteLine("Process canceled.");
                         break;
                 }
-            } while (userInput != 3);
+            } while (userInput != 4);
         }
 
         private void UpdateProduct(Product product) {
