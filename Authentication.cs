@@ -18,7 +18,7 @@ namespace CS251_A3_ToffeeShop {
                 // Create smtp connection and send Message
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com");
                 MailMessage message = new MailMessage();
-                message.From = new MailAddress("fcai.toffeeshop@gmail.com");
+                message.From = new MailAddress("fcai.toffeeshop2@gmail.com");
                 message.To.Add(new MailAddress(emailAdress));
                 message.Subject = "Your verifcation OTP from Toffee Shop!";
                 message.Body = $"<div>Your one time password verifcation is <h2>{OTP}</h2></div>";
@@ -26,7 +26,7 @@ namespace CS251_A3_ToffeeShop {
 
                 smtp.Port = 587;
                 smtp.EnableSsl = true;
-                smtp.Credentials = new NetworkCredential("fcai.toffeeshop@gmail.com", "dfpzbhgihyfxtbjp");
+                smtp.Credentials = new NetworkCredential("fcai.toffeeshop2@gmail.com", "ovftmwaxchqrwtgx");
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
 
                 smtp.Send(message);
