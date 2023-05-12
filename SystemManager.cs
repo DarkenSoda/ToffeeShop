@@ -510,9 +510,9 @@ namespace CS251_A3_ToffeeShop {
 
             do {
                 correctInput = false;
-                Console.WriteLine("Please enter your Username (Enter 0 to cancel Log in): ");
+                Console.Write("Please enter your Username (Enter 0 to cancel Log in): ");
                 username = Console.ReadLine();
-                Console.WriteLine("Please enter your Password (Enter 0 to cancel Log in): ");
+                Console.Write("Please enter your Password (Enter 0 to cancel Log in): ");
                 password = Console.ReadLine();
 
                 if (username == "0" || password == "0") {
