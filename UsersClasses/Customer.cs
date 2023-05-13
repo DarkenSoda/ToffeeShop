@@ -1,14 +1,31 @@
+using System;
 using CS251_A3_ToffeeShop.CartClasses;
 using CS251_A3_ToffeeShop.BalanceClasses;
 using CS251_A3_ToffeeShop.Items;
 using CS251_A3_ToffeeShop.PaymentMethod;
 
+/* The code defines the Customer class and CustomerData struct in the UsersClasses namespace. The
+Customer class is a subclass of the User class and represents a customer of the ToffeeShop. It has
+properties such as totalMoneySpent, orderHistory, shoppingCart, voucherList, loyalityPoints,
+currentPaymentMethod, and address. It also has methods such as PrintOrders, GetTotalMoneySpent,
+SetTotalMoneySpent, AddVoucher, CheckOut, ReOrder, and GetCustomerState. The CustomerData struct is
+a data transfer object that contains information about a customer. */
 namespace CS251_A3_ToffeeShop.UsersClasses {
+    /* The `public enum CustomerState` is defining an enumeration type called `CustomerState` with two
+    possible values: `active` and `inactive`. This enumeration type is used to represent the state
+    of a customer object in the ToffeeShop system. */
     public enum CustomerState {
         active, inactive
     }
 
     public class Customer : User {
+        /* These are the private fields of the `Customer` class in the
+        `CS251_A3_ToffeeShop.UsersClasses` namespace. They represent various properties of a
+        customer object in the ToffeeShop system, such as the total money spent by the customer, the
+        maximum amount of money that can be spent to receive a voucher, the state of the customer
+        (active or inactive), the customer's order history, shopping cart, voucher list, loyalty
+        points, current payment method, and address. These fields are used to store and manipulate
+        data related to a customer object. */
         private double totalMoneySpent = 0;
         private static double maxMoneySpendForVoucher = 50;
         private CustomerState customerState;
@@ -19,11 +36,19 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         private IPaymentMethodStrategy? currentPaymentMethod;
         Address address;
 
+        /* This is a constructor for the `Customer` class in the `CS251_A3_ToffeeShop.UsersClasses`
+        namespace. It takes in five parameters: `name`, `userName`, `password`, `emailAdress`, and
+        `caddress`. It calls the constructor of the base class `User` with the `name`, `userName`,
+        `password`, and `emailAdress` parameters. It then sets the `address` field to the `caddress`
+        parameter and sets the `customerState` field to `CustomerState.active`. This constructor is
+        used to create a new `Customer` object with the specified properties. */
         public Customer(string name, string userName, string password, string emailAdress, Address caddress) : base(name, userName, password, emailAdress) {
             address = caddress;
             customerState = CustomerState.active;
         }
 
+        /// This function prints out the order history, including the date, state, items, and delivery
+        /// address for each order.
         public void PrintOrders() {
             int i = 1;
             System.Console.WriteLine("{}-----------------{[ Orders ]}-----------------{}");
@@ -70,6 +95,10 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             return loyalityPoints;
         }
 
+        /// The function adds a voucher to a list if the total money spent exceeds a certain amount.
+        /// 
+        /// @param Voucher The Voucher parameter is an object of the Voucher class, which contains
+        /// information about a discount or promotion that can be applied to a shopping cart.
         public void AddVoucher(Voucher voucher) {
             totalMoneySpent += shoppingCart.CalculateTotalPrice();
             if (totalMoneySpent >= maxMoneySpendForVoucher) {
@@ -82,6 +111,12 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             customerState = _customerState;
         }
 
+        /// This function prompts the user to select a payment method and enter an address, then creates
+        /// a new order and adds it to the system list.
+        /// 
+        /// @param systemList A list of orders in the system.
+        /// 
+        /// @return The method returns a boolean value. True if the process is successful, False if process failed
         public bool CheckOut(List<Order> systemList) {
             int choice;
             Console.WriteLine("1) Cash.\n2) PayPal.\n3) Credit Card.\n4) Cancel Check Out!");
@@ -140,16 +175,26 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             return true;
         }
 
+        /// This function allows the user to reorder items from a shopping cart and create a new order
+        /// with a new address.
+        /// 
+        /// @param Catalogue A class that contains a list of products available for purchase.
         public void ReOrder(Catalogue catalogue) {
             int userInput;
             Console.Write("Enter an item to change: ");
             int.TryParse(Console.ReadLine(), out userInput);
             while (userInput < 0 || userInput > orderHistory.Count) {
-                System.Console.WriteLine("Invalid Input! Try Again!");
+                Console.WriteLine("Invalid Input! Try Again!");
                 Console.Write("Enter an item to change:");
                 int.TryParse(Console.ReadLine(), out userInput);
             }
+
             ShoppingCart tempShoppingCart = new ShoppingCart();
+
+            /* The code is iterating through the product list of a shopping cart in an order history
+            object, and for each product, it is comparing its name to the names of products in a
+            catalogue. If a match is found, the product and its quantity are added to a temporary
+            shopping cart object. */
             foreach (var item in orderHistory[userInput - 1].GetOrderShoppingCart().GetProductList()) {
                 string orderName = item.Key.GetName();
                 foreach (var productItem in catalogue.GetProductList()) {
@@ -160,8 +205,14 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
                     }
                 }
             }
+
+            /* The code below is checking if the product list in a shopping cart is not empty. If it is
+            not empty, it prompts the user to enter an address by asking for the street name, city,
+            and building number. It then creates a new Address object with the entered information
+            and a new Order object with the shopping cart and the new address. Finally, it adds the
+            new order to a list of order history. */
             if (tempShoppingCart.GetProductList().Count > 0) {
-                System.Console.WriteLine("Enter an Address Please!");
+                Console.WriteLine("Enter an Address Please!");
                 string? street;
                 string? city;
                 string? buildingNumber;
@@ -195,9 +246,12 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
         public CustomerState GetCustomerState() {
             return customerState;
         }
-
     }
 
+    /* The code below is defining a C# struct called CustomerData which contains properties for storing
+    customer information such as name, username, password, phone, email, total money spent, orders,
+    vouchers, loyalty points, address, customer state, and authentication status. The struct is used to
+    store a customer object in the database. */
     public struct CustomerData {
         public string name { get; set; }
         public string username { get; set; }

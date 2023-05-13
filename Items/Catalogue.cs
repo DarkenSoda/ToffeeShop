@@ -1,6 +1,10 @@
 using System;
 using System.Text.Json;
 
+/* This is a C# class called `Catalogue` that is part of the `CS251_A3_ToffeeShop.Items` namespace. It
+contains methods for managing a list of `Product` objects, including adding and removing products,
+loading and saving product data to a JSON file, and displaying the product catalogue. The class uses
+the `System.Text.Json` namespace for JSON serialization and deserialization. */
 namespace CS251_A3_ToffeeShop.Items {
     public class Catalogue {
         private List<Product> productList = new List<Product>();
@@ -88,6 +92,8 @@ namespace CS251_A3_ToffeeShop.Items {
             }
         }
 
+        /// The function displays a catalogue of products with their names, prices, discount prices,
+        /// categories, brands (if available), and descriptions (if available).
         public void DisplayCatalogue() {
             int i = 1;
             foreach (Product product in GetProductList()) {

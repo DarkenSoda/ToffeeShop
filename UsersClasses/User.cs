@@ -1,3 +1,10 @@
+using System;
+
+/* This code defines a class called `User` in the `CS251_A3_ToffeeShop.UsersClasses` namespace. The
+`User` class has several properties such as `name`, `userName`, `password`, `phoneNumber`,
+`emailAdress`, and `isAuthenticated`. It also has several methods to set and get these properties,
+as well as a method to authenticate the user. The `User` class is intended to be used as a base
+class for other classes that represent different types of users in a Toffee Shop application. */
 namespace CS251_A3_ToffeeShop.UsersClasses {
     public class User {
         protected string name;
@@ -66,6 +73,10 @@ namespace CS251_A3_ToffeeShop.UsersClasses {
             isAuthenticated = authenticate;
         }
 
+        /// The function checks if the user is authenticated and either adds or removes authentication
+        /// based on the current state.
+        /// 
+        /// @return The method returns nothing (void).
         public void Authernicate() {
             if (isAuthenticated) {
                 Console.WriteLine("Authentication Removed!");

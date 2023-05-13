@@ -2,6 +2,14 @@ using System;
 using System.Net;
 using System.Net.Mail;
 
+/* The code defines a class named `Authentication` in the namespace `CS251_A3_ToffeeShop`. The class
+has a private constructor and a public static property named `Instance` that returns a singleton
+instance of the `Authentication` class. The class also has a public static method named
+`Authenticate` that takes an email address as input, generates a random one-time password (OTP),
+sends an email containing the OTP to the provided email address, prompts the user to enter the OTP,
+and returns `true` if the user enters the correct OTP, otherwise `false`. The class also has a
+private method named `GenerateRandomNumber` that generates a random integer between 100000 and
+999999. */
 namespace CS251_A3_ToffeeShop {
     public sealed class Authentication {
         private static readonly Lazy<Authentication> _instance = new Lazy<Authentication>(() => new Authentication());

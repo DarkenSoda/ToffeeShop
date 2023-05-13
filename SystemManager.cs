@@ -9,7 +9,12 @@ using System.Text.Json;
 
 
 namespace CS251_A3_ToffeeShop {
+    /* The code below is defining a C# class called "SystemManager". This class can be used to manage
+    various system-related tasks and operations in a C# program. */
     public class SystemManager {
+        /* The code below is declaring private fields for a class that manages a catalogue, a
+        dictionary of users, a list of orders, a list of vouchers, a current user, and an
+        integer for user input. */
         private Catalogue catalogue = new Catalogue();
         private Dictionary<string, User> users = new Dictionary<string, User>();
         private List<Order> orderList = new List<Order>();
@@ -17,6 +22,8 @@ namespace CS251_A3_ToffeeShop {
         private User? currentUser;
         private int userInput;
 
+        /// This function runs the main system of a Toffee Shop program, allowing users to browse the
+        /// catalogue, register, log in, and access different systems based on their user type.
         public void SystemRun() {
             // Load Data at the start of the program
             LoadData();
@@ -67,6 +74,14 @@ namespace CS251_A3_ToffeeShop {
             SaveData();
         }
 
+        /// The function allows a customer to browse the catalogue, add items to their shopping cart,
+        /// review their shopping cart, review their orders, authenticate, and log out.
+        /// 
+        /// @return If the `currentUser` is `null`, the method returns without doing anything.
+        /// Otherwise, the method runs a loop that allows the user to perform various actions related to
+        /// browsing the catalogue, adding items to the shopping cart, reviewing the shopping cart,
+        /// reviewing orders, authenticating, and logging out. The loop continues until the user chooses
+        /// to log out (option 6).
         private void CustomerSystem() {
             if (currentUser == null) return;
 
@@ -117,6 +132,9 @@ namespace CS251_A3_ToffeeShop {
             } while (userInput != 6);
         }
 
+        /// The AdminSystem function provides a menu of options for an admin user to update the
+        /// catalogue, vouchers, loyalty points, cancel or update orders, suspend or unsuspend
+        /// customers, authenticate, or log out.
         private void AdminSystem() {
             if (currentUser == null) return;
 
@@ -238,8 +256,14 @@ namespace CS251_A3_ToffeeShop {
             } while (userInput != 8);
         }
 
-        public void OrderInterface() {
+        /// The function allows a customer to view and modify their order history.
+        /// 
+        /// @return If the currentUser is null, the method returns without doing anything. Otherwise,
+        /// the method runs a loop that allows the user to interact with their order history and menu
+        /// options. The method does not have a return value.
+        private void OrderInterface() {
             if (currentUser == null) return;
+
             int orderInput;
             do {
                 ((Customer)currentUser).PrintOrders();
@@ -277,8 +301,11 @@ namespace CS251_A3_ToffeeShop {
 
         }
 
-        public void CustomerLoyalityPointsInterface() {
+        /// The function displays a menu for a customer to redeem loyalty points or cancel the
+        /// operation.
+        private void CustomerLoyalityPointsInterface() {
             if (currentUser == null) return;
+
             Console.WriteLine("Available Points: {0} TP\n-------------------\n1) Redeem.\n2) Cancel.", ((Customer)currentUser).GetLoyalityPoints().GetPoints());
             int userInput;
             int.TryParse(Console.ReadLine(), out userInput);
@@ -300,7 +327,13 @@ namespace CS251_A3_ToffeeShop {
             }
         }
 
-        public void CustomerVoucherInterface() {
+        /// The function displays a list of available vouchers for a customer to choose from and applies
+        /// the selected voucher to their shopping cart.
+        /// 
+        /// @return If the currentUser is null, the method returns nothing. Otherwise, it returns the
+        /// available vouchers for the current user to choose from, and applies the chosen voucher to
+        /// their shopping cart.
+        private void CustomerVoucherInterface() {
             if (currentUser == null) return;
             int i = 1;
             var availableVoucherList = ((Customer)currentUser).GetVoucherList().Where(v => !v.GetExpiryState() && !((Customer)currentUser).GetShoppingCart().GetAppliedVouchers().Contains(v)).ToList();
@@ -328,7 +361,13 @@ namespace CS251_A3_ToffeeShop {
             ((Customer)currentUser).GetShoppingCart().ApplyVoucher(availableVoucherList[choice - 1]);
         }
 
-        public void ShoppingInterface() {
+        /// This function displays a shopping cart interface for a customer to apply loyalty points,
+        /// vouchers, update quantity, clear cart, check out, or cancel.
+        /// 
+        /// @return If the currentUser is null, nothing is returned as the method exits immediately.
+        /// Otherwise, the method runs a shopping interface and allows the user to perform various
+        /// actions on their shopping cart. The method does not have a return type.
+        private void ShoppingInterface() {
             if (currentUser == null) return;
 
             int userInput;
@@ -389,6 +428,8 @@ namespace CS251_A3_ToffeeShop {
             } while (userInput != 6 && userInput != 4);
         }
 
+        /// The function registers a new user by taking their name, username, password, email address,
+        /// city, street, and building number as input and validating them using regular expressions.
         private void RegisterUser() {
             string name = string.Empty;
             string? username, password, emailAdress;
@@ -503,6 +544,11 @@ namespace CS251_A3_ToffeeShop {
             Console.WriteLine("Registered Successfully!");
         }
 
+        /// This function handles the process of logging in a user, including input validation,
+        /// authentication, and checking for suspended accounts.
+        /// 
+        /// @return The method returns a boolean value indicating whether the user was successfully
+        /// logged in or not.
         private bool LoginUser() {
             string? username;
             string? password;
@@ -571,6 +617,15 @@ namespace CS251_A3_ToffeeShop {
             return true;
         }
 
+        /// The function takes user input for registration and checks if it is valid, returning a
+        /// boolean value indicating if the input was successful or not.
+        /// 
+        /// @param variable A reference to a string variable that will store the user input.
+        /// @param strname a string representing the name of the input variable (e.g. "username",
+        /// "password", "email")
+        /// 
+        /// @return The method returns a boolean value indicating whether the input was taken
+        /// successfully or not.
         private bool TakeRegistrationInputNoRegex(ref string variable, string strname) {
             bool correctInput;
             string? input;
@@ -596,7 +651,11 @@ namespace CS251_A3_ToffeeShop {
             return true;
         }
 
-        public void ForgotPassword() {
+        /// The function allows a user to reset their password by entering their username and a new
+        /// password that meets certain criteria.
+        /// 
+        /// @return The method is returning void, which means it is not returning any value.
+        private void ForgotPassword() {
             // Take username from customer then check if it's found first
             Console.Write("Please Enter your username (Enter 0 to cancel Registration): ");
             string? username = Console.ReadLine();
@@ -638,6 +697,7 @@ namespace CS251_A3_ToffeeShop {
             }
         }
 
+        /// The function loads data from various JSON files into the program.
         private void LoadData() {
             catalogue.LoadCatalogueData("./Items/Data.json");
             LoadCustomerData("./UsersClasses/Customers.json");
@@ -645,6 +705,7 @@ namespace CS251_A3_ToffeeShop {
             LoadBalanceData("./BalanceClasses/BalanceClasses.json");
         }
 
+        /// The function saves catalogue, customer, admin, and balance data to JSON files.
         private void SaveData() {
             catalogue.SaveCatalogueData("./Items/Data.json");
 
@@ -666,6 +727,14 @@ namespace CS251_A3_ToffeeShop {
             SaveBalanceData("./BalanceClasses/BalanceClasses.json");
         }
 
+        /// The function takes a Customer object and returns a CustomerData object with the customer's
+        /// information, order history, and voucher list converted to data objects.
+        /// 
+        /// @param Customer The customer object contains all the information about a particular
+        /// customer, such as their name, username, password, phone number, email, loyalty points,
+        /// address, order history, voucher list, and other relevant details.
+        /// 
+        /// @return The method is returning an object of type CustomerData.
         private CustomerData SaveCustomerData(Customer customer) {
             CustomerData customerData = new CustomerData();
             customerData.orders = new List<OrderData>();
@@ -721,6 +790,13 @@ namespace CS251_A3_ToffeeShop {
             return customerData;
         }
 
+        /// The function takes an Admin object and returns an AdminData object with its properties set
+        /// to the values of the Admin object's corresponding getter methods.
+        /// 
+        /// @param Admin An object of the Admin class, which contains information about an administrator
+        /// such as their name, username, password, phone number, email, and authentication status.
+        /// 
+        /// @return The method is returning an object of type AdminData.
         private AdminData SaveAdminData(Admin admin) {
             AdminData adminData = new AdminData();
 
@@ -734,6 +810,15 @@ namespace CS251_A3_ToffeeShop {
             return adminData;
         }
 
+        /// This function saves balance data to a JSON file.
+        /// 
+        /// @param file The file path and name where the balance data will be saved as a JSON file.
+        /// 
+        /// @return If the file does not end with ".json", the method will print "Failed To Open File!"
+        /// and return without saving any data. If there is an exception during the saving process, the
+        /// method will print "Failed to Save User Data!" and return without saving any data. Otherwise,
+        /// the method will save the balance data to the specified file. There is no explicit return
+        /// value.
         private void SaveBalanceData(string file) {
             if (!file.EndsWith(".json")) {
                 Console.WriteLine("Failed To Open File!");
@@ -763,6 +848,16 @@ namespace CS251_A3_ToffeeShop {
             }
         }
 
+        /// This function saves a list of data to a JSON file.
+        /// 
+        /// @param list A generic List of type T that contains the data to be saved.
+        /// @param file The file parameter is a string that represents the path and name of the file
+        /// where the serialized data will be saved.
+        /// 
+        /// @return If the file does not end with ".json", the method will print "Failed To Open File!"
+        /// and return without doing anything else. Otherwise, if the data is successfully saved,
+        /// nothing is returned. If there is an error while saving the data, the method will print
+        /// "Failed to Save User Data!" and return without doing anything else.
         private void SaveDataLists<T>(List<T> list, string file) {
             if (!file.EndsWith(".json")) {
                 Console.WriteLine("Failed To Open File!");
@@ -781,6 +876,15 @@ namespace CS251_A3_ToffeeShop {
             }
         }
 
+        /// This function loads CustomerData from a JSON file and converts it into Customer objects to
+        /// be added to a list of users.
+        /// 
+        /// @param file The file path of the JSON file containing customers data to be loaded.
+        /// 
+        /// @return If the file does not end with ".json" or if there are no items in the file, the
+        /// method returns without doing anything. Otherwise, the method loads customer data from the
+        /// JSON file and converts it to Customer objects, which are then added to the users list. No
+        /// explicit value is returned from the method.
         private void LoadCustomerData(string file) {
             // Return if can't Open file
             if (!file.EndsWith(".json")) {
@@ -870,6 +974,15 @@ namespace CS251_A3_ToffeeShop {
             }
         }
 
+        /// This function loads admin data from a JSON file and converts it into Admin objects to be
+        /// added to a users list.
+        /// 
+        /// @param file The file path of the JSON file containing the admin data to be loaded.
+        /// 
+        /// @return If the file does not end with ".json", the message "Failed To Open File!" is printed
+        /// and the method returns. If there are no items in the file, the method returns. If there is
+        /// an exception while loading the admin data, the message "Failed to Load Admin Data!" is
+        /// printed. Otherwise, the method does not return anything.
         private void LoadAdminData(string file) {
             // Return if can't Open file
             if (!file.EndsWith(".json")) {
@@ -912,6 +1025,16 @@ namespace CS251_A3_ToffeeShop {
             }
         }
 
+        /// This function loads balance data from a JSON file and updates the voucher and loyalty points
+        /// values accordingly.
+        /// 
+        /// @param file The file path of the JSON file containing balance data to be loaded.
+        /// 
+        /// @return If the file does not end with ".json", the message "Failed To Open File!" is printed
+        /// and the method returns without doing anything. Otherwise, the method reads the contents of
+        /// the file, deserializes it into a BalanceClassesStruct object, adds the voucher values to a
+        /// list, and changes the discount value of the LoyalityPoints class. If an exception occurs
+        /// during this process, the message
         private void LoadBalanceData(string file) {
             // Return if can't Open file
             if (!file.EndsWith(".json")) {

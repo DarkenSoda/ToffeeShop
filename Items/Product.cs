@@ -1,3 +1,5 @@
+/* This code defines a namespace `CS251_A3_ToffeeShop.Items` which contains a class `Product` and a
+struct `ProductData`. */
 namespace CS251_A3_ToffeeShop.Items {
     public class Product {
         private string name;
@@ -66,8 +68,10 @@ namespace CS251_A3_ToffeeShop.Items {
         }
     }
 
-    // Struct to use as a database schema
-    // Load all data into it before converting to Product class
+    /* The `ProductData` struct is defining a database schema for a product. It contains properties for
+    the name, category, description, brand, price, and discount price of a product. This struct can
+    be used to load data from a database or other source and then convert it into a `Product`
+    object. */
     public struct ProductData {
         public string name { get; set; }
         public string category { get; set; }
