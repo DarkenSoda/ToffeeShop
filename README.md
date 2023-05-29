@@ -49,10 +49,5 @@ We welcome contributions to the Toffee Shop project! If you would like to contri
 - Fork the repository and create a new branch for your contribution.
 - Make your changes, ensuring adherence to coding standards and best practices.
 - Test your changes to ensure they do not introduce any issues or errors.
+- Add your info to the Contributors.md file.
 - Submit a pull request, explaining the changes made and the purpose behind them.
-
-## Contributors:
-
-- [Mahmoud Adel](https://github.com/DarkenSoda)
-- [Nour El-Deen](https://github.com/Nour8317)
-- [Yassin Tarek Helmy](https://github.com/YassinTarekHelmy)
